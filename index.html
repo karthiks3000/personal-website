@@ -3,74 +3,1443 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your Name - Personal Website</title>
-    <link rel="stylesheet" href="styles.css">
+    <meta name="description" content="Karthik Subramanian - Principal Software Engineer specializing in backend systems, cloud architecture, and modern web applications">
+    <meta name="keywords" content="Karthik Subramanian, Principal Software Engineer, Backend Development, AWS, Cloud Architecture, Full Stack Developer">
+    <meta name="author" content="Karthik Subramanian">
+    
+    <!-- Dark theme meta tags -->
+    <meta name="color-scheme" content="dark">
+    <meta name="theme-color" content="#111827">
+    
+    <!-- Mobile-specific meta tags -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Karthik Subramanian">
+    
+    <!-- Preconnect to external domains for better performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdn.tailwindcss.com">
+    
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="Karthik Subramanian - Principal Software Engineer">
+    <meta property="og:description" content="Backend systems architect who builds elegant frontend experiences">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://karthiks3000.dev">
+    
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Karthik Subramanian - Principal Software Engineer">
+    <meta name="twitter:description" content="Backend systems architect who builds elegant frontend experiences">
+    
+    <title>Karthik Subramanian - Principal Software Engineer</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS with Dark Theme Configuration -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'inter': ['Inter', 'sans-serif'],
+                        'mono': ['JetBrains Mono', 'monospace']
+                    },
+                    colors: {
+                        gray: {
+                            900: '#111827',
+                            800: '#1f2937',
+                            700: '#374151',
+                            400: '#9ca3af',
+                            300: '#d1d5db',
+                            100: '#f3f4f6'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Custom Dark Theme Styles -->
+    <link rel="stylesheet" href="styles/main.css">
+    
+    <!-- Noscript fallback styles -->
+    <noscript>
+        <style>
+            .opacity-0 { opacity: 1 !important; }
+        </style>
+    </noscript>
 </head>
-<body>
-    <main>
-        <section class="hero">
-            <img src="profile-photo.svg" alt="Your Name" class="profile-photo">
-            <h1>Your Name</h1>
-            <p class="tagline">Cloud Builder & AWS Enthusiast</p>
-            <a href="https://builder.aws.com/community/@youralias" target="_blank" class="aws-link">AWS Builder Center Profile</a>
-        </section>
+<body class="font-inter bg-gray-900 text-gray-100 dark">
+    <!-- Skip navigation links for keyboard users -->
+    <nav aria-label="Skip navigation links" class="sr-only focus-within:not-sr-only focus-within:absolute focus-within:top-4 focus-within:left-4 focus-within:z-50">
+        <div class="flex flex-col space-y-2 bg-gray-900 p-4 rounded-lg border border-blue-400">
+            <a href="#main-content" class="bg-blue-400 text-gray-900 px-4 py-2 rounded-md font-medium focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 focus:ring-offset-gray-900">
+                Skip to main content
+            </a>
+            <a href="#skills" class="bg-blue-400 text-gray-900 px-4 py-2 rounded-md font-medium focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 focus:ring-offset-gray-900">
+                Skip to Skills
+            </a>
+            <a href="#experience" class="bg-blue-400 text-gray-900 px-4 py-2 rounded-md font-medium focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 focus:ring-offset-gray-900">
+                Skip to Experience
+            </a>
+            <a href="#projects" class="bg-blue-400 text-gray-900 px-4 py-2 rounded-md font-medium focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 focus:ring-offset-gray-900">
+                Skip to Projects
+            </a>
+            <a href="#background" class="bg-blue-400 text-gray-900 px-4 py-2 rounded-md font-medium focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 focus:ring-offset-gray-900">
+                Skip to Background
+            </a>
+            <a href="#contact" class="bg-blue-400 text-gray-900 px-4 py-2 rounded-md font-medium focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 focus:ring-offset-gray-900">
+                Skip to Contact
+            </a>
+        </div>
+    </nav>
 
-        <section class="fun-facts">
-            <h3>Fun Facts About Me</h3>
-            <div class="facts-grid">
-                <div class="fact-card">
-                    <h4>🚀 Challenge In Progress</h4>
-                    <p>Currently working on <a href="https://builder.aws.com/content/31C2WxIDSQive7q2Dv5xNFCmYJj/aws-builder-challenge-2-build-a-website-on-the-cloud?trk=86c76c09-e8f4-4138-badc-604ce7bc5d77&sc_channel=el" target="_blank">AWS Builder Challenge #2: Build a website on the cloud!</a></p>
+    <!-- Main Content -->
+    <main id="main-content" tabindex="-1">
+        <!-- Hero Section (serves as site header) -->
+        <header>
+            <section id="hero" class="relative min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 flex items-center justify-center" role="banner" aria-labelledby="hero-heading" aria-describedby="hero-description">
+            <!-- Hero Content -->
+            <div class="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center hero-content py-8 sm:py-12">
+                <!-- Profile Photo -->
+                <div class="mb-6 sm:mb-8">
+                    <img src="me.jpg" 
+                         alt="Professional headshot of Karthik Subramanian, Principal Software Engineer" 
+                         class="w-32 h-32 sm:w-40 sm:h-40 rounded-full border-2 border-gray-700 shadow-2xl mx-auto hover-scale transition-transform duration-300 object-cover image-loading"
+                         loading="eager"
+                         width="160"
+                         height="160"
+                         onload="this.classList.remove('image-loading'); this.classList.add('image-loaded');">
                 </div>
-                <div class="fact-card">
-                    <h4>🎯 Learning Goal</h4>
-                    <p>Building my skills one AWS service at a time - S3, CloudFront, and beyond!</p>
+                
+                <!-- Name -->
+                <h1 id="hero-heading" class="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-100 mb-3 sm:mb-4">
+                    Karthik Subramanian
+                </h1>
+                
+                <!-- Professional Title -->
+                <p class="text-lg sm:text-xl lg:text-2xl font-medium text-blue-400 mb-4 sm:mb-6">
+                    Principal Software Engineer
+                </p>
+                
+                <!-- Value Proposition -->
+                <p id="hero-description" class="text-base sm:text-lg lg:text-xl text-gray-300 mb-6 sm:mb-8 max-w-2xl mx-auto px-2">
+                    Backend systems architect who builds elegant frontend experiences
+                </p>
+                
+                <!-- AI Feature Status (for debugging) -->
+                <div id="ai-status-indicator" class="hidden mt-4 p-3 rounded-lg border text-sm">
+                    <span id="ai-status-text">Checking AI capabilities...</span>
                 </div>
-                <div class="fact-card">
-                    <h4>💡 Fun Project</h4>
-                    <p>This website is hosted on Amazon S3 with CloudFront for global delivery!</p>
+                
+                <!-- Essential Contact Links -->
+                <nav class="flex flex-wrap justify-center gap-4 sm:gap-6 mb-8 contact-links" aria-label="Social media and contact links">
+                    <a href="https://www.linkedin.com/in/karthik-subramanian-7381b67b/" 
+                       target="_blank" rel="noopener noreferrer"
+                       class="text-gray-400 hover:text-blue-400 focus:text-blue-400 transition-colors duration-300 p-3 rounded-lg hover:bg-gray-800 focus:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-gray-900"
+                       aria-label="Connect with Karthik on LinkedIn (opens in new tab)">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                        </svg>
+                        <span class="sr-only">LinkedIn</span>
+                    </a>
+                    
+                    <a href="https://github.com/karthiks3000" 
+                       target="_blank" rel="noopener noreferrer"
+                       class="text-gray-400 hover:text-blue-400 focus:text-blue-400 transition-colors duration-300 p-3 rounded-lg hover:bg-gray-800 focus:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-gray-900"
+                       aria-label="View Karthik's GitHub projects (opens in new tab)">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                        </svg>
+                        <span class="sr-only">GitHub</span>
+                    </a>
+                    
+                    <a href="mailto:contact@karthiks3000.dev" 
+                       class="text-gray-400 hover:text-blue-400 focus:text-blue-400 transition-colors duration-300 p-3 rounded-lg hover:bg-gray-800 focus:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-gray-900"
+                       aria-label="Send email to Karthik">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                        </svg>
+                        <span class="sr-only">Email</span>
+                    </a>
+                </nav>
+                
+                <!-- Prominent Contact Information -->
+                <div class="mb-8 space-y-4 contact-info">
+                    <!-- Email Display -->
+                    <div class="text-center">
+                        <p class="text-sm text-gray-400 mb-2">Get in touch</p>
+                        <a href="mailto:contact@karthiks3000.dev" 
+                           class="inline-flex items-center gap-2 text-lg font-medium text-blue-400 hover:text-blue-300 focus:text-blue-300 transition-colors duration-300 px-4 py-2 rounded-lg hover:bg-gray-800/50 focus:bg-gray-800/50 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-gray-900"
+                           aria-label="Send email to contact@karthiks3000.dev">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                            </svg>
+                            contact@karthiks3000.dev
+                        </a>
+                    </div>
+                    
+                    <!-- Resume Download -->
+                    <div class="text-center">
+                        <a href="Karthik_Subramanian.pdf" 
+                           target="_blank" rel="noopener noreferrer"
+                           class="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 focus:bg-blue-700 text-white font-medium px-6 py-3 rounded-lg transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-gray-900"
+                           aria-label="Download Karthik's resume (PDF, opens in new tab)">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                            </svg>
+                            Download Resume
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Subtle Scroll Indicator -->
+                <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 scroll-indicator" aria-hidden="true">
+                    <div class="flex flex-col items-center text-gray-400">
+                        <span class="text-sm mb-2 hidden sm:block">Scroll to explore</span>
+                        <span class="text-xs mb-2 sm:hidden">Scroll down</span>
+                        <div class="w-6 h-10 border-2 border-gray-400 rounded-full flex justify-center">
+                            <div class="w-1 h-3 bg-gray-400 rounded-full mt-2 animate-bounce"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </section>
+        </header>
+
+        <!-- Live region for screen reader announcements -->
+        <div id="live-region" aria-live="polite" aria-atomic="true" class="sr-only"></div>
+
+        <!-- Core Skills Section -->
+        <section id="skills" class="py-16 sm:py-20 bg-gray-800 relative overflow-hidden" aria-labelledby="skills-heading" role="region">
+            <!-- Background Pattern -->
+            <div class="absolute inset-0 opacity-5">
+                <div class="absolute inset-0" style="background-image: radial-gradient(circle at 1px 1px, rgba(255,255,255,0.15) 1px, transparent 0); background-size: 20px 20px;"></div>
+            </div>
+            
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+                <div class="text-center mb-12 sm:mb-16">
+                    <h2 id="skills-heading" class="text-3xl sm:text-4xl font-bold text-gray-100 mb-4">Core Skills</h2>
+                    <p class="text-lg sm:text-xl text-gray-400 max-w-3xl mx-auto">
+                        Technical expertise spanning backend systems, frontend development, and cloud architecture
+                    </p>
+                </div>
+                
+                <!-- Skills Overview Cards -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 mb-12 animate-on-scroll">
+                    <!-- Backend Card -->
+                    <div class="group relative bg-gradient-to-br from-gray-900 to-gray-800 rounded-xl p-6 sm:p-8 border border-gray-700 hover:border-blue-500/50 transition-all duration-500 skill-overview-card cursor-pointer" data-category="backend">
+                        <div class="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-transparent rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                        <div class="relative z-10">
+                            <div class="flex items-center justify-between mb-6">
+                                <div class="w-14 h-14 bg-blue-500/10 rounded-xl flex items-center justify-center group-hover:bg-blue-500/20 transition-colors duration-300">
+                                    <svg class="w-7 h-7 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01"/>
+                                    </svg>
+                                </div>
+                                <div class="text-right">
+                                    <div class="text-2xl font-bold text-blue-400">95%</div>
+                                    <div class="text-xs text-gray-500">Expertise</div>
+                                </div>
+                            </div>
+                            <h3 class="text-xl font-semibold text-gray-100 mb-2">Backend & Systems</h3>
+                            <p class="text-gray-400 text-sm mb-4">Scalable architecture and robust systems</p>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-2 py-1 bg-blue-500/10 text-blue-400 text-xs rounded-full">Node.js</span>
+                                <span class="px-2 py-1 bg-blue-500/10 text-blue-400 text-xs rounded-full">Python</span>
+                                <span class="px-2 py-1 bg-blue-500/10 text-blue-400 text-xs rounded-full">APIs</span>
+                                <span class="px-2 py-1 bg-blue-500/10 text-blue-400 text-xs rounded-full">+3 more</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Frontend Card -->
+                    <div class="group relative bg-gradient-to-br from-gray-900 to-gray-800 rounded-xl p-6 sm:p-8 border border-gray-700 hover:border-emerald-500/50 transition-all duration-500 skill-overview-card cursor-pointer" data-category="frontend">
+                        <div class="absolute inset-0 bg-gradient-to-br from-emerald-500/5 to-transparent rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                        <div class="relative z-10">
+                            <div class="flex items-center justify-between mb-6">
+                                <div class="w-14 h-14 bg-emerald-500/10 rounded-xl flex items-center justify-center group-hover:bg-emerald-500/20 transition-colors duration-300">
+                                    <svg class="w-7 h-7 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                                    </svg>
+                                </div>
+                                <div class="text-right">
+                                    <div class="text-2xl font-bold text-emerald-400">88%</div>
+                                    <div class="text-xs text-gray-500">Expertise</div>
+                                </div>
+                            </div>
+                            <h3 class="text-xl font-semibold text-gray-100 mb-2">Frontend & UI</h3>
+                            <p class="text-gray-400 text-sm mb-4">Modern web interfaces and experiences</p>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-2 py-1 bg-emerald-500/10 text-emerald-400 text-xs rounded-full">React</span>
+                                <span class="px-2 py-1 bg-emerald-500/10 text-emerald-400 text-xs rounded-full">TypeScript</span>
+                                <span class="px-2 py-1 bg-emerald-500/10 text-emerald-400 text-xs rounded-full">CSS</span>
+                                <span class="px-2 py-1 bg-emerald-500/10 text-emerald-400 text-xs rounded-full">+3 more</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Cloud Card -->
+                    <div class="group relative bg-gradient-to-br from-gray-900 to-gray-800 rounded-xl p-6 sm:p-8 border border-gray-700 hover:border-orange-500/50 transition-all duration-500 skill-overview-card cursor-pointer" data-category="cloud">
+                        <div class="absolute inset-0 bg-gradient-to-br from-orange-500/5 to-transparent rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                        <div class="relative z-10">
+                            <div class="flex items-center justify-between mb-6">
+                                <div class="w-14 h-14 bg-orange-500/10 rounded-xl flex items-center justify-center group-hover:bg-orange-500/20 transition-colors duration-300">
+                                    <svg class="w-7 h-7 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z"/>
+                                    </svg>
+                                </div>
+                                <div class="text-right">
+                                    <div class="text-2xl font-bold text-orange-400">92%</div>
+                                    <div class="text-xs text-gray-500">Expertise</div>
+                                </div>
+                            </div>
+                            <h3 class="text-xl font-semibold text-gray-100 mb-2">Cloud & DevOps</h3>
+                            <p class="text-gray-400 text-sm mb-4">Scalable infrastructure and deployment</p>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-2 py-1 bg-orange-500/10 text-orange-400 text-xs rounded-full">AWS</span>
+                                <span class="px-2 py-1 bg-orange-500/10 text-orange-400 text-xs rounded-full">Serverless</span>
+                                <span class="px-2 py-1 bg-orange-500/10 text-orange-400 text-xs rounded-full">IaC</span>
+                                <span class="px-2 py-1 bg-orange-500/10 text-orange-400 text-xs rounded-full">+3 more</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Detailed Skills Display -->
+                <div class="skills-detail-container">
+                    <!-- Backend Details -->
+                    <div class="skills-detail-panel active" data-category="backend">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                            <div class="skill-badge">
+                                <div class="flex items-center justify-between mb-2">
+                                    <span class="font-medium text-gray-200">Node.js</span>
+                                    <div class="flex items-center space-x-1">
+                                        <div class="w-2 h-2 bg-blue-400 rounded-full"></div>
+                                        <div class="w-2 h-2 bg-blue-400 rounded-full"></div>
+                                        <div class="w-2 h-2 bg-blue-400 rounded-full"></div>
+                                        <div class="w-2 h-2 bg-blue-400 rounded-full"></div>
+                                        <div class="w-2 h-2 bg-blue-400 rounded-full"></div>
+                                    </div>
+                                </div>
+                                <div class="text-xs text-gray-400">5+ years • Expert level</div>
+                            </div>
+                            
+                            <div class="skill-badge">
+                                <div class="flex items-center justify-between mb-2">
+                                    <span class="font-medium text-gray-200">Python</span>
+                                    <div class="flex items-center space-x-1">
+                                        <div class="w-2 h-2 bg-blue-400 rounded-full"></div>
+                                        <div class="w-2 h-2 bg-blue-400 rounded-full"></div>
+                                        <div class="w-2 h-2 bg-blue-400 rounded-full"></div>
+                                        <div class="w-2 h-2 bg-blue-400 rounded-full"></div>
+                                        <div class="w-2 h-2 bg-gray-600 rounded-full"></div>
+                                    </div>
+                                </div>
+                                <div class="text-xs text-gray-400">4+ years • Advanced level</div>
+                            </div>
+                            
+                            <div class="skill-badge">
+                                <div class="flex items-center justify-between mb-2">
+                                    <span class="font-medium text-gray-200">System Architecture</span>
+                                    <div class="flex items-center space-x-1">
+                                        <div class="w-2 h-2 bg-blue-400 rounded-full"></div>
+                                        <div class="w-2 h-2 bg-blue-400 rounded-full"></div>
+                                        <div class="w-2 h-2 bg-blue-400 rounded-full"></div>
+                                        <div class="w-2 h-2 bg-blue-400 rounded-full"></div>
+                                        <div class="w-2 h-2 bg-blue-400 rounded-full"></div>
+                                    </div>
+                                </div>
+                                <div class="text-xs text-gray-400">6+ years • Expert level</div>
+                            </div>
+                            
+                            <div class="skill-badge">
+                                <div class="flex items-center justify-between mb-2">
+                                    <span class="font-medium text-gray-200">API Design</span>
+                                    <div class="flex items-center space-x-1">
+                                        <div class="w-2 h-2 bg-blue-400 rounded-full"></div>
+                                        <div class="w-2 h-2 bg-blue-400 rounded-full"></div>
+                                        <div class="w-2 h-2 bg-blue-400 rounded-full"></div>
+                                        <div class="w-2 h-2 bg-blue-400 rounded-full"></div>
+                                        <div class="w-2 h-2 bg-blue-400 rounded-full"></div>
+                                    </div>
+                                </div>
+                                <div class="text-xs text-gray-400">5+ years • Expert level</div>
+                            </div>
+                            
+                            <div class="skill-badge">
+                                <div class="flex items-center justify-between mb-2">
+                                    <span class="font-medium text-gray-200">Database Design</span>
+                                    <div class="flex items-center space-x-1">
+                                        <div class="w-2 h-2 bg-blue-400 rounded-full"></div>
+                                        <div class="w-2 h-2 bg-blue-400 rounded-full"></div>
+                                        <div class="w-2 h-2 bg-blue-400 rounded-full"></div>
+                                        <div class="w-2 h-2 bg-blue-400 rounded-full"></div>
+                                        <div class="w-2 h-2 bg-gray-600 rounded-full"></div>
+                                    </div>
+                                </div>
+                                <div class="text-xs text-gray-400">4+ years • Advanced level</div>
+                            </div>
+                            
+                            <div class="skill-badge">
+                                <div class="flex items-center justify-between mb-2">
+                                    <span class="font-medium text-gray-200">Java</span>
+                                    <div class="flex items-center space-x-1">
+                                        <div class="w-2 h-2 bg-blue-400 rounded-full"></div>
+                                        <div class="w-2 h-2 bg-blue-400 rounded-full"></div>
+                                        <div class="w-2 h-2 bg-blue-400 rounded-full"></div>
+                                        <div class="w-2 h-2 bg-blue-400 rounded-full"></div>
+                                        <div class="w-2 h-2 bg-gray-600 rounded-full"></div>
+                                    </div>
+                                </div>
+                                <div class="text-xs text-gray-400">3+ years • Advanced level</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Frontend Details -->
+                    <div class="skills-detail-panel" data-category="frontend">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                            <div class="skill-badge">
+                                <div class="flex items-center justify-between mb-2">
+                                    <span class="font-medium text-gray-200">JavaScript/TypeScript</span>
+                                    <div class="flex items-center space-x-1">
+                                        <div class="w-2 h-2 bg-emerald-400 rounded-full"></div>
+                                        <div class="w-2 h-2 bg-emerald-400 rounded-full"></div>
+                                        <div class="w-2 h-2 bg-emerald-400 rounded-full"></div>
+                                        <div class="w-2 h-2 bg-emerald-400 rounded-full"></div>
+                                        <div class="w-2 h-2 bg-gray-600 rounded-full"></div>
+                                    </div>
+                                </div>
+                                <div class="text-xs text-gray-400">5+ years • Advanced level</div>
+                            </div>
+                            
+                            <div class="skill-badge">
+                                <div class="flex items-center justify-between mb-2">
+                                    <span class="font-medium text-gray-200">HTML/CSS</span>
+                                    <div class="flex items-center space-x-1">
+                                        <div class="w-2 h-2 bg-emerald-400 rounded-full"></div>
+                                        <div class="w-2 h-2 bg-emerald-400 rounded-full"></div>
+                                        <div class="w-2 h-2 bg-emerald-400 rounded-full"></div>
+                                        <div class="w-2 h-2 bg-emerald-400 rounded-full"></div>
+                                        <div class="w-2 h-2 bg-gray-600 rounded-full"></div>
+                                    </div>
+                                </div>
+                                <div class="text-xs text-gray-400">6+ years • Advanced level</div>
+                            </div>
+                            
+                            <div class="skill-badge">
+                                <div class="flex items-center justify-between mb-2">
+                                    <span class="font-medium text-gray-200">React</span>
+                                    <div class="flex items-center space-x-1">
+                                        <div class="w-2 h-2 bg-emerald-400 rounded-full"></div>
+                                        <div class="w-2 h-2 bg-emerald-400 rounded-full"></div>
+                                        <div class="w-2 h-2 bg-emerald-400 rounded-full"></div>
+                                        <div class="w-2 h-2 bg-emerald-400 rounded-full"></div>
+                                        <div class="w-2 h-2 bg-gray-600 rounded-full"></div>
+                                    </div>
+                                </div>
+                                <div class="text-xs text-gray-400">3+ years • Advanced level</div>
+                            </div>
+                            
+                            <div class="skill-badge">
+                                <div class="flex items-center justify-between mb-2">
+                                    <span class="font-medium text-gray-200">Responsive Design</span>
+                                    <div class="flex items-center space-x-1">
+                                        <div class="w-2 h-2 bg-emerald-400 rounded-full"></div>
+                                        <div class="w-2 h-2 bg-emerald-400 rounded-full"></div>
+                                        <div class="w-2 h-2 bg-emerald-400 rounded-full"></div>
+                                        <div class="w-2 h-2 bg-emerald-400 rounded-full"></div>
+                                        <div class="w-2 h-2 bg-gray-600 rounded-full"></div>
+                                    </div>
+                                </div>
+                                <div class="text-xs text-gray-400">4+ years • Advanced level</div>
+                            </div>
+                            
+                            <div class="skill-badge">
+                                <div class="flex items-center justify-between mb-2">
+                                    <span class="font-medium text-gray-200">Modern Web APIs</span>
+                                    <div class="flex items-center space-x-1">
+                                        <div class="w-2 h-2 bg-emerald-400 rounded-full"></div>
+                                        <div class="w-2 h-2 bg-emerald-400 rounded-full"></div>
+                                        <div class="w-2 h-2 bg-emerald-400 rounded-full"></div>
+                                        <div class="w-2 h-2 bg-emerald-400 rounded-full"></div>
+                                        <div class="w-2 h-2 bg-gray-600 rounded-full"></div>
+                                    </div>
+                                </div>
+                                <div class="text-xs text-gray-400">3+ years • Advanced level</div>
+                            </div>
+                            
+                            <div class="skill-badge">
+                                <div class="flex items-center justify-between mb-2">
+                                    <span class="font-medium text-gray-200">UI/UX Principles</span>
+                                    <div class="flex items-center space-x-1">
+                                        <div class="w-2 h-2 bg-emerald-400 rounded-full"></div>
+                                        <div class="w-2 h-2 bg-emerald-400 rounded-full"></div>
+                                        <div class="w-2 h-2 bg-emerald-400 rounded-full"></div>
+                                        <div class="w-2 h-2 bg-gray-600 rounded-full"></div>
+                                        <div class="w-2 h-2 bg-gray-600 rounded-full"></div>
+                                    </div>
+                                </div>
+                                <div class="text-xs text-gray-400">2+ years • Intermediate level</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Cloud Details -->
+                    <div class="skills-detail-panel" data-category="cloud">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                            <div class="skill-badge">
+                                <div class="flex items-center justify-between mb-2">
+                                    <span class="font-medium text-gray-200">AWS Services</span>
+                                    <div class="flex items-center space-x-1">
+                                        <div class="w-2 h-2 bg-orange-400 rounded-full"></div>
+                                        <div class="w-2 h-2 bg-orange-400 rounded-full"></div>
+                                        <div class="w-2 h-2 bg-orange-400 rounded-full"></div>
+                                        <div class="w-2 h-2 bg-orange-400 rounded-full"></div>
+                                        <div class="w-2 h-2 bg-orange-400 rounded-full"></div>
+                                    </div>
+                                </div>
+                                <div class="text-xs text-gray-400">6+ years • Expert level</div>
+                            </div>
+                            
+                            <div class="skill-badge">
+                                <div class="flex items-center justify-between mb-2">
+                                    <span class="font-medium text-gray-200">Serverless Architecture</span>
+                                    <div class="flex items-center space-x-1">
+                                        <div class="w-2 h-2 bg-orange-400 rounded-full"></div>
+                                        <div class="w-2 h-2 bg-orange-400 rounded-full"></div>
+                                        <div class="w-2 h-2 bg-orange-400 rounded-full"></div>
+                                        <div class="w-2 h-2 bg-orange-400 rounded-full"></div>
+                                        <div class="w-2 h-2 bg-orange-400 rounded-full"></div>
+                                    </div>
+                                </div>
+                                <div class="text-xs text-gray-400">4+ years • Expert level</div>
+                            </div>
+                            
+                            <div class="skill-badge">
+                                <div class="flex items-center justify-between mb-2">
+                                    <span class="font-medium text-gray-200">Infrastructure as Code</span>
+                                    <div class="flex items-center space-x-1">
+                                        <div class="w-2 h-2 bg-orange-400 rounded-full"></div>
+                                        <div class="w-2 h-2 bg-orange-400 rounded-full"></div>
+                                        <div class="w-2 h-2 bg-orange-400 rounded-full"></div>
+                                        <div class="w-2 h-2 bg-orange-400 rounded-full"></div>
+                                        <div class="w-2 h-2 bg-gray-600 rounded-full"></div>
+                                    </div>
+                                </div>
+                                <div class="text-xs text-gray-400">3+ years • Advanced level</div>
+                            </div>
+                            
+                            <div class="skill-badge">
+                                <div class="flex items-center justify-between mb-2">
+                                    <span class="font-medium text-gray-200">Monitoring & Logging</span>
+                                    <div class="flex items-center space-x-1">
+                                        <div class="w-2 h-2 bg-orange-400 rounded-full"></div>
+                                        <div class="w-2 h-2 bg-orange-400 rounded-full"></div>
+                                        <div class="w-2 h-2 bg-orange-400 rounded-full"></div>
+                                        <div class="w-2 h-2 bg-orange-400 rounded-full"></div>
+                                        <div class="w-2 h-2 bg-gray-600 rounded-full"></div>
+                                    </div>
+                                </div>
+                                <div class="text-xs text-gray-400">4+ years • Advanced level</div>
+                            </div>
+                            
+                            <div class="skill-badge">
+                                <div class="flex items-center justify-between mb-2">
+                                    <span class="font-medium text-gray-200">CI/CD Pipelines</span>
+                                    <div class="flex items-center space-x-1">
+                                        <div class="w-2 h-2 bg-orange-400 rounded-full"></div>
+                                        <div class="w-2 h-2 bg-orange-400 rounded-full"></div>
+                                        <div class="w-2 h-2 bg-orange-400 rounded-full"></div>
+                                        <div class="w-2 h-2 bg-orange-400 rounded-full"></div>
+                                        <div class="w-2 h-2 bg-gray-600 rounded-full"></div>
+                                    </div>
+                                </div>
+                                <div class="text-xs text-gray-400">3+ years • Advanced level</div>
+                            </div>
+                            
+                            <div class="skill-badge">
+                                <div class="flex items-center justify-between mb-2">
+                                    <span class="font-medium text-gray-200">Docker</span>
+                                    <div class="flex items-center space-x-1">
+                                        <div class="w-2 h-2 bg-orange-400 rounded-full"></div>
+                                        <div class="w-2 h-2 bg-orange-400 rounded-full"></div>
+                                        <div class="w-2 h-2 bg-orange-400 rounded-full"></div>
+                                        <div class="w-2 h-2 bg-gray-600 rounded-full"></div>
+                                        <div class="w-2 h-2 bg-gray-600 rounded-full"></div>
+                                    </div>
+                                </div>
+                                <div class="text-xs text-gray-400">2+ years • Intermediate level</div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
 
-        <section class="aws-journey">
-            <h3>AWS Builder Challenge #2</h3>
-            <p>I'm currently working on the "Build a website on the cloud" challenge, learning to deploy websites using AWS S3 and CloudFront. This site is part of my challenge progress!</p>
-            <a href="https://builder.aws.com/content/31C2WxIDSQive7q2Dv5xNFCmYJj/aws-builder-challenge-2-build-a-website-on-the-cloud?trk=86c76c09-e8f4-4138-badc-604ce7bc5d77&sc_channel=el" target="_blank" class="cta-button">View Challenge Details</a>
+        <!-- Experience Section -->
+        <section id="experience" class="py-16 sm:py-20 bg-gray-900 relative overflow-hidden" aria-labelledby="experience-heading" role="region">
+            <!-- Background Pattern -->
+            <div class="absolute inset-0 opacity-5">
+                <div class="absolute inset-0" style="background-image: radial-gradient(circle at 1px 1px, rgba(255,255,255,0.15) 1px, transparent 0); background-size: 20px 20px;"></div>
+            </div>
+            
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+                <div class="text-center mb-12 sm:mb-16">
+                    <h2 id="experience-heading" class="text-3xl sm:text-4xl font-bold text-gray-100 mb-4">Professional Experience</h2>
+                    <p class="text-lg sm:text-xl text-gray-400 max-w-3xl mx-auto">
+                        Career progression from software engineer to technical leadership roles
+                    </p>
+                </div>
+                
+                <!-- Experience Timeline -->
+                <div class="relative max-w-6xl mx-auto experience-timeline">
+                    <!-- Timeline Line -->
+                    <div class="absolute left-4 md:left-1/2 transform md:-translate-x-px top-0 bottom-0 w-0.5 bg-gradient-to-b from-blue-400 via-blue-500 to-blue-600"></div>
+                    
+                    <!-- Experience Items -->
+                    <div class="space-y-12 animate-on-scroll">
+                        <!-- Scholastic Inc. - Senior Software Engineering Manager -->
+                        <div class="relative flex items-start experience-item">
+                            <!-- Timeline Dot -->
+                            <div class="absolute left-4 md:left-1/2 transform -translate-x-1/2 w-4 h-4 bg-blue-400 rounded-full border-4 border-gray-900 z-10 timeline-dot"></div>
+                            
+                            <!-- Content -->
+                            <div class="ml-12 md:ml-0 md:w-1/2 md:pr-8 md:text-right">
+                                <div class="bg-gradient-to-br from-gray-800 to-gray-900 rounded-xl p-6 border border-gray-700 hover:border-blue-500/50 transition-all duration-300 group experience-card">
+                                    <div class="flex flex-col md:items-end md:group-even:items-start">
+                                        <div class="text-sm text-blue-400 font-medium mb-2">Oct 2022 - Present</div>
+                                        <h3 class="text-xl font-semibold text-gray-100 mb-1">Senior Software Engineering Manager</h3>
+                                        <div class="text-lg text-gray-300 mb-4">Scholastic Inc. • Remote</div>
+                                        <p class="text-gray-400 text-sm mb-4 leading-relaxed">
+                                            Leading software engineering teams and driving technical strategy for educational technology solutions at one of the world's largest publishers and distributors of children's books.
+                                        </p>
+                                        
+                                        <!-- Key Achievements -->
+                                        <div class="mb-4">
+                                            <h4 class="text-sm font-medium text-gray-200 mb-2">Key Achievements:</h4>
+                                            <ul class="text-sm text-gray-400 space-y-1 achievement-list">
+                                                <li class="flex items-start achievement-item">
+                                                    <span class="text-blue-400 mr-2 mt-1 achievement-bullet">•</span>
+                                                    <span>Managing and mentoring senior software engineering teams</span>
+                                                </li>
+                                                <li class="flex items-start achievement-item">
+                                                    <span class="text-blue-400 mr-2 mt-1 achievement-bullet">•</span>
+                                                    <span>Driving technical architecture decisions for scalable educational platforms</span>
+                                                </li>
+                                                <li class="flex items-start achievement-item">
+                                                    <span class="text-blue-400 mr-2 mt-1 achievement-bullet">•</span>
+                                                    <span>Implementing best practices for software development lifecycle</span>
+                                                </li>
+                                                <li class="flex items-start achievement-item">
+                                                    <span class="text-blue-400 mr-2 mt-1 achievement-bullet">•</span>
+                                                    <span>Collaborating with product teams to deliver innovative educational solutions</span>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        
+                                        <!-- Technologies -->
+                                        <div class="flex flex-wrap gap-2 tech-tags">
+                                            <span class="px-3 py-1 bg-blue-500/10 text-blue-400 text-xs rounded-full border border-blue-500/20 tech-tag">Team Leadership</span>
+                                            <span class="px-3 py-1 bg-blue-500/10 text-blue-400 text-xs rounded-full border border-blue-500/20 tech-tag">Software Architecture</span>
+                                            <span class="px-3 py-1 bg-blue-500/10 text-blue-400 text-xs rounded-full border border-blue-500/20 tech-tag">Educational Technology</span>
+                                            <span class="px-3 py-1 bg-blue-500/10 text-blue-400 text-xs rounded-full border border-blue-500/20 tech-tag">Agile Methodologies</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Renaissance Learning - Technical Lead -->
+                        <div class="relative flex items-start experience-item">
+                            <!-- Timeline Dot -->
+                            <div class="absolute left-4 md:left-1/2 transform -translate-x-1/2 w-4 h-4 bg-emerald-400 rounded-full border-4 border-gray-900 z-10 timeline-dot"></div>
+                            
+                            <!-- Content -->
+                            <div class="ml-12 md:ml-0 md:w-1/2 md:ml-auto md:pl-8 md:text-left">
+                                <div class="bg-gradient-to-br from-gray-800 to-gray-900 rounded-xl p-6 border border-gray-700 hover:border-emerald-500/50 transition-all duration-300 group experience-card">
+                                    <div class="flex flex-col">
+                                        <div class="text-sm text-emerald-400 font-medium mb-2">Mar 2022 - Oct 2022</div>
+                                        <h3 class="text-xl font-semibold text-gray-100 mb-1">Technical Lead</h3>
+                                        <div class="text-lg text-gray-300 mb-4">Renaissance Learning • Remote</div>
+                                        <p class="text-gray-400 text-sm mb-4 leading-relaxed">
+                                            Led technical initiatives for educational assessment and learning analytics platforms, focusing on scalable solutions for K-12 education.
+                                        </p>
+                                        
+                                        <!-- Key Achievements -->
+                                        <div class="mb-4">
+                                            <h4 class="text-sm font-medium text-gray-200 mb-2">Key Achievements:</h4>
+                                            <ul class="text-sm text-gray-400 space-y-1 achievement-list">
+                                                <li class="flex items-start achievement-item">
+                                                    <span class="text-emerald-400 mr-2 mt-1 achievement-bullet">•</span>
+                                                    <span>Architected and implemented scalable learning analytics solutions</span>
+                                                </li>
+                                                <li class="flex items-start achievement-item">
+                                                    <span class="text-emerald-400 mr-2 mt-1 achievement-bullet">•</span>
+                                                    <span>Led cross-functional teams in delivering educational assessment tools</span>
+                                                </li>
+                                                <li class="flex items-start achievement-item">
+                                                    <span class="text-emerald-400 mr-2 mt-1 achievement-bullet">•</span>
+                                                    <span>Optimized system performance for high-volume educational data processing</span>
+                                                </li>
+                                                <li class="flex items-start achievement-item">
+                                                    <span class="text-emerald-400 mr-2 mt-1 achievement-bullet">•</span>
+                                                    <span>Mentored junior developers and established coding standards</span>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        
+                                        <!-- Technologies -->
+                                        <div class="flex flex-wrap gap-2 tech-tags">
+                                            <span class="px-3 py-1 bg-emerald-500/10 text-emerald-400 text-xs rounded-full border border-emerald-500/20 tech-tag">Technical Leadership</span>
+                                            <span class="px-3 py-1 bg-emerald-500/10 text-emerald-400 text-xs rounded-full border border-emerald-500/20 tech-tag">Learning Analytics</span>
+                                            <span class="px-3 py-1 bg-emerald-500/10 text-emerald-400 text-xs rounded-full border border-emerald-500/20 tech-tag">Data Processing</span>
+                                            <span class="px-3 py-1 bg-emerald-500/10 text-emerald-400 text-xs rounded-full border border-emerald-500/20 tech-tag">Educational Software</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Scholastic Inc. - Senior Software Engineer Consultant -->
+                        <div class="relative flex items-start experience-item">
+                            <!-- Timeline Dot -->
+                            <div class="absolute left-4 md:left-1/2 transform -translate-x-1/2 w-4 h-4 bg-orange-400 rounded-full border-4 border-gray-900 z-10 timeline-dot"></div>
+                            
+                            <!-- Content -->
+                            <div class="ml-12 md:ml-0 md:w-1/2 md:pr-8 md:text-right">
+                                <div class="bg-gradient-to-br from-gray-800 to-gray-900 rounded-xl p-6 border border-gray-700 hover:border-orange-500/50 transition-all duration-300 group experience-card">
+                                    <div class="flex flex-col md:items-end">
+                                        <div class="text-sm text-orange-400 font-medium mb-2">Apr 2018 - Mar 2022</div>
+                                        <h3 class="text-xl font-semibold text-gray-100 mb-1">Senior Software Engineer Consultant</h3>
+                                        <div class="text-lg text-gray-300 mb-4">Scholastic Inc. • Remote</div>
+                                        <p class="text-gray-400 text-sm mb-4 leading-relaxed">
+                                            Developed and maintained large-scale educational software solutions, focusing on digital learning platforms and content management systems.
+                                        </p>
+                                        
+                                        <!-- Key Achievements -->
+                                        <div class="mb-4">
+                                            <h4 class="text-sm font-medium text-gray-200 mb-2">Key Achievements:</h4>
+                                            <ul class="text-sm text-gray-400 space-y-1 achievement-list">
+                                                <li class="flex items-start achievement-item">
+                                                    <span class="text-orange-400 mr-2 mt-1 achievement-bullet">•</span>
+                                                    <span>Built scalable web applications for educational content delivery</span>
+                                                </li>
+                                                <li class="flex items-start achievement-item">
+                                                    <span class="text-orange-400 mr-2 mt-1 achievement-bullet">•</span>
+                                                    <span>Implemented robust APIs for educational data management</span>
+                                                </li>
+                                                <li class="flex items-start achievement-item">
+                                                    <span class="text-orange-400 mr-2 mt-1 achievement-bullet">•</span>
+                                                    <span>Optimized application performance for millions of student users</span>
+                                                </li>
+                                                <li class="flex items-start achievement-item">
+                                                    <span class="text-orange-400 mr-2 mt-1 achievement-bullet">•</span>
+                                                    <span>Collaborated with UX teams to create engaging educational interfaces</span>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        
+                                        <!-- Technologies -->
+                                        <div class="flex flex-wrap gap-2 tech-tags">
+                                            <span class="px-3 py-1 bg-orange-500/10 text-orange-400 text-xs rounded-full border border-orange-500/20 tech-tag">Full-Stack Development</span>
+                                            <span class="px-3 py-1 bg-orange-500/10 text-orange-400 text-xs rounded-full border border-orange-500/20 tech-tag">API Design</span>
+                                            <span class="px-3 py-1 bg-orange-500/10 text-orange-400 text-xs rounded-full border border-orange-500/20 tech-tag">Educational Platforms</span>
+                                            <span class="px-3 py-1 bg-orange-500/10 text-orange-400 text-xs rounded-full border border-orange-500/20 tech-tag">Performance Optimization</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Viacom Inc. - Technical Lead Consultant -->
+                        <div class="relative flex items-start experience-item">
+                            <!-- Timeline Dot -->
+                            <div class="absolute left-4 md:left-1/2 transform -translate-x-1/2 w-4 h-4 bg-purple-400 rounded-full border-4 border-gray-900 z-10 timeline-dot"></div>
+                            
+                            <!-- Content -->
+                            <div class="ml-12 md:ml-0 md:w-1/2 md:ml-auto md:pl-8 md:text-left">
+                                <div class="bg-gradient-to-br from-gray-800 to-gray-900 rounded-xl p-6 border border-gray-700 hover:border-purple-500/50 transition-all duration-300 group experience-card">
+                                    <div class="flex flex-col">
+                                        <div class="text-sm text-purple-400 font-medium mb-2">Jun 2011 - Apr 2018</div>
+                                        <h3 class="text-xl font-semibold text-gray-100 mb-1">Technical Lead Consultant</h3>
+                                        <div class="text-lg text-gray-300 mb-4">Viacom Inc. • New York, NY</div>
+                                        <p class="text-gray-400 text-sm mb-4 leading-relaxed">
+                                            Led technical development for media and entertainment platforms, focusing on content management systems and digital media delivery solutions.
+                                        </p>
+                                        
+                                        <!-- Key Achievements -->
+                                        <div class="mb-4">
+                                            <h4 class="text-sm font-medium text-gray-200 mb-2">Key Achievements:</h4>
+                                            <ul class="text-sm text-gray-400 space-y-1 achievement-list">
+                                                <li class="flex items-start achievement-item">
+                                                    <span class="text-purple-400 mr-2 mt-1 achievement-bullet">•</span>
+                                                    <span>Architected content management systems for major media brands</span>
+                                                </li>
+                                                <li class="flex items-start achievement-item">
+                                                    <span class="text-purple-400 mr-2 mt-1 achievement-bullet">•</span>
+                                                    <span>Led development teams for high-traffic entertainment websites</span>
+                                                </li>
+                                                <li class="flex items-start achievement-item">
+                                                    <span class="text-purple-400 mr-2 mt-1 achievement-bullet">•</span>
+                                                    <span>Implemented scalable video streaming and content delivery solutions</span>
+                                                </li>
+                                                <li class="flex items-start achievement-item">
+                                                    <span class="text-purple-400 mr-2 mt-1 achievement-bullet">•</span>
+                                                    <span>Established technical standards and development processes</span>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        
+                                        <!-- Technologies -->
+                                        <div class="flex flex-wrap gap-2 tech-tags">
+                                            <span class="px-3 py-1 bg-purple-500/10 text-purple-400 text-xs rounded-full border border-purple-500/20 tech-tag">Media Technology</span>
+                                            <span class="px-3 py-1 bg-purple-500/10 text-purple-400 text-xs rounded-full border border-purple-500/20 tech-tag">Content Management</span>
+                                            <span class="px-3 py-1 bg-purple-500/10 text-purple-400 text-xs rounded-full border border-purple-500/20 tech-tag">Video Streaming</span>
+                                            <span class="px-3 py-1 bg-purple-500/10 text-purple-400 text-xs rounded-full border border-purple-500/20 tech-tag">High-Traffic Systems</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </section>
 
-        <!-- CONTACT FORM SECTION - Added for user contact functionality -->
-        <section class="contact-form">
-            <h3>Get In Touch</h3>
-            <p>Have a question or want to connect? Send me a message!</p>
-            <!-- Form message container for success/error messages -->
-            <div id="form-message" class="form-message" style="display: none;"></div>
-            <form class="contact-form-container">
-                <!-- Contact form input fields -->
-                <div class="form-group">
-                    <label for="name">Name</label>
-                    <input type="text" id="name" name="name" required>
+        <!-- Featured Projects Section -->
+        <section id="projects" class="py-16 sm:py-20 bg-gray-800 relative overflow-hidden" aria-labelledby="projects-heading" role="region">
+            <!-- Background Pattern -->
+            <div class="absolute inset-0 opacity-5">
+                <div class="absolute inset-0" style="background-image: radial-gradient(circle at 1px 1px, rgba(255,255,255,0.15) 1px, transparent 0); background-size: 20px 20px;"></div>
+            </div>
+            
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+                <div class="text-center mb-12 sm:mb-16">
+                    <h2 id="projects-heading" class="text-3xl sm:text-4xl font-bold text-gray-100 mb-4">Featured Projects</h2>
+                    <p class="text-lg sm:text-xl text-gray-400 max-w-3xl mx-auto">
+                        Curated selection of technical projects showcasing innovation and expertise
+                    </p>
                 </div>
-                <div class="form-group">
-                    <label for="email">Email</label>
-                    <input type="email" id="email" name="email" required>
+                
+                <!-- Projects Grid -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 animate-on-scroll">
+                    <!-- TriviaSnake Game Project -->
+                    <article class="group relative bg-gradient-to-br from-gray-900 to-gray-800 rounded-xl p-6 sm:p-8 border border-gray-700 hover:border-blue-500/50 transition-all duration-500 project-card cursor-pointer">
+                        <div class="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-transparent rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                        <div class="relative z-10">
+                            <!-- Project Header -->
+                            <div class="flex items-start justify-between mb-6">
+                                <div class="flex-1">
+                                    <div class="flex items-center mb-2">
+                                        <div class="w-12 h-12 bg-blue-500/10 rounded-lg flex items-center justify-center group-hover:bg-blue-500/20 transition-colors duration-300 mr-4">
+                                            <svg class="w-6 h-6 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h1m4 0h1m-6 4h.01M15 14h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                            </svg>
+                                        </div>
+                                        <div>
+                                            <h3 class="text-xl font-semibold text-gray-100 group-hover:text-blue-400 transition-colors duration-300">
+                                                Multiplayer TriviaSnake Game
+                                            </h3>
+                                            <p class="text-sm text-blue-400 font-medium">Featured Project</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flex items-center space-x-2 ml-4">
+                                    <span class="px-2 py-1 bg-blue-500/10 text-blue-400 text-xs rounded-full">Game Dev</span>
+                                </div>
+                            </div>
+                            
+                            <!-- Project Description -->
+                            <p class="text-gray-300 mb-6 leading-relaxed">
+                                Built with Amazon Q Developer - an innovative multiplayer game combining trivia and snake gameplay mechanics. Features real-time multiplayer functionality, WebSocket connections, and engaging game mechanics that challenge both knowledge and reflexes.
+                            </p>
+                            
+                            <!-- Technology Stack -->
+                            <div class="mb-6">
+                                <h4 class="text-sm font-medium text-gray-400 mb-3">Technologies Used</h4>
+                                <div class="flex flex-wrap gap-2">
+                                    <span class="px-3 py-1 bg-gray-700/50 text-gray-300 text-sm rounded-full border border-gray-600 hover:border-blue-500/50 transition-colors duration-200">JavaScript</span>
+                                    <span class="px-3 py-1 bg-gray-700/50 text-gray-300 text-sm rounded-full border border-gray-600 hover:border-blue-500/50 transition-colors duration-200">AWS</span>
+                                    <span class="px-3 py-1 bg-gray-700/50 text-gray-300 text-sm rounded-full border border-gray-600 hover:border-blue-500/50 transition-colors duration-200">WebSockets</span>
+                                    <span class="px-3 py-1 bg-gray-700/50 text-gray-300 text-sm rounded-full border border-gray-600 hover:border-blue-500/50 transition-colors duration-200">HTML5 Canvas</span>
+                                    <span class="px-3 py-1 bg-gray-700/50 text-gray-300 text-sm rounded-full border border-gray-600 hover:border-blue-500/50 transition-colors duration-200">Amazon Q</span>
+                                </div>
+                            </div>
+                            
+                            <!-- Project Links -->
+                            <div class="flex flex-wrap gap-3">
+                                <a href="https://dj3xrj5xgqclx.cloudfront.net/" 
+                                   target="_blank" rel="noopener noreferrer"
+                                   class="inline-flex items-center px-4 py-2 bg-blue-500/10 text-blue-400 rounded-lg hover:bg-blue-500/20 focus:bg-blue-500/20 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-gray-900"
+                                   aria-label="Play TriviaSnake Game (opens in new tab)">
+                                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h1m4 0h1m-6 4h.01M15 14h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                    </svg>
+                                    Play Game
+                                </a>
+                                <a href="https://github.com/karthiks3000/triviasnake" 
+                                   target="_blank" rel="noopener noreferrer"
+                                   class="inline-flex items-center px-4 py-2 bg-gray-700/50 text-gray-300 rounded-lg hover:bg-gray-600/50 focus:bg-gray-600/50 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 focus:ring-offset-gray-900"
+                                   aria-label="View TriviaSnake source code on GitHub (opens in new tab)">
+                                    <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                                    </svg>
+                                    GitHub
+                                </a>
+                                <a href="https://dev.to/aws-builders/building-a-multiplayer-triviasnake-game-with-amazon-q-developer-15j3" 
+                                   target="_blank" rel="noopener noreferrer"
+                                   class="inline-flex items-center px-4 py-2 bg-gray-700/50 text-gray-300 rounded-lg hover:bg-gray-600/50 focus:bg-gray-600/50 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 focus:ring-offset-gray-900"
+                                   aria-label="Read article about TriviaSnake development (opens in new tab)">
+                                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                                    </svg>
+                                    Article
+                                </a>
+                            </div>
+                        </div>
+                    </article>
+                    
+                    <!-- AWS Serverless Tutorial Project -->
+                    <article class="group relative bg-gradient-to-br from-gray-900 to-gray-800 rounded-xl p-6 sm:p-8 border border-gray-700 hover:border-emerald-500/50 transition-all duration-500 project-card cursor-pointer">
+                        <div class="absolute inset-0 bg-gradient-to-br from-emerald-500/5 to-transparent rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                        <div class="relative z-10">
+                            <!-- Project Header -->
+                            <div class="flex items-start justify-between mb-6">
+                                <div class="flex-1">
+                                    <div class="flex items-center mb-2">
+                                        <div class="w-12 h-12 bg-emerald-500/10 rounded-lg flex items-center justify-center group-hover:bg-emerald-500/20 transition-colors duration-300 mr-4">
+                                            <svg class="w-6 h-6 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z"/>
+                                            </svg>
+                                        </div>
+                                        <div>
+                                            <h3 class="text-xl font-semibold text-gray-100 group-hover:text-emerald-400 transition-colors duration-300">
+                                                AWS Serverless Architecture with SAM
+                                            </h3>
+                                            <p class="text-sm text-emerald-400 font-medium">Featured Tutorial</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flex items-center space-x-2 ml-4">
+                                    <span class="px-2 py-1 bg-emerald-500/10 text-emerald-400 text-xs rounded-full">Cloud</span>
+                                </div>
+                            </div>
+                            
+                            <!-- Project Description -->
+                            <p class="text-gray-300 mb-6 leading-relaxed">
+                                Comprehensive tutorial series on building serverless applications with AWS SAM. Covers setup, deployment, best practices, and real-world implementation examples for scalable cloud architecture.
+                            </p>
+                            
+                            <!-- Technology Stack -->
+                            <div class="mb-6">
+                                <h4 class="text-sm font-medium text-gray-400 mb-3">Technologies Used</h4>
+                                <div class="flex flex-wrap gap-2">
+                                    <span class="px-3 py-1 bg-gray-700/50 text-gray-300 text-sm rounded-full border border-gray-600 hover:border-emerald-500/50 transition-colors duration-200">AWS Lambda</span>
+                                    <span class="px-3 py-1 bg-gray-700/50 text-gray-300 text-sm rounded-full border border-gray-600 hover:border-emerald-500/50 transition-colors duration-200">API Gateway</span>
+                                    <span class="px-3 py-1 bg-gray-700/50 text-gray-300 text-sm rounded-full border border-gray-600 hover:border-emerald-500/50 transition-colors duration-200">DynamoDB</span>
+                                    <span class="px-3 py-1 bg-gray-700/50 text-gray-300 text-sm rounded-full border border-gray-600 hover:border-emerald-500/50 transition-colors duration-200">SAM</span>
+                                    <span class="px-3 py-1 bg-gray-700/50 text-gray-300 text-sm rounded-full border border-gray-600 hover:border-emerald-500/50 transition-colors duration-200">CloudFormation</span>
+                                </div>
+                            </div>
+                            
+                            <!-- Project Links -->
+                            <div class="flex flex-wrap gap-3">
+                                <a href="https://dev.to/aws-builders/aws-serverless-architecture-with-sam-part-1-3fj1" 
+                                   target="_blank" rel="noopener noreferrer"
+                                   class="inline-flex items-center px-4 py-2 bg-emerald-500/10 text-emerald-400 rounded-lg hover:bg-emerald-500/20 focus:bg-emerald-500/20 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:ring-offset-2 focus:ring-offset-gray-900"
+                                   aria-label="Read AWS Serverless tutorial (opens in new tab)">
+                                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                                    </svg>
+                                    Read Tutorial
+                                </a>
+                                <a href="https://github.com/karthiks3000/aws-sam-tutorial" 
+                                   target="_blank" rel="noopener noreferrer"
+                                   class="inline-flex items-center px-4 py-2 bg-gray-700/50 text-gray-300 rounded-lg hover:bg-gray-600/50 focus:bg-gray-600/50 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 focus:ring-offset-gray-900"
+                                   aria-label="View AWS SAM tutorial source code on GitHub (opens in new tab)">
+                                    <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                                    </svg>
+                                    GitHub
+                                </a>
+                            </div>
+                        </div>
+                    </article>
+                    
+                    <!-- Rapid Prototyping Insights Project -->
+                    <article class="group relative bg-gradient-to-br from-gray-900 to-gray-800 rounded-xl p-6 sm:p-8 border border-gray-700 hover:border-orange-500/50 transition-all duration-500 project-card cursor-pointer">
+                        <div class="absolute inset-0 bg-gradient-to-br from-orange-500/5 to-transparent rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                        <div class="relative z-10">
+                            <!-- Project Header -->
+                            <div class="flex items-start justify-between mb-6">
+                                <div class="flex-1">
+                                    <div class="flex items-center mb-2">
+                                        <div class="w-12 h-12 bg-orange-500/10 rounded-lg flex items-center justify-center group-hover:bg-orange-500/20 transition-colors duration-300 mr-4">
+                                            <svg class="w-6 h-6 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                                            </svg>
+                                        </div>
+                                        <div>
+                                            <h3 class="text-xl font-semibold text-gray-100 group-hover:text-orange-400 transition-colors duration-300">
+                                                Rapid Prototyping Insights
+                                            </h3>
+                                            <p class="text-sm text-orange-400 font-medium">Technical Article</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flex items-center space-x-2 ml-4">
+                                    <span class="px-2 py-1 bg-orange-500/10 text-orange-400 text-xs rounded-full">Insights</span>
+                                </div>
+                            </div>
+                            
+                            <!-- Project Description -->
+                            <p class="text-gray-300 mb-6 leading-relaxed">
+                                Technical article sharing key insights and lessons learned from rapid prototyping experiences in software development. Covers methodologies, tools, and best practices for efficient development cycles.
+                            </p>
+                            
+                            <!-- Technology Stack -->
+                            <div class="mb-6">
+                                <h4 class="text-sm font-medium text-gray-400 mb-3">Focus Areas</h4>
+                                <div class="flex flex-wrap gap-2">
+                                    <span class="px-3 py-1 bg-gray-700/50 text-gray-300 text-sm rounded-full border border-gray-600 hover:border-orange-500/50 transition-colors duration-200">Prototyping</span>
+                                    <span class="px-3 py-1 bg-gray-700/50 text-gray-300 text-sm rounded-full border border-gray-600 hover:border-orange-500/50 transition-colors duration-200">Best Practices</span>
+                                    <span class="px-3 py-1 bg-gray-700/50 text-gray-300 text-sm rounded-full border border-gray-600 hover:border-orange-500/50 transition-colors duration-200">Technical Writing</span>
+                                    <span class="px-3 py-1 bg-gray-700/50 text-gray-300 text-sm rounded-full border border-gray-600 hover:border-orange-500/50 transition-colors duration-200">Development</span>
+                                </div>
+                            </div>
+                            
+                            <!-- Project Links -->
+                            <div class="flex flex-wrap gap-3">
+                                <a href="https://dev.to/aws-builders/rapid-learnings-from-rapid-prototyping-54pe" 
+                                   target="_blank" rel="noopener noreferrer"
+                                   class="inline-flex items-center px-4 py-2 bg-orange-500/10 text-orange-400 rounded-lg hover:bg-orange-500/20 focus:bg-orange-500/20 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:ring-offset-2 focus:ring-offset-gray-900"
+                                   aria-label="Read rapid prototyping insights article (opens in new tab)">
+                                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                                    </svg>
+                                    Read Article
+                                </a>
+                            </div>
+                        </div>
+                    </article>
+                    
+                    <!-- Personal Portfolio Website Project -->
+                    <article class="group relative bg-gradient-to-br from-gray-900 to-gray-800 rounded-xl p-6 sm:p-8 border border-gray-700 hover:border-purple-500/50 transition-all duration-500 project-card cursor-pointer">
+                        <div class="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-transparent rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                        <div class="relative z-10">
+                            <!-- Project Header -->
+                            <div class="flex items-start justify-between mb-6">
+                                <div class="flex-1">
+                                    <div class="flex items-center mb-2">
+                                        <div class="w-12 h-12 bg-purple-500/10 rounded-lg flex items-center justify-center group-hover:bg-purple-500/20 transition-colors duration-300 mr-4">
+                                            <svg class="w-6 h-6 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                                            </svg>
+                                        </div>
+                                        <div>
+                                            <h3 class="text-xl font-semibold text-gray-100 group-hover:text-purple-400 transition-colors duration-300">
+                                                Personal Portfolio Website
+                                            </h3>
+                                            <p class="text-sm text-purple-400 font-medium">This Website</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flex items-center space-x-2 ml-4">
+                                    <span class="px-2 py-1 bg-purple-500/10 text-purple-400 text-xs rounded-full">Web Dev</span>
+                                </div>
+                            </div>
+                            
+                            <!-- Project Description -->
+                            <p class="text-gray-300 mb-6 leading-relaxed">
+                                Modern, responsive personal website built with vanilla JavaScript, Tailwind CSS, and advanced animations. Features interactive timeline, project showcase, and optimized performance with accessibility compliance.
+                            </p>
+                            
+                            <!-- Technology Stack -->
+                            <div class="mb-6">
+                                <h4 class="text-sm font-medium text-gray-400 mb-3">Technologies Used</h4>
+                                <div class="flex flex-wrap gap-2">
+                                    <span class="px-3 py-1 bg-gray-700/50 text-gray-300 text-sm rounded-full border border-gray-600 hover:border-purple-500/50 transition-colors duration-200">JavaScript</span>
+                                    <span class="px-3 py-1 bg-gray-700/50 text-gray-300 text-sm rounded-full border border-gray-600 hover:border-purple-500/50 transition-colors duration-200">Tailwind CSS</span>
+                                    <span class="px-3 py-1 bg-gray-700/50 text-gray-300 text-sm rounded-full border border-gray-600 hover:border-purple-500/50 transition-colors duration-200">HTML5</span>
+                                    <span class="px-3 py-1 bg-gray-700/50 text-gray-300 text-sm rounded-full border border-gray-600 hover:border-purple-500/50 transition-colors duration-200">Responsive Design</span>
+                                    <span class="px-3 py-1 bg-gray-700/50 text-gray-300 text-sm rounded-full border border-gray-600 hover:border-purple-500/50 transition-colors duration-200">Accessibility</span>
+                                </div>
+                            </div>
+                            
+                            <!-- Project Links -->
+                            <div class="flex flex-wrap gap-3">
+                                <a href="#hero" 
+                                   class="inline-flex items-center px-4 py-2 bg-purple-500/10 text-purple-400 rounded-lg hover:bg-purple-500/20 focus:bg-purple-500/20 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:ring-offset-2 focus:ring-offset-gray-900"
+                                   aria-label="View this website">
+                                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                                    </svg>
+                                    View Live
+                                </a>
+                                <a href="https://github.com/karthiks3000" 
+                                   target="_blank" rel="noopener noreferrer"
+                                   class="inline-flex items-center px-4 py-2 bg-gray-700/50 text-gray-300 rounded-lg hover:bg-gray-600/50 focus:bg-gray-600/50 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 focus:ring-offset-gray-900"
+                                   aria-label="View portfolio source code on GitHub (opens in new tab)">
+                                    <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                                    </svg>
+                                    GitHub
+                                </a>
+                            </div>
+                        </div>
+                    </article>
                 </div>
-                <div class="form-group">
-                    <label for="message">Message</label>
-                    <textarea id="message" name="message" rows="5" required></textarea>
+                
+                <!-- Additional Projects Link -->
+                <div class="text-center mt-12">
+                    <p class="text-gray-400 mb-4">Interested in seeing more projects and contributions?</p>
+                    <a href="https://github.com/karthiks3000" 
+                       target="_blank" rel="noopener noreferrer"
+                       class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-blue-500/10 to-emerald-500/10 text-gray-100 rounded-lg border border-gray-600 hover:border-blue-500/50 focus:border-blue-500/50 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-gray-800"
+                       aria-label="View all projects on GitHub (opens in new tab)">
+                        <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                        </svg>
+                        View All Projects on GitHub
+                        <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+                        </svg>
+                    </a>
                 </div>
-                <!-- Contact form submit button -->
-                <button type="submit" class="contact-submit-btn">Send Message</button>
-            </form>
+            </div>
         </section>
-        <!-- END CONTACT FORM SECTION -->
+
+        <!-- Background & Credentials Section -->
+        <section id="background" class="py-16 sm:py-20 bg-gray-900 relative overflow-hidden" aria-labelledby="background-heading" role="region">
+            <!-- Background Pattern -->
+            <div class="absolute inset-0 opacity-5">
+                <div class="absolute inset-0" style="background-image: radial-gradient(circle at 1px 1px, rgba(255,255,255,0.15) 1px, transparent 0); background-size: 20px 20px;"></div>
+            </div>
+            
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+                <div class="text-center mb-12 sm:mb-16">
+                    <h2 id="background-heading" class="text-3xl sm:text-4xl font-bold text-gray-100 mb-4">Background & Credentials</h2>
+                    <p class="text-lg sm:text-xl text-gray-400 max-w-3xl mx-auto">
+                        Education, certifications, and professional achievements
+                    </p>
+                </div>
+                
+                <!-- Content Grid -->
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 animate-on-scroll">
+                    <!-- Education Card -->
+                    <div class="group relative bg-gradient-to-br from-gray-800 to-gray-900 rounded-xl p-6 sm:p-8 border border-gray-700 hover:border-blue-500/50 transition-all duration-500">
+                        <div class="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-transparent rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                        <div class="relative z-10">
+                            <!-- Education Icon -->
+                            <div class="w-14 h-14 bg-blue-500/10 rounded-xl flex items-center justify-center group-hover:bg-blue-500/20 transition-colors duration-300 mb-6">
+                                <svg class="w-7 h-7 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5z"/>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"/>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222"/>
+                                </svg>
+                            </div>
+                            
+                            <h3 class="text-xl font-semibold text-gray-100 mb-4">Education</h3>
+                            
+                            <div class="space-y-3">
+                                <div>
+                                    <h4 class="font-medium text-gray-200 mb-1">Bachelor of Engineering</h4>
+                                    <p class="text-gray-400 text-sm mb-1">Information Technology</p>
+                                    <p class="text-gray-500 text-sm">University of Mumbai • 2011</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Certifications Card -->
+                    <div class="group relative bg-gradient-to-br from-gray-800 to-gray-900 rounded-xl p-6 sm:p-8 border border-gray-700 hover:border-orange-500/50 transition-all duration-500">
+                        <div class="absolute inset-0 bg-gradient-to-br from-orange-500/5 to-transparent rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                        <div class="relative z-10">
+                            <!-- Certification Icon -->
+                            <div class="w-14 h-14 bg-orange-500/10 rounded-xl flex items-center justify-center group-hover:bg-orange-500/20 transition-colors duration-300 mb-6">
+                                <svg class="w-7 h-7 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/>
+                                </svg>
+                            </div>
+                            
+                            <h3 class="text-xl font-semibold text-gray-100 mb-4">Certifications</h3>
+                            
+                            <div class="space-y-4">
+                                <div class="flex items-start">
+                                    <div class="w-8 h-8 bg-orange-500/10 rounded-lg flex items-center justify-center mr-3 mt-1 flex-shrink-0">
+                                        <svg class="w-4 h-4 text-orange-400" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                            <path d="M12.017 0C5.396 0 .029 5.367.029 11.987c0 5.079 3.158 9.417 7.618 11.174-.105-.949-.199-2.403.041-3.439.219-.937 1.406-5.957 1.406-5.957s-.359-.72-.359-1.781c0-1.663.967-2.911 2.168-2.911 1.024 0 1.518.769 1.518 1.688 0 1.029-.653 2.567-.992 3.992-.285 1.193.6 2.165 1.775 2.165 2.128 0 3.768-2.245 3.768-5.487 0-2.861-2.063-4.869-5.008-4.869-3.41 0-5.409 2.562-5.409 5.199 0 1.033.394 2.143.889 2.741.097.118.112.221.083.342-.09.375-.293 1.199-.334 1.363-.053.225-.172.271-.402.165-1.495-.69-2.433-2.878-2.433-4.646 0-3.776 2.748-7.252 7.92-7.252 4.158 0 7.392 2.967 7.392 6.923 0 4.135-2.607 7.462-6.233 7.462-1.214 0-2.357-.629-2.746-1.378l-.748 2.853c-.271 1.043-1.002 2.35-1.492 3.146C9.57 23.812 10.763 24.009 12.017 24.009c6.624 0 11.99-5.367 11.99-11.988C24.007 5.367 18.641.001.012.001z"/>
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-medium text-gray-200 mb-1">AWS Certified Cloud Practitioner</h4>
+                                        <p class="text-gray-400 text-sm mb-1">Amazon Web Services</p>
+                                        <p class="text-gray-500 text-sm">2022</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Professional Recognition Card -->
+                    <div class="group relative bg-gradient-to-br from-gray-800 to-gray-900 rounded-xl p-6 sm:p-8 border border-gray-700 hover:border-emerald-500/50 transition-all duration-500">
+                        <div class="absolute inset-0 bg-gradient-to-br from-emerald-500/5 to-transparent rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                        <div class="relative z-10">
+                            <!-- Recognition Icon -->
+                            <div class="w-14 h-14 bg-emerald-500/10 rounded-xl flex items-center justify-center group-hover:bg-emerald-500/20 transition-colors duration-300 mb-6">
+                                <svg class="w-7 h-7 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/>
+                                </svg>
+                            </div>
+                            
+                            <h3 class="text-xl font-semibold text-gray-100 mb-4">Recognition</h3>
+                            
+                            <div class="space-y-4">
+                                <div class="flex items-start">
+                                    <div class="w-8 h-8 bg-emerald-500/10 rounded-lg flex items-center justify-center mr-3 mt-1 flex-shrink-0">
+                                        <svg class="w-4 h-4 text-emerald-400" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                            <path d="M12.017 0C5.396 0 .029 5.367.029 11.987c0 5.079 3.158 9.417 7.618 11.174-.105-.949-.199-2.403.041-3.439.219-.937 1.406-5.957 1.406-5.957s-.359-.72-.359-1.781c0-1.663.967-2.911 2.168-2.911 1.024 0 1.518.769 1.518 1.688 0 1.029-.653 2.567-.992 3.992-.285 1.193.6 2.165 1.775 2.165 2.128 0 3.768-2.245 3.768-5.487 0-2.861-2.063-4.869-5.008-4.869-3.41 0-5.409 2.562-5.409 5.199 0 1.033.394 2.143.889 2.741.097.118.112.221.083.342-.09.375-.293 1.199-.334 1.363-.053.225-.172.271-.402.165-1.495-.69-2.433-2.878-2.433-4.646 0-3.776 2.748-7.252 7.92-7.252 4.158 0 7.392 2.967 7.392 6.923 0 4.135-2.607 7.462-6.233 7.462-1.214 0-2.357-.629-2.746-1.378l-.748 2.853c-.271 1.043-1.002 2.35-1.492 3.146C9.57 23.812 10.763 24.009 12.017 24.009c6.624 0 11.99-5.367 11.99-11.988C24.007 5.367 18.641.001.012.001z"/>
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-medium text-gray-200 mb-1">AWS Community Builders</h4>
+                                        <p class="text-gray-400 text-sm mb-1">Amazon Web Services</p>
+                                        <p class="text-gray-500 text-sm mb-2">2025</p>
+                                        <p class="text-gray-400 text-xs leading-relaxed">
+                                            Selected member contributing to the AWS community through technical content and expertise sharing
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="py-16 sm:py-20 bg-gradient-to-br from-gray-800 to-gray-900 relative overflow-hidden" aria-labelledby="contact-heading" role="region">
+            <!-- Background Pattern -->
+            <div class="absolute inset-0 opacity-5">
+                <div class="absolute inset-0" style="background-image: radial-gradient(circle at 1px 1px, rgba(96,165,250,0.15) 1px, transparent 0); background-size: 30px 30px;"></div>
+            </div>
+            
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative text-center">
+                <div class="mb-12 sm:mb-16">
+                    <h2 id="contact-heading" class="text-3xl sm:text-4xl font-bold text-gray-100 mb-4">Let's Connect</h2>
+                    <p class="text-lg sm:text-xl text-gray-400 max-w-2xl mx-auto">
+                        Ready to discuss your next project or explore collaboration opportunities?
+                    </p>
+                </div>
+                
+                <!-- Contact Options Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12 animate-on-scroll">
+                    <!-- Email Contact -->
+                    <div class="group relative bg-gradient-to-br from-gray-900 to-gray-800 rounded-xl p-8 border border-gray-700 hover:border-blue-500/50 transition-all duration-500">
+                        <div class="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-transparent rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                        <div class="relative z-10">
+                            <div class="w-16 h-16 bg-blue-500/10 rounded-xl flex items-center justify-center group-hover:bg-blue-500/20 transition-colors duration-300 mb-6 mx-auto">
+                                <svg class="w-8 h-8 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                                </svg>
+                            </div>
+                            <h3 class="text-xl font-semibold text-gray-100 mb-4">Email Me</h3>
+                            <p class="text-gray-400 text-sm mb-6">
+                                Drop me a line for project inquiries, collaboration opportunities, or just to say hello.
+                            </p>
+                            <a href="mailto:contact@karthiks3000.dev" 
+                               class="inline-flex items-center gap-2 text-blue-400 hover:text-blue-300 focus:text-blue-300 font-medium transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-gray-900 rounded-lg px-2 py-1"
+                               aria-label="Send email to contact@karthiks3000.dev">
+                                contact@karthiks3000.dev
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <!-- Professional Networks -->
+                    <div class="group relative bg-gradient-to-br from-gray-900 to-gray-800 rounded-xl p-8 border border-gray-700 hover:border-emerald-500/50 transition-all duration-500">
+                        <div class="absolute inset-0 bg-gradient-to-br from-emerald-500/5 to-transparent rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                        <div class="relative z-10">
+                            <div class="w-16 h-16 bg-emerald-500/10 rounded-xl flex items-center justify-center group-hover:bg-emerald-500/20 transition-colors duration-300 mb-6 mx-auto">
+                                <svg class="w-8 h-8 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+                                </svg>
+                            </div>
+                            <h3 class="text-xl font-semibold text-gray-100 mb-4">Professional Networks</h3>
+                            <p class="text-gray-400 text-sm mb-6">
+                                Connect with me on professional platforms to stay updated on my latest work and insights.
+                            </p>
+                            <div class="flex justify-center gap-4">
+                                <a href="https://www.linkedin.com/in/karthik-subramanian-7381b67b/" 
+                                   target="_blank" rel="noopener noreferrer"
+                                   class="text-emerald-400 hover:text-emerald-300 focus:text-emerald-300 transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:ring-offset-2 focus:ring-offset-gray-900 rounded-lg p-2"
+                                   aria-label="Connect on LinkedIn (opens in new tab)">
+                                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                        <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                                    </svg>
+                                </a>
+                                <a href="https://github.com/karthiks3000" 
+                                   target="_blank" rel="noopener noreferrer"
+                                   class="text-emerald-400 hover:text-emerald-300 focus:text-emerald-300 transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:ring-offset-2 focus:ring-offset-gray-900 rounded-lg p-2"
+                                   aria-label="View GitHub projects (opens in new tab)">
+                                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                        <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                                    </svg>
+                                </a>
+                                <a href="https://dev.to/karthiks3000" 
+                                   target="_blank" rel="noopener noreferrer"
+                                   class="text-emerald-400 hover:text-emerald-300 focus:text-emerald-300 transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:ring-offset-2 focus:ring-offset-gray-900 rounded-lg p-2"
+                                   aria-label="Read articles on Dev.to (opens in new tab)">
+                                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                        <path d="M7.42 10.05c-.18-.16-.46-.23-.84-.23H6l.02 2.44.04 2.45h.56c.42 0 .63-.09.83-.26.24-.2.34-.49.34-1.07v-.8c0-.58-.1-.87-.37-1.07zM8.16 7.74c.42 0 .75.07 1.03.2.29.14.48.33.57.58.09.26.13.6.13 1.02v.97c0 .52-.07.89-.2 1.09-.14.2-.33.34-.58.44-.25.09-.55.14-.9.14-.44 0-.79-.05-1.03-.15-.25-.1-.44-.25-.58-.45-.15-.2-.22-.48-.22-.83v-.65c0-.64.11-1.1.33-1.39.22-.3.58-.45 1.09-.45.19 0 .37.02.51.05.15.03.28.08.38.13.11.05.2.11.27.18.08.07.13.14.17.22.04.08.06.15.06.22v.07c0 .08-.05.13-.14.13-.09 0-.16-.05-.2-.14-.04-.09-.1-.16-.19-.22-.09-.06-.2-.09-.33-.09-.32 0-.53.09-.63.26-.1.18-.15.47-.15.88v.05c0 .41.05.7.15.88.1.18.31.26.63.26.12 0 .23-.03.32-.09.09-.06.15-.13.19-.22.04-.09.11-.14.2-.14.09 0 .14.05.14.13v.07c0 .07-.02.14-.06.22-.04.08-.09.15-.17.22-.07.07-.16.12-.27.18-.1.05-.23.1-.38.13-.14.03-.32.05-.51.05-.51 0-.87-.15-1.09-.45-.22-.3-.33-.75-.33-1.39v-.65c0-.35.07-.63.22-.83.14-.2.33-.35.58-.45.24-.1.59-.15 1.03-.15z"/>
+                                    </svg>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Call to Action -->
+                <div class="text-center">
+                    <p class="text-gray-400 mb-6">
+                        Looking for my resume or want to learn more about my work?
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                        <a href="Karthik_Subramanian.pdf" 
+                           target="_blank" rel="noopener noreferrer"
+                           class="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 focus:bg-blue-700 text-white font-medium px-6 py-3 rounded-lg transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-gray-900"
+                           aria-label="Download Karthik's resume (PDF, opens in new tab)">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                            </svg>
+                            Download Resume
+                        </a>
+                        <a href="https://karthiks3000.github.io/" 
+                           target="_blank" rel="noopener noreferrer"
+                           class="inline-flex items-center gap-2 border border-gray-600 hover:border-gray-500 focus:border-gray-500 text-gray-300 hover:text-gray-200 focus:text-gray-200 font-medium px-6 py-3 rounded-lg transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 focus:ring-offset-gray-900"
+                           aria-label="View portfolio website (opens in new tab)">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9v-9m0-9v9"/>
+                            </svg>
+                            View Portfolio
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Minimal Footer -->
+        <footer class="py-12 bg-gray-800 border-t border-gray-700" role="contentinfo" aria-labelledby="footer-heading">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex flex-col sm:flex-row justify-between items-center space-y-6 sm:space-y-0">
+                    <!-- Copyright -->
+                    <div class="text-center sm:text-left">
+                        <h3 id="footer-heading" class="sr-only">Footer</h3>
+                        <p class="text-gray-400 text-sm">
+                            &copy; 2025 Karthik Subramanian. All rights reserved.
+                        </p>
+                    </div>
+                    
+                    <!-- Essential Links -->
+                    <nav aria-label="Footer navigation" class="flex flex-wrap justify-center sm:justify-end items-center gap-4 sm:gap-6">
+                        <!-- Back to Top -->
+                        <a href="#hero" 
+                           class="text-gray-400 hover:text-blue-400 focus:text-blue-400 transition-colors duration-300 text-sm font-medium px-2 py-1 rounded focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-gray-800"
+                           aria-label="Back to top">
+                            Back to Top
+                        </a>
+                        
+                        <!-- Quick Contact -->
+                        <a href="#contact" 
+                           class="text-gray-400 hover:text-blue-400 focus:text-blue-400 transition-colors duration-300 text-sm font-medium px-2 py-1 rounded focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-gray-800"
+                           aria-label="Go to contact section">
+                            Contact
+                        </a>
+                        
+                        <!-- Privacy Note -->
+                        <span class="text-gray-500 text-xs">
+                            Built with accessibility in mind
+                        </span>
+                    </nav>
+                </div>
+                
+                <!-- Additional Footer Info -->
+                <div class="mt-8 pt-8 border-t border-gray-700 text-center">
+                    <p class="text-gray-500 text-xs">
+                        Built with modern web technologies and attention to accessibility
+                    </p>
+                </div>
+            </div>
+        </footer>
     </main>
 
-    <footer>
-        <p>&copy; 2025 Your Name. Built with ❤️ on AWS</p>
-    </footer>
+    <!-- AI Chat Interface (conditionally rendered based on browser support) -->
+    <div id="ai-chat-interface" class="chat-widget hidden" aria-hidden="true">
+        <!-- Toggle Button -->
+        <button id="chat-toggle" class="chat-toggle">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+            </svg>
+        </button>
+        
+        <!-- Chat Window -->
+        <div id="chat-window" class="chat-window hidden">
+            <!-- Header -->
+            <div class="chat-header">
+                <div>
+                    <h3>Chat with Karthik</h3>
+                    <span class="chat-subtitle">Ask me about my experience</span>
+                </div>
+                <button class="chat-close">×</button>
+            </div>
+            
+            <!-- Messages Container - THE KEY FIX -->
+            <div class="chat-messages">
+                <!-- Messages will stack from bottom up -->
+            </div>
+            
+            <!-- Input Area -->
+            <div class="chat-input-area">
+                <input type="text" placeholder="Type your message..." maxlength="500">
+                <button class="chat-send">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Profile Data -->
+    <script src="scripts/data.js"></script>
     
-    <!-- Contact form JavaScript -->
-    <script src="script.js"></script>
+    <!-- AI Feature Detection -->
+    <script src="scripts/ai-feature-detection.js"></script>
+    
+    <!-- AI Chat Interface -->
+    <script src="scripts/ai-chat-interface.js"></script>
+    
+    <!-- Main Application Scripts -->
+    <script src="scripts/main.js"></script>
+    
+    <!-- Animation Scripts -->
+    <script src="scripts/animations.js"></script>
+    
+    <!-- Accessibility Enhancements -->
+    <script src="scripts/accessibility-enhancements.js"></script>
+    
 </body>
 </html>
