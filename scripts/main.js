@@ -778,10 +778,8 @@ async function initAIFeatureHandling() {
         return;
     }
     
-    // Show the indicator during development/debugging
-    statusIndicator.classList.remove('hidden');
-    statusIndicator.classList.add('bg-blue-900/50', 'border-blue-500/50', 'text-blue-300');
-    statusText.textContent = 'Checking AI capabilities...';
+    // Setup status indicator with dismiss button
+    setupStatusIndicator(statusIndicator, statusText);
     
     try {
         // Follow the official Chrome Prompt API pattern
@@ -818,157 +816,54 @@ async function initAIFeatureHandling() {
         window.aiModelParams = { defaultTemperature, maxTemperature, defaultTopK, maxTopK };
         
         // Update UI based on availability
-        if (statusIndicator && statusText) {
-            switch (availability) {
-                case 'available':
-                    window.aiSupported = true;
-                    statusIndicator.className = 'mt-4 p-3 rounded-lg border border-green-500/50 bg-green-900/50 text-green-300';
-                    statusText.textContent = '✅ AI chat available - look for the chat button!';
-                    break;
-                    
-                case 'downloadable':
-                    window.aiSupported = true;
-                    statusIndicator.className = 'mt-4 p-3 rounded-lg border border-yellow-500/50 bg-yellow-900/50 text-yellow-300';
-                    statusText.textContent = '⏳ AI model downloading - chat will be available soon';
-                    break;
-                    
-                case 'downloading':
-                    window.aiSupported = true;
-                    statusIndicator.className = 'mt-4 p-3 rounded-lg border border-yellow-500/50 bg-yellow-900/50 text-yellow-300';
-                    statusText.textContent = '⏳ AI model downloading - please wait...';
-                    break;
-                    
-                case 'unavailable':
-                    window.aiSupported = false;
-                    statusIndicator.className = 'mt-4 p-3 rounded-lg border border-red-500/50 bg-red-900/50 text-red-300';
-                    statusText.textContent = '❌ AI chat not available on this browser';
-                    break;
-                    
-                default:
-                    window.aiSupported = false;
-                    statusIndicator.className = 'mt-4 p-3 rounded-lg border border-red-500/50 bg-red-900/50 text-red-300';
-                    statusText.textContent = `❌ Unknown AI status: ${availability}`;
-                    break;
-            }
-        }
+        updateStatusIndicator(statusIndicator, statusText, availability);
         
     } catch (error) {
         console.log('❌ AI features not available:', error.message);
         window.aiSupported = false;
         
-        if (statusIndicator && statusText) {
-            statusIndicator.className = 'mt-4 p-3 rounded-lg border border-red-500/50 bg-red-900/50 text-red-300';
-            statusText.textContent = '❌ AI chat requires Chrome 127+ with experimental features enabled';
-        }
-        
+        updateStatusIndicator(statusIndicator, statusText, 'error', error.message);
     }
+}
+
+// Setup status indicator with dismiss functionality
+function setupStatusIndicator(statusIndicator, statusText) {
+    // Show the indicator and add basic styling
+    statusIndicator.classList.remove('hidden');
+    statusIndicator.classList.add('bg-blue-900/50', 'border-blue-500/50', 'text-blue-300', 'relative');
     
-    // Hide status indicator after 5 seconds in production
-    setTimeout(() => {
-        if (statusIndicator) {
+    // Set initial text
+    statusText.innerHTML = 'Checking AI capabilities...';
+    
+    // Add dismiss button if not already present
+    if (!statusIndicator.querySelector('.status-dismiss-btn')) {
+        const dismissBtn = document.createElement('button');
+        dismissBtn.className = 'status-dismiss-btn absolute top-2 right-2 p-1 hover:bg-gray-700/50 rounded transition-colors duration-200';
+        dismissBtn.setAttribute('aria-label', 'Dismiss AI status');
+        dismissBtn.innerHTML = '×';
+        dismissBtn.style.fontSize = '18px';
+        dismissBtn.style.lineHeight = '1';
+        dismissBtn.style.color = 'rgba(156, 163, 175, 0.8)';
+        
+        dismissBtn.addEventListener('click', () => {
             statusIndicator.classList.add('hidden');
-        }
-    }, 5000);xt-sm bg-emerald-900/50 border-emerald-500/50 text-emerald-300';
-                    statusText.textContent = '✅ AI Chat Ready (Model Available)';
-                    
-                    console.log('✅ AI is ready to use!');
-                    break;
-                    
-                case 'downloadable':
-                    window.aiSupported = true;
-                    statusIndicator.className = 'mt-4 p-3 rounded-lg border text-sm bg-yellow-900/50 border-yellow-500/50 text-yellow-300';
-                    statusText.innerHTML = `
-                        <div>⏳ AI Available (Download Required)</div>
-                        <div class="text-xs mt-1 opacity-75">First use will trigger model download</div>
-                    `;
-                    
-                    console.log('⏳ AI available after download - ready to use');
-                    break;
-                    
-                case 'downloading':
-                    window.aiSupported = true;
-                    statusIndicator.className = 'mt-4 p-3 rounded-lg border text-sm bg-blue-900/50 border-blue-500/50 text-blue-300';
-                    statusText.innerHTML = `
-                        <div class="flex items-center space-x-2">
-                            <div class="animate-spin w-4 h-4 border-2 border-blue-300 border-t-transparent rounded-full"></div>
-                            <span>AI Model Downloading...</span>
-                        </div>
-                    `;
-                    console.log('⏳ AI model is downloading...');
-                    break;
-                    
-                case 'unavailable':
-                default:
-                    window.aiSupported = false;
-                    statusIndicator.className = 'mt-4 p-3 rounded-lg border text-sm bg-red-900/50 border-red-500/50 text-red-300';
-                    statusText.innerHTML = `
-                        <div>❌ AI Not Available</div>
-                        <div class="text-xs mt-1 opacity-75">Run showAISetupInstructions() for help</div>
-                    `;
-                    console.log('❌ AI unavailable on this device/browser');
-                    break;
-            }
-        }
+        });
         
-        // Initialize AI chat interface
-        if (window.aiChatInterface && window.aiSupported) {
-            window.aiChatInterface.show();
-        }
-        
-        // Dispatch event for other components
-        window.dispatchEvent(new CustomEvent('aiStatusReady', {
-            detail: {
-                supported: window.aiSupported,
-                availability: availability,
-                capabilities: window.aiCapabilities,
-                modelParams: window.aiModelParams
-            }
-        }));
-        
-    } catch (error) {
-        console.log('❌ AI feature detection failed:', error.message);
-        window.aiSupported = false;
-        window.aiCapabilities = null;
-        window.aiModelParams = null;
-        
-        // Update status indicator for errors
-        if (statusIndicator && statusText) {
-            statusIndicator.className = 'mt-4 p-3 rounded-lg border text-sm bg-red-900/50 border-red-500/50 text-red-300';
-            
-            let reason = 'Unknown error';
-            let helpText = 'Check console for details';
-            
-            if (error.message.includes('not available')) {
-                reason = 'LanguageModel not available';
-                helpText = 'Run showAISetupInstructions() for setup guide';
-            } else if (error.message.includes('params')) {
-                reason = 'Cannot get model parameters';
-                helpText = 'Check Chrome AI configuration';
-            } else if (error.message.includes('availability')) {
-                reason = 'Cannot check AI availability';
-                helpText = 'Ensure Chrome AI is properly enabled';
-            }
-            
-            statusText.innerHTML = `
-                <div>❌ AI Error (${reason})</div>
-                <div class="text-xs mt-1 opacity-75">${helpText}</div>
-            `;
-        }
-        
-        // Hide AI chat interface on error
-        if (window.aiChatInterface) {
-            window.aiChatInterface.hide();
-        }
-        
-        // Dispatch error event
-        window.dispatchEvent(new CustomEvent('aiStatusReady', {
-            detail: {
-                supported: false,
-                error: error.message,
-                capabilities: null,
-                modelParams: null
-            }
-        }));
+        statusIndicator.appendChild(dismissBtn);
+    }
+}
+
+// Update status indicator based on AI availability
+function updateStatusIndicator(statusIndicator, statusText, availability, errorMessage = null) {
+    // Hide the status indicator since we're using inline teaser instead
+    statusIndicator.classList.add('hidden');
+    window.aiSupported = false;
+    
+    // Set global variables for other components to use
+    if (availability === 'available') {
+        window.aiSupported = true;
+    } else if (availability === 'downloadable' || availability === 'downloading') {
+        window.aiSupported = true;
     }
 }
 
@@ -3604,7 +3499,7 @@ function initAIChatHandling() {
                 const initialPrompts = [
                     {
                         role: 'system',
-                        content: `You are an AI representation of Karthik Subramanian, a Principal Software Engineer. 
+                        content: `You are an AI representation of Karthik Subramanian. 
 Respond as if you are Karthik himself, using first person. Base your responses on this information:
 
 Background: Principal-level software engineer specializing in scalable backend systems, cloud architecture, and modern web applications. Currently Senior Software Engineering Manager at Scholastic Inc.

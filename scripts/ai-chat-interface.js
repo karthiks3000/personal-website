@@ -30,6 +30,26 @@ class LightweightChat {
             if (window.AIFeatureDetector && window.AIFeatureDetector.isAISupported()) {
                 console.log('Initializing AI session with Karthik\'s context...');
                 
+                // Check availability and user activation requirements
+                const availabilityCheck = await window.AIFeatureDetector.checkAvailabilityWithUserActivation();
+                console.log('AI availability check:', availabilityCheck);
+                
+                if (!availabilityCheck.canProceed) {
+                    if (availabilityCheck.requiresUserInteraction) {
+                        console.log('⚠️ AI model needs download but requires user interaction');
+                        this.isAIEnabled = false;
+                        return; // Don't create session yet, wait for user interaction
+                    } else if (availabilityCheck.available === 'downloading') {
+                        console.log('⏳ AI model is downloading, will retry when complete');
+                        this.isAIEnabled = false;
+                        return;
+                    } else {
+                        console.log(`❌ Cannot initialize AI: ${availabilityCheck.reason}`);
+                        this.isAIEnabled = false;
+                        return;
+                    }
+                }
+                
                 const systemPrompt = this.buildSystemPrompt();
                 
                 this.aiSession = await window.AIFeatureDetector.createSession({
@@ -51,6 +71,12 @@ class LightweightChat {
             }
         } catch (error) {
             console.error('Error initializing AI:', error);
+            
+            // Check if it's a user activation error
+            if (error.message?.includes('User activation required')) {
+                console.log('⚠️ User activation required for AI initialization');
+            }
+            
             this.isAIEnabled = false;
         }
     }
@@ -522,34 +548,601 @@ Remember: You are Karthik Subramanian having a conversation about your professio
     }
 }
 
-// Initialize chat when DOM is ready AND AI is available
-let lightweightChat;
+// AI Download and Status Management
+class AIDownloadManager {
+    constructor() {
+        this.status = this.getStoredStatus();
+        this.progressInterval = null;
+        this.downloadStartTime = null;
+        this.bindEvents();
+    }
 
-// Wait for AI feature detection to complete before initializing chat
+    getStoredStatus() {
+        const stored = localStorage.getItem('aiChatStatus');
+        return stored ? JSON.parse(stored) : {
+            userDeclinedDownload: false,
+            lastDeclineTime: null,
+            downloadAttempted: false
+        };
+    }
+
+    setStoredStatus(status) {
+        this.status = { ...this.status, ...status };
+        localStorage.setItem('aiChatStatus', JSON.stringify(this.status));
+    }
+
+    bindEvents() {
+        // Download modal events
+        const downloadYes = document.getElementById('ai-download-yes');
+        const downloadLater = document.getElementById('ai-download-later');
+        const modalCloses = document.querySelectorAll('.ai-modal-close');
+        const progressBackground = document.getElementById('ai-progress-background');
+        const tellMeMore = document.getElementById('ai-tell-me-more');
+
+        if (downloadYes) {
+            downloadYes.addEventListener('click', () => this.startDownload());
+        }
+
+        if (downloadLater) {
+            downloadLater.addEventListener('click', () => this.declineDownload());
+        }
+
+        if (progressBackground) {
+            progressBackground.addEventListener('click', () => this.hideProgressModal());
+        }
+
+        if (tellMeMore) {
+            tellMeMore.addEventListener('click', () => this.toggleRequirements());
+        }
+
+        modalCloses.forEach(close => {
+            close.addEventListener('click', (e) => {
+                const modal = e.target.closest('.ai-modal');
+                if (modal) this.hideModal(modal);
+            });
+        });
+
+        // Listen for download progress events
+        window.addEventListener('aiModelDownloadProgress', (event) => {
+            this.updateProgress(event.detail);
+        });
+
+        // Close modals on backdrop click
+        document.addEventListener('click', (e) => {
+            if (e.target.classList.contains('ai-modal-backdrop')) {
+                const modal = e.target.closest('.ai-modal');
+                if (modal) this.hideModal(modal);
+            }
+        });
+
+        // Escape key to close modals
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                const openModal = document.querySelector('.ai-modal:not(.hidden)');
+                if (openModal) this.hideModal(openModal);
+            }
+        });
+    }
+
+    showModal(modalId) {
+        const modal = document.getElementById(modalId);
+        if (modal) {
+            modal.classList.remove('hidden');
+            modal.setAttribute('aria-hidden', 'false');
+            
+            // Focus management
+            const firstFocusable = modal.querySelector('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+            if (firstFocusable) {
+                setTimeout(() => firstFocusable.focus(), 100);
+            }
+        }
+    }
+
+    hideModal(modal) {
+        if (modal) {
+            modal.classList.add('hidden');
+            modal.setAttribute('aria-hidden', 'true');
+        }
+    }
+
+    shouldShowDownloadPrompt() {
+        // Don't show if user declined recently (within 24 hours)
+        if (this.status.userDeclinedDownload && this.status.lastDeclineTime) {
+            const hoursSinceDecline = (Date.now() - this.status.lastDeclineTime) / (1000 * 60 * 60);
+            if (hoursSinceDecline < 24) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    async startDownload() {
+        console.log('Starting AI model download...');
+        
+        try {
+            // Check user activation before proceeding
+            if (!window.AIFeatureDetector.isUserActivationActive()) {
+                console.log('❌ User activation not active - download must be triggered from user interaction');
+                this.showDownloadError('User activation required. Please click the download button again.');
+                return;
+            }
+            
+            console.log('✅ User activation confirmed, proceeding with download...');
+            this.hideModal(document.getElementById('ai-download-modal'));
+            this.showModal('ai-progress-modal');
+            
+            this.setStoredStatus({ downloadAttempted: true });
+            this.downloadStartTime = Date.now();
+            
+            // Use the user activation-aware session creation method
+            const session = await window.AIFeatureDetector.createSessionWithUserActivation({
+                initialPrompts: [
+                    { role: 'system', content: 'You are Karthik Subramanian, ready to chat about your professional experience and expertise.' }
+                ]
+            });
+
+            if (session) {
+                console.log('✅ AI model downloaded and session created successfully');
+                this.hideModal(document.getElementById('ai-progress-modal'));
+                
+                // Initialize chat interface
+                this.initializeChatInterface(session);
+            } else {
+                throw new Error('Failed to create AI session');
+            }
+        } catch (error) {
+            console.error('Error during AI model download:', error);
+            
+            // Handle specific user activation errors
+            if (error.message?.includes('User activation required')) {
+                this.showDownloadError('Please click the download button to start the AI model download.');
+            } else if (error.message?.includes('AI not supported')) {
+                this.showDownloadError('AI features are not supported on this device or browser.');
+            } else {
+                this.showDownloadError(error.message);
+            }
+        }
+    }
+
+    updateProgress(detail) {
+        const progressFill = document.querySelector('.ai-progress-fill');
+        const progressPercent = document.getElementById('ai-progress-percent');
+        const progressSize = document.getElementById('ai-progress-size');
+
+        if (progressFill && progressPercent && progressSize) {
+            const progress = detail.progress || 0;
+            const loaded = this.formatBytes(detail.loaded || 0);
+            const total = this.formatBytes(detail.total || 0);
+
+            progressFill.style.width = `${progress}%`;
+            progressPercent.textContent = `${progress}%`;
+            progressSize.textContent = `${loaded} / ${total}`;
+
+            // Estimate time remaining
+            if (this.downloadStartTime && progress > 5) {
+                const elapsed = Date.now() - this.downloadStartTime;
+                const estimatedTotal = (elapsed / progress) * 100;
+                const remaining = Math.max(0, estimatedTotal - elapsed);
+                const remainingMinutes = Math.round(remaining / (1000 * 60));
+                
+                if (remainingMinutes > 0) {
+                    const timeInfo = document.querySelector('.ai-progress-info p:first-child');
+                    if (timeInfo) {
+                        timeInfo.textContent = `This may take about ${remainingMinutes} more minute${remainingMinutes === 1 ? '' : 's'}.`;
+                    }
+                }
+            }
+        }
+    }
+
+    formatBytes(bytes) {
+        if (bytes === 0) return '0 MB';
+        const mb = bytes / (1024 * 1024);
+        return mb.toFixed(1) + ' MB';
+    }
+
+    declineDownload() {
+        console.log('User declined AI model download');
+        this.setStoredStatus({
+            userDeclinedDownload: true,
+            lastDeclineTime: Date.now()
+        });
+        this.hideModal(document.getElementById('ai-download-modal'));
+        
+        // Hide chat interface
+        const chatInterface = document.getElementById('ai-chat-interface');
+        if (chatInterface) {
+            chatInterface.style.display = 'none';
+        }
+    }
+
+    hideProgressModal() {
+        this.hideModal(document.getElementById('ai-progress-modal'));
+        
+        // Show chat toggle since download is happening in background
+        const chatInterface = document.getElementById('ai-chat-interface');
+        if (chatInterface) {
+            chatInterface.style.display = 'block';
+        }
+    }
+
+    showDownloadError(message) {
+        this.hideModal(document.getElementById('ai-progress-modal'));
+        
+        // You could show an error modal here
+        console.error('Download failed:', message);
+        
+        // For now, show the unavailable modal
+        this.showModal('ai-unavailable-modal');
+    }
+
+    /**
+     * Show inline teaser with customized messaging based on browser/device info and AI availability
+     */
+    showTeaserModal(browserInfo, detectionResult = null) {
+        const teaserSection = document.getElementById('ai-teaser-section');
+        const inlineText = document.getElementById('ai-teaser-inline-text');
+        const requirementsSection = document.getElementById('ai-requirements-inline');
+        const tellMeMoreBtn = document.getElementById('ai-tell-me-more-inline');
+        
+        if (!teaserSection) return;
+        
+        // Reset requirements section to collapsed state
+        if (requirementsSection) {
+            requirementsSection.classList.add('hidden');
+        }
+        if (tellMeMoreBtn) {
+            tellMeMoreBtn.classList.remove('expanded');
+            
+            // Clear any existing event listeners
+            const newBtn = tellMeMoreBtn.cloneNode(true);
+            tellMeMoreBtn.parentNode.replaceChild(newBtn, tellMeMoreBtn);
+            
+            // Bind click event for inline button
+            newBtn.addEventListener('click', () => this.toggleInlineRequirements());
+        }
+        
+        // Check if chat interface is actually visible/available
+        const chatInterface = document.getElementById('ai-chat-interface');
+        const isChatInterfaceVisible = chatInterface && chatInterface.style.display !== 'none' && !chatInterface.classList.contains('hidden');
+        
+        // Determine if AI is available and working
+        const isAIAvailable = detectionResult?.isSupported && detectionResult?.capabilities?.available === 'available';
+        const isCompatible = browserInfo.isCompatibleDevice && browserInfo.isCompatibleBrowser;
+        
+        let customMessage = '';
+        let buttonText = 'Tell me more';
+        
+        // If chat interface is visible, AI is working - encourage them to try it!
+        if (isChatInterfaceVisible || isAIAvailable) {
+            customMessage = "Hey! Want to chat with an AI version of me? Click the floating chat button to get started!";
+            buttonText = 'About this feature';
+        } else if (isCompatible) {
+            // Compatible setup but AI features need to be enabled or downloaded
+            if (detectionResult?.isSupported) {
+                // AI detection succeeded but needs download
+                const availability = detectionResult?.capabilities?.available;
+                if (availability === 'downloadable') {
+                    customMessage = "You can chat with an AI version of me! The AI model just needs to be downloaded first.";
+                } else if (availability === 'downloading') {
+                    customMessage = "Great! The AI model is downloading. Soon you'll be able to chat with an AI version of me!";
+                } else {
+                    customMessage = "You could chat with an AI version of me, but it's not quite ready yet.";
+                }
+            } else {
+                // AI detection failed but browser/device is compatible - need to enable features
+                if (browserInfo.isChrome) {
+                    customMessage = "You can chat with an AI version of me! Just activate chrome://flags/#prompt-api-for-gemini-nano first.";
+                } else {
+                    customMessage = "You can chat with an AI version of me! You just need to enable Chrome's AI features first.";
+                }
+            }
+            buttonText = 'Tell me more';
+        } else {
+            // Not compatible device or browser
+            if (browserInfo.isMobile || browserInfo.isChromeOS) {
+                if (browserInfo.isAndroid) {
+                    customMessage = "You could chat with an AI version of me, but it's not available on Android devices yet.";
+                } else if (browserInfo.isIOS) {
+                    customMessage = "You could chat with an AI version of me, but it's not available on iOS devices yet.";
+                } else if (browserInfo.isChromeOS) {
+                    customMessage = "You could chat with an AI version of me, but it's not available on ChromeOS yet.";
+                } else {
+                    customMessage = "You could chat with an AI version of me, but it's not available on mobile devices yet.";
+                }
+            } else if (!browserInfo.isChrome) {
+                if (browserInfo.isSafari) {
+                    customMessage = "You could chat with an AI version of me, but it requires Chrome with special features enabled.";
+                } else if (browserInfo.isFirefox) {
+                    customMessage = "You could chat with an AI version of me, but it requires Chrome with special features enabled.";
+                } else if (browserInfo.isEdge) {
+                    customMessage = "You could chat with an AI version of me, but it requires Chrome (not Edge) with special features enabled.";
+                } else {
+                    customMessage = "You could chat with an AI version of me, but it requires Chrome with special features enabled.";
+                }
+            } else if (browserInfo.isChrome && browserInfo.chromeVersion < 127) {
+                customMessage = `You could chat with an AI version of me, but your Chrome version (${browserInfo.chromeVersion}) needs to be updated to 127 or higher.`;
+            } else {
+                customMessage = "You could chat with an AI version of me, but it requires Chrome with special AI features enabled.";
+            }
+            buttonText = 'Tell me more';
+        }
+        
+        // Update inline content
+        if (inlineText) {
+            inlineText.textContent = customMessage;
+        }
+        
+        // Update button text
+        const newTellMeMoreBtn = document.getElementById('ai-tell-me-more-inline');
+        if (newTellMeMoreBtn) {
+            newTellMeMoreBtn.innerHTML = `
+                ${buttonText}
+                <svg class="w-4 h-4 ml-1 transform transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                </svg>
+            `;
+        }
+        
+        // Show the teaser section
+        teaserSection.classList.remove('hidden');
+        teaserSection.style.display = 'block';
+        
+        console.log('Showing inline teaser with message:', customMessage);
+    }
+
+    /**
+     * Toggle the inline requirements section visibility
+     */
+    toggleInlineRequirements() {
+        const requirementsSection = document.getElementById('ai-requirements-inline');
+        const tellMeMoreBtn = document.getElementById('ai-tell-me-more-inline');
+        const availableContent = document.getElementById('ai-available-content');
+        const unavailableContent = document.getElementById('ai-unavailable-content');
+        
+        if (!requirementsSection || !tellMeMoreBtn) return;
+        
+        const isExpanded = !requirementsSection.classList.contains('hidden');
+        const currentButtonText = tellMeMoreBtn.textContent.trim();
+        
+        if (isExpanded) {
+            // Collapse
+            requirementsSection.classList.add('hidden');
+            tellMeMoreBtn.classList.remove('expanded');
+            
+            const buttonText = currentButtonText.includes('feature') ? 'About this feature' : 'Tell me more';
+            tellMeMoreBtn.innerHTML = `
+                ${buttonText}
+                <svg class="w-4 h-4 ml-1 transform transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                </svg>
+            `;
+            console.log('Inline requirements section collapsed');
+        } else {
+            // Expand and show appropriate content
+            requirementsSection.classList.remove('hidden');
+            tellMeMoreBtn.classList.add('expanded');
+            
+            // Determine which content to show based on current state
+            const isAIWorking = window.lightweightChat && document.getElementById('ai-chat-interface').style.display !== 'none';
+            
+            if (isAIWorking && availableContent && unavailableContent) {
+                // Show AI available content
+                availableContent.classList.remove('hidden');
+                unavailableContent.classList.add('hidden');
+                console.log('Showing AI available content');
+            } else if (unavailableContent && availableContent) {
+                // Show AI unavailable content (requirements)
+                unavailableContent.classList.remove('hidden');
+                availableContent.classList.add('hidden');
+                console.log('Showing AI unavailable content');
+            }
+            
+            tellMeMoreBtn.innerHTML = `
+                Show less
+                <svg class="w-4 h-4 ml-1 transform transition-transform duration-200 rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                </svg>
+            `;
+            console.log('Inline requirements section expanded');
+        }
+        
+        // Smooth scroll to show expanded content
+        if (!isExpanded) {
+            setTimeout(() => {
+                requirementsSection.scrollIntoView({ 
+                    behavior: 'smooth', 
+                    block: 'nearest' 
+                });
+            }, 200);
+        }
+    }
+
+    /**
+     * Toggle the modal requirements section visibility (kept for modal fallback)
+     */
+    toggleRequirements() {
+        const requirementsSection = document.getElementById('ai-requirements-section');
+        const tellMeMoreBtn = document.getElementById('ai-tell-me-more');
+        
+        if (!requirementsSection || !tellMeMoreBtn) return;
+        
+        const isExpanded = !requirementsSection.classList.contains('hidden');
+        
+        if (isExpanded) {
+            // Collapse
+            requirementsSection.classList.add('hidden');
+            tellMeMoreBtn.classList.remove('expanded');
+            tellMeMoreBtn.textContent = 'Tell me more';
+            console.log('Modal requirements section collapsed');
+        } else {
+            // Expand
+            requirementsSection.classList.remove('hidden');
+            tellMeMoreBtn.classList.add('expanded');
+            tellMeMoreBtn.textContent = 'Show less';
+            console.log('Modal requirements section expanded');
+        }
+        
+        // Smooth scroll to show expanded content
+        if (!isExpanded) {
+            setTimeout(() => {
+                requirementsSection.scrollIntoView({ 
+                    behavior: 'smooth', 
+                    block: 'nearest' 
+                });
+            }, 200);
+        }
+    }
+
+    initializeChatInterface(aiSession = null) {
+        if (window.lightweightChat) {
+            console.log('Chat interface already initialized');
+            return;
+        }
+
+        console.log('Initializing chat interface...');
+        lightweightChat = new LightweightChat(aiSession);
+        window.lightweightChat = lightweightChat;
+        
+        const chatInterface = document.getElementById('ai-chat-interface');
+        if (chatInterface) {
+            chatInterface.style.display = 'block';
+        }
+    }
+}
+
+// Initialize chat when DOM is ready AND handle AI availability states
+let lightweightChat;
+let aiDownloadManager;
+
+// Enhanced browser and device detection
+function detectBrowserAndDevice() {
+    const userAgent = navigator.userAgent.toLowerCase();
+    
+    // Mobile detection
+    const isMobile = /android|iphone|ipad|ipod|blackberry|iemobile|opera mini|mobile/i.test(userAgent);
+    const isAndroid = /android/i.test(userAgent);
+    const isIOS = /iphone|ipad|ipod/i.test(userAgent);
+    const isChromeOS = /cros/i.test(userAgent);
+    
+    // Browser detection
+    const isChrome = /chrome/i.test(userAgent) && !/edge|edg/i.test(userAgent);
+    const isEdge = /edge|edg/i.test(userAgent);
+    const isFirefox = /firefox/i.test(userAgent);
+    const isSafari = /safari/i.test(userAgent) && !/chrome/i.test(userAgent);
+    
+    // Chrome version detection
+    const chromeMatch = userAgent.match(/chrome\/(\d+)/);
+    const chromeVersion = chromeMatch ? parseInt(chromeMatch[1]) : null;
+    
+    return {
+        isMobile,
+        isAndroid,
+        isIOS,
+        isChromeOS,
+        isChrome,
+        isEdge,
+        isFirefox,
+        isSafari,
+        chromeVersion,
+        isCompatibleBrowser: isChrome && chromeVersion >= 127,
+        isCompatibleDevice: !isMobile && !isChromeOS
+    };
+}
+
+// Enhanced chat initialization that handles all AI availability states
 function initializeChatWhenReady() {
+    // Initialize download manager
+    aiDownloadManager = new AIDownloadManager();
+    window.aiDownloadManager = aiDownloadManager;
+
+    // Check browser and device compatibility first
+    const browserInfo = detectBrowserAndDevice();
+    console.log('Browser and device info:', browserInfo);
+    
+    // Always show teaser - even for compatible setups
+    setTimeout(() => {
+        aiDownloadManager.showTeaserModal(browserInfo, null); // Pass null for initial detection
+    }, 500);
+
     // Listen for AI feature detection completion
     window.addEventListener('aiFeatureDetectionComplete', (event) => {
         console.log('AI feature detection completed:', event.detail);
-        
-        if (event.detail.isSupported) {
-            console.log('AI is supported - initializing chat interface');
-            lightweightChat = new LightweightChat();
-            window.lightweightChat = lightweightChat;
-        } else {
-            console.log('AI not supported - chat interface will not be available');
-            // Hide chat interface if it exists
-            const chatInterface = document.getElementById('ai-chat-interface');
+        handleAIAvailabilityState(event.detail, browserInfo);
+    });
+    
+    // If AI detection has already completed, handle the current state
+    if (window.AIFeatureDetector) {
+        const capabilities = window.AIFeatureDetector.getCapabilities();
+        if (capabilities) {
+            handleAIAvailabilityState({
+                isSupported: window.AIFeatureDetector.isAISupported(),
+                capabilities: capabilities
+            }, browserInfo);
+        }
+    }
+}
+
+function handleAIAvailabilityState(detectionResult, browserInfo) {
+    const { isSupported, capabilities } = detectionResult;
+    const chatInterface = document.getElementById('ai-chat-interface');
+    
+    // Always update teaser with availability info
+    setTimeout(() => {
+        aiDownloadManager.showTeaserModal(browserInfo, detectionResult);
+    }, 100);
+    
+    if (!isSupported) {
+        console.log('AI not supported - chat interface hidden');
+        if (chatInterface) {
+            chatInterface.style.display = 'none';
+        }
+        return;
+    }
+
+    const availability = capabilities?.available;
+    console.log('AI availability state:', availability);
+
+    switch (availability) {
+        case 'available':
+            console.log('AI is available - initializing chat interface');
+            aiDownloadManager.initializeChatInterface();
+            break;
+
+        case 'downloadable':
+            console.log('AI model needs to be downloaded');
             if (chatInterface) {
                 chatInterface.style.display = 'none';
             }
-        }
-    });
-    
-    // If AI detection has already completed, check the status
-    if (window.AIFeatureDetector && window.AIFeatureDetector.isAISupported()) {
-        console.log('AI already detected as supported - initializing chat');
-        lightweightChat = new LightweightChat();
-        window.lightweightChat = lightweightChat;
+            
+            if (aiDownloadManager.shouldShowDownloadPrompt()) {
+                aiDownloadManager.showModal('ai-download-modal');
+            } else {
+                console.log('User declined download recently - hiding chat interface');
+            }
+            break;
+
+        case 'downloading':
+            console.log('AI model is currently downloading - showing progress');
+            if (chatInterface) {
+                chatInterface.style.display = 'none';
+            }
+            aiDownloadManager.showModal('ai-progress-modal');
+            
+            // Try to get current progress
+            aiDownloadManager.updateProgress({
+                progress: 0,
+                loaded: 0,
+                total: 1572864000 // Approximate size of Gemini Nano model
+            });
+            break;
+
+        default:
+            console.log('AI unavailable - chat interface hidden');
+            if (chatInterface) {
+                chatInterface.style.display = 'none';
+            }
+            break;
     }
 }
 

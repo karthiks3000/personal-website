@@ -10,9 +10,10 @@ class AIFeatureDetector {
 
     /**
      * Main function to detect Chrome's Prompt API availability
+     * @param {Object} options - Optional parameters for availability checking
      * @returns {Promise<boolean>} True if AI features are available
      */
-    async detectAICapability() {
+    async detectAICapability(options = {}) {
         this.log('Starting AI capability detection...');
         
         try {
@@ -33,9 +34,9 @@ class AIFeatureDetector {
 
             this.log('✅ LanguageModel global found!');
 
-            // Check availability using the correct API
-            this.log('Checking AI language model availability...');
-            const availability = await LanguageModel.availability();
+            // Check availability using the correct API with options
+            this.log('Checking AI language model availability...', options);
+            const availability = await LanguageModel.availability(options);
             
             if (!availability) {
                 this.log('Failed to get AI availability - AI features not supported');
@@ -45,7 +46,7 @@ class AIFeatureDetector {
             this.log('AI availability status received:', availability);
             
             // Store availability info for later use
-            this.capabilities = { available: availability };
+            this.capabilities = { available: availability, options: options };
             
             switch (availability) {
                 case 'available':
@@ -55,6 +56,7 @@ class AIFeatureDetector {
                     
                 case 'downloadable':
                     this.log('⏳ AI features available after download - model needs to be downloaded first');
+                    this.log('⚠️ User activation will be required to trigger download');
                     this.log('💡 Call testAIDownload() in console to trigger download with progress monitoring');
                     this.isSupported = true;
                     return true;
@@ -70,6 +72,7 @@ class AIFeatureDetector {
                     this.log('   - Browser version too old');
                     this.log('   - Feature flag not enabled');
                     this.log('   - Device/OS limitations');
+                    this.log('   - Requested options not supported');
                     return false;
                     
                 default:
@@ -187,6 +190,137 @@ class AIFeatureDetector {
      */
     isAISupported() {
         return this.isSupported;
+    }
+
+    /**
+     * Check if user activation is currently active
+     * @returns {boolean} True if user activation is active
+     */
+    isUserActivationActive() {
+        const isActive = navigator.userActivation?.isActive || false;
+        this.log(`User activation status: ${isActive ? 'ACTIVE' : 'INACTIVE'}`);
+        return isActive;
+    }
+
+    /**
+     * Check if user activation has been used since page load
+     * @returns {boolean} True if user has activated
+     */
+    hasUserActivated() {
+        const hasActivated = navigator.userActivation?.hasBeenActive || false;
+        this.log(`User has activated since page load: ${hasActivated ? 'YES' : 'NO'}`);
+        return hasActivated;
+    }
+
+    /**
+     * Check availability and user activation requirements for AI session creation
+     * @param {Object} options - Session options to check availability for
+     * @returns {Promise<Object>} Availability state with user activation info
+     */
+    async checkAvailabilityWithUserActivation(options = {}) {
+        this.log('Checking AI availability with user activation requirements...');
+        
+        try {
+            if (typeof LanguageModel === 'undefined') {
+                return {
+                    available: 'unavailable',
+                    isSupported: false,
+                    reason: 'LanguageModel API not available',
+                    canProceed: false
+                };
+            }
+
+            const availability = await LanguageModel.availability(options);
+            this.log('Raw availability status:', availability);
+
+            const result = {
+                available: availability,
+                isSupported: availability !== 'unavailable',
+                userActivationActive: this.isUserActivationActive(),
+                userHasActivated: this.hasUserActivated(),
+                canProceed: false,
+                reason: '',
+                requiresUserInteraction: false
+            };
+
+            switch (availability) {
+                case 'available':
+                    result.canProceed = true;
+                    result.reason = 'AI model is ready, no download needed';
+                    break;
+                    
+                case 'downloadable':
+                    result.canProceed = result.userActivationActive;
+                    result.requiresUserInteraction = !result.userActivationActive;
+                    if (result.canProceed) {
+                        result.reason = 'AI model needs download, user activation present';
+                    } else {
+                        result.reason = 'AI model needs download, user interaction required';
+                    }
+                    break;
+                    
+                case 'downloading':
+                    result.canProceed = false;
+                    result.reason = 'AI model is currently downloading, please wait';
+                    break;
+                    
+                case 'unavailable':
+                    result.canProceed = false;
+                    result.reason = 'AI features not supported on this device/browser';
+                    break;
+                    
+                default:
+                    result.canProceed = false;
+                    result.reason = `Unknown availability status: ${availability}`;
+                    break;
+            }
+
+            this.log('Availability check result:', result);
+            return result;
+            
+        } catch (error) {
+            this.log('Error checking availability with user activation:', error);
+            return {
+                available: 'unavailable',
+                isSupported: false,
+                reason: `Error: ${error.message}`,
+                canProceed: false,
+                userActivationActive: false,
+                userHasActivated: false,
+                requiresUserInteraction: false
+            };
+        }
+    }
+
+    /**
+     * Create AI session with user activation validation
+     * @param {Object} options - Session creation options
+     * @returns {Promise<Object|null>} AI session or null if failed
+     */
+    async createSessionWithUserActivation(options = {}) {
+        this.log('Creating AI session with user activation validation...');
+        
+        // First check availability and user activation requirements
+        const availabilityCheck = await this.checkAvailabilityWithUserActivation(options);
+        
+        if (!availabilityCheck.isSupported) {
+            this.log(`❌ Cannot create session: ${availabilityCheck.reason}`);
+            throw new Error(`AI not supported: ${availabilityCheck.reason}`);
+        }
+
+        if (!availabilityCheck.canProceed) {
+            if (availabilityCheck.requiresUserInteraction) {
+                this.log('❌ User activation required for AI model download');
+                throw new Error('User activation required - this must be called from a user interaction (click, tap, key press)');
+            } else {
+                this.log(`❌ Cannot proceed: ${availabilityCheck.reason}`);
+                throw new Error(availabilityCheck.reason);
+            }
+        }
+
+        // Proceed with session creation using the existing method
+        this.log('✅ Availability check passed, creating session...');
+        return await this.createSession(options);
     }
 
     /**
@@ -362,18 +496,46 @@ class AIFeatureDetector {
      * @returns {Object} Browser compatibility details
      */
     getBrowserCompatibilityInfo() {
+        const userAgent = navigator.userAgent;
+        const isChrome = /Chrome/.test(userAgent) && /Google Inc/.test(navigator.vendor);
+        
         const info = {
-            userAgent: navigator.userAgent,
+            userAgent: userAgent,
             isChromeBasedBrowser: this.isChromeBasedBrowser(),
             hasLanguageModelGlobal: typeof LanguageModel !== 'undefined',
             chromeVersion: this.getChromeVersion(),
             isChromeVersionSupported: this.isChromeVersionSupported(),
             isAISupported: this.isSupported,
-            capabilities: this.capabilities
+            capabilities: this.capabilities,
+            isChrome: isChrome
         };
 
         this.log('Browser compatibility info:', info);
+        
+        // Show Chrome-specific instructions if on Chrome but AI not working
+        if (isChrome && info.isChromeVersionSupported && !info.isAISupported) {
+            this.showChromeActivationInstructions();
+        }
+        
         return info;
+    }
+
+    /**
+     * Show Chrome-specific activation instructions
+     */
+    showChromeActivationInstructions() {
+        console.log('🔧 Chrome AI Activation Required');
+        console.log('You\'re using Chrome but AI features need to be activated:');
+        console.log('');
+        console.log('👉 Quick Setup:');
+        console.log('1. Go to: chrome://flags/#prompt-api-for-gemini-nano');
+        console.log('2. Set "Prompt API for Gemini Nano" to "Enabled"');
+        console.log('3. Go to: chrome://flags/#optimization-guide-on-device-model');
+        console.log('4. Set "Optimization Guide On Device Model" to "Enabled BypassPerfRequirement"');
+        console.log('5. Restart Chrome');
+        console.log('6. Refresh this page');
+        console.log('');
+        console.log('💡 For detailed instructions, run: showAISetupInstructions()');
     }
 
     /**
@@ -769,6 +931,137 @@ window.getAIStatus = function() {
         capabilities: window.aiCapabilities,
         detector: window.AIFeatureDetector
     };
+};
+
+// Test functions for user activation functionality
+window.testUserActivation = function() {
+    console.log('=== User Activation Test ===');
+    
+    if (window.AIFeatureDetector) {
+        const isActive = window.AIFeatureDetector.isUserActivationActive();
+        const hasActivated = window.AIFeatureDetector.hasUserActivated();
+        
+        console.log('User Activation Status:');
+        console.log('- Currently Active:', isActive ? '✅ YES' : '❌ NO');
+        console.log('- Has Been Active:', hasActivated ? '✅ YES' : '❌ NO');
+        
+        if (navigator.userActivation) {
+            console.log('- Native isActive:', navigator.userActivation.isActive);
+            console.log('- Native hasBeenActive:', navigator.userActivation.hasBeenActive);
+        } else {
+            console.log('❌ navigator.userActivation not available');
+        }
+        
+        return { isActive, hasActivated };
+    } else {
+        console.error('AIFeatureDetector not available');
+        return null;
+    }
+};
+
+window.testAvailabilityWithUserActivation = async function() {
+    console.log('=== Availability with User Activation Test ===');
+    
+    if (window.AIFeatureDetector) {
+        try {
+            const result = await window.AIFeatureDetector.checkAvailabilityWithUserActivation();
+            console.log('Availability Check Result:', result);
+            
+            console.log('Summary:');
+            console.log('- Available:', result.available);
+            console.log('- Is Supported:', result.isSupported ? '✅' : '❌');
+            console.log('- Can Proceed:', result.canProceed ? '✅' : '❌');
+            console.log('- Requires User Interaction:', result.requiresUserInteraction ? '⚠️ YES' : '✅ NO');
+            console.log('- Reason:', result.reason);
+            
+            return result;
+        } catch (error) {
+            console.error('Error checking availability:', error);
+            return null;
+        }
+    } else {
+        console.error('AIFeatureDetector not available');
+        return null;
+    }
+};
+
+window.testSessionWithUserActivation = async function() {
+    console.log('=== Session Creation with User Activation Test ===');
+    
+    if (window.AIFeatureDetector && window.AIFeatureDetector.isAISupported()) {
+        try {
+            console.log('Attempting to create session with user activation validation...');
+            
+            const session = await window.AIFeatureDetector.createSessionWithUserActivation({
+                initialPrompts: [
+                    { role: 'system', content: 'You are a test assistant for user activation validation.' }
+                ]
+            });
+            
+            if (session) {
+                console.log('✅ Session created successfully with user activation!');
+                
+                // Test a simple prompt
+                const response = await session.prompt('Hello! Can you confirm user activation worked?');
+                console.log('AI Response:', response);
+                
+                // Clean up
+                session.destroy();
+                console.log('Session destroyed');
+                
+                return true;
+            } else {
+                console.log('❌ Failed to create session');
+                return false;
+            }
+        } catch (error) {
+            console.error('Error creating session with user activation:', error);
+            
+            if (error.message?.includes('User activation required')) {
+                console.log('💡 This error is expected if you run this test without a user interaction (click, tap, key press)');
+                console.log('💡 Try clicking a button on the page first, then immediately run this test');
+            }
+            
+            return false;
+        }
+    } else {
+        console.log('AI not supported or not initialized');
+        return false;
+    }
+};
+
+window.testUserActivationWorkflow = async function() {
+    console.log('=== Complete User Activation Workflow Test ===');
+    
+    // Step 1: Check current user activation status
+    console.log('1️⃣ Checking current user activation status...');
+    const activationStatus = window.testUserActivation();
+    
+    // Step 2: Check availability with user activation
+    console.log('\n2️⃣ Checking AI availability with user activation...');
+    const availabilityCheck = await window.testAvailabilityWithUserActivation();
+    
+    // Step 3: Attempt session creation if possible
+    if (availabilityCheck && availabilityCheck.canProceed) {
+        console.log('\n3️⃣ Availability check passed, attempting session creation...');
+        const sessionResult = await window.testSessionWithUserActivation();
+        
+        console.log('\n🎉 Complete workflow test results:');
+        console.log('- User activation working:', activationStatus ? '✅' : '❌');
+        console.log('- Availability check working:', availabilityCheck ? '✅' : '❌');
+        console.log('- Session creation working:', sessionResult ? '✅' : '❌');
+        
+        return { activationStatus, availabilityCheck, sessionResult };
+    } else {
+        console.log('\n3️⃣ Cannot proceed with session creation');
+        console.log('Reason:', availabilityCheck?.reason || 'Unknown');
+        
+        if (availabilityCheck?.requiresUserInteraction) {
+            console.log('💡 Try clicking somewhere on the page first, then run this test again');
+        }
+        
+        return { activationStatus, availabilityCheck, sessionResult: false };
+    }
 };
 
 window.testCompleteAIWorkflow = async function() {
