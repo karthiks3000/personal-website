@@ -1,5 +1,8 @@
 // Main JavaScript file for Karthik's Personal Website
 
+// Contact form handler - Sends form data to AWS Lambda
+const LAMBDA_URL = 'https://dgkl5wqh364k5l35oglsk2lkwm0vjszu.lambda-url.us-east-1.on.aws';
+
 // DOM Content Loaded Event
 document.addEventListener('DOMContentLoaded', function() {
     console.log('Karthik\'s Personal Website - Initializing...');
@@ -305,21 +308,47 @@ function initContactForm() {
     const contactForm = document.getElementById('contact-form');
     
     if (contactForm) {
-        // Initialize form validation
-        initFormValidation();
+        console.log('Initializing contact form...');
         
-        // Populate social links
-        populateContactSocialLinks();
+        // Get form elements
+        const nameField = document.getElementById('name');
+        const emailField = document.getElementById('email');
+        const messageField = document.getElementById('message');
+        const submitBtn = document.getElementById('contact-submit-btn');
+        const formMessage = document.getElementById('form-message');
+        const messageCounter = document.getElementById('message-counter');
+        const messageCount = document.getElementById('message-count');
         
-        // Handle form submission
-        contactForm.addEventListener('submit', handleFormSubmission);
+        // Initialize character counter for message field
+        if (messageField && messageCounter) {
+            messageField.addEventListener('input', function() {
+                const count = this.value.length;
+                const maxLength = parseInt(this.getAttribute('maxlength'));
+                
+                messageCount.textContent = count;
+                
+                // Update counter styling based on character count
+                messageCounter.classList.remove('warning', 'danger');
+                if (count > maxLength * 0.9) {
+                    messageCounter.classList.add('danger');
+                } else if (count > maxLength * 0.8) {
+                    messageCounter.classList.add('warning');
+                }
+            });
+        }
         
         // Add real-time validation
-        const formInputs = contactForm.querySelectorAll('.form-input');
-        formInputs.forEach(input => {
-            input.addEventListener('blur', () => validateField(input));
-            input.addEventListener('input', () => clearFieldError(input));
+        [nameField, emailField, messageField].forEach(field => {
+            if (field) {
+                field.addEventListener('blur', () => validateContactField(field));
+                field.addEventListener('input', () => clearContactFieldError(field));
+            }
         });
+        
+        // Handle form submission
+        contactForm.addEventListener('submit', handleContactFormSubmission);
+        
+        console.log('Contact form initialized successfully');
     }
 }
 
@@ -540,25 +569,275 @@ function populateContactSocialLinks() {
     }
 }
 
+// Contact Form Validation Functions
+function validateContactField(field) {
+    if (!field) return false;
+    
+    const fieldName = field.getAttribute('name');
+    const fieldValue = field.value.trim();
+    const fieldType = field.getAttribute('type');
+    const isRequired = field.hasAttribute('required');
+    
+    let isValid = true;
+    let errorMessage = '';
+    
+    // Required field validation
+    if (isRequired && !fieldValue) {
+        isValid = false;
+        errorMessage = `Please enter ${
+            fieldName === 'name' ? 'your name' :
+            fieldName === 'email' ? 'your email address' :
+            fieldName === 'message' ? 'your message' : fieldName
+        }`;
+    }
+    // Email validation
+    else if (fieldType === 'email' && fieldValue && !isValidEmail(fieldValue)) {
+        isValid = false;
+        errorMessage = 'Please enter a valid email address';
+    }
+    // Name validation (only letters, spaces, hyphens, apostrophes)
+    else if (fieldName === 'name' && fieldValue && !/^[a-zA-Z\s\-']+$/.test(fieldValue)) {
+        isValid = false;
+        errorMessage = 'Name can only contain letters, spaces, hyphens, and apostrophes';
+    }
+    // Name length validation
+    else if (fieldName === 'name' && fieldValue && fieldValue.length < 2) {
+        isValid = false;
+        errorMessage = 'Name must be at least 2 characters long';
+    }
+    // Message length validation
+    else if (fieldName === 'message' && fieldValue && fieldValue.length < 10) {
+        isValid = false;
+        errorMessage = 'Message must be at least 10 characters long';
+    }
+    
+    // Update field error display
+    updateFieldError(field, isValid, errorMessage);
+    
+    return isValid;
+}
+
+function clearContactFieldError(field) {
+    if (!field) return;
+    
+    const errorElement = document.getElementById(`${field.id}-error`);
+    
+    if (field.value.trim()) {
+        // Clear error styling
+        field.classList.remove('border-red-400');
+        field.setAttribute('aria-invalid', 'false');
+        
+        // Hide error message
+        if (errorElement) {
+            errorElement.classList.add('hidden');
+            errorElement.textContent = '';
+        }
+    }
+}
+
+function updateFieldError(field, isValid, errorMessage) {
+    if (!field) return;
+    
+    const errorElement = document.getElementById(`${field.id}-error`);
+    
+    if (isValid) {
+        // Remove error styling
+        field.classList.remove('border-red-400');
+        field.classList.add('border-green-400');
+        field.setAttribute('aria-invalid', 'false');
+        
+        // Hide error message
+        if (errorElement) {
+            errorElement.classList.add('hidden');
+            errorElement.textContent = '';
+        }
+    } else {
+        // Add error styling
+        field.classList.remove('border-green-400');
+        field.classList.add('border-red-400');
+        field.setAttribute('aria-invalid', 'true');
+        
+        // Show error message
+        if (errorElement) {
+            errorElement.classList.remove('hidden');
+            errorElement.textContent = errorMessage;
+        }
+        
+        // Announce error to screen readers
+        announceToScreenReader(`Error in ${field.getAttribute('name')} field: ${errorMessage}`, 'assertive');
+    }
+}
+
+async function handleContactFormSubmission(e) {
+    e.preventDefault();
+    
+    const form = e.target;
+    const submitBtn = document.getElementById('contact-submit-btn');
+    const submitText = submitBtn.querySelector('.submit-text');
+    const submitIcon = submitBtn.querySelector('.submit-icon');
+    const loadingSpinner = submitBtn.querySelector('.loading-spinner');
+    const formMessage = document.getElementById('form-message');
+    const submitStatus = document.getElementById('submit-status');
+    
+    // Get form fields
+    const nameField = document.getElementById('name');
+    const emailField = document.getElementById('email');
+    const messageField = document.getElementById('message');
+    
+    // Validate all fields
+    let isFormValid = true;
+    const fieldsToValidate = [nameField, emailField, messageField].filter(Boolean);
+    
+    fieldsToValidate.forEach(field => {
+        if (!validateContactField(field)) {
+            isFormValid = false;
+        }
+    });
+    
+    if (!isFormValid) {
+        showContactFormMessage('Please correct the errors above and try again.', 'error');
+        announceToScreenReader('Form contains errors. Please correct them and try again.', 'assertive');
+        return;
+    }
+    
+    // Show loading state
+    setSubmitButtonLoading(true);
+    announceToScreenReader('Sending message...', 'polite');
+    
+    // Collect form data
+    const formData = {
+        name: nameField.value.trim(),
+        email: emailField.value.trim(),
+        message: messageField.value.trim(),
+        timestamp: new Date().toISOString(),
+        userAgent: navigator.userAgent
+    };
+    
+    try {
+        // Send form data to AWS Lambda
+        const response = await fetch(LAMBDA_URL, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(formData)
+        });
+
+        if (response.ok) {
+            // Success state
+            setSubmitButtonLoading(false);
+            showContactFormMessage(
+                'Message sent successfully! Thank you for reaching out.',
+                'success'
+            );
+        } else {
+            throw new Error('Failed to send message. Please try again.');
+        }
+        
+        // Reset form
+        form.reset();
+        
+        // Clear character counter
+        const messageCount = document.getElementById('message-count');
+        if (messageCount) {
+            messageCount.textContent = '0';
+        }
+        
+        // Clear validation states
+        fieldsToValidate.forEach(field => {
+            field.classList.remove('border-red-400', 'border-green-400');
+            field.setAttribute('aria-invalid', 'false');
+            const errorElement = document.getElementById(`${field.id}-error`);
+            if (errorElement) {
+                errorElement.classList.add('hidden');
+                errorElement.textContent = '';
+            }
+        });
+        
+        // Announce success
+        announceToScreenReader('Message sent successfully! Thank you for contacting me.', 'polite');
+        
+        // Focus on the form message for screen readers
+        if (formMessage) {
+            formMessage.focus();
+        }
+        
+        console.log('Contact form submitted successfully:', formData);
+        
+    } catch (error) {
+        console.error('Contact form submission error:', error);
+        
+        setSubmitButtonLoading(false);
+        showContactFormMessage(
+            'Sorry, there was an error sending your message. Please try again or contact me directly at contact@karthiks3000.dev',
+            'error'
+        );
+        announceToScreenReader('Error sending message. Please try again.', 'assertive');
+    }
+}
+
+function setSubmitButtonLoading(isLoading) {
+    const submitBtn = document.getElementById('contact-submit-btn');
+    const submitText = submitBtn.querySelector('.submit-text');
+    const submitIcon = submitBtn.querySelector('.submit-icon');
+    const loadingSpinner = submitBtn.querySelector('.loading-spinner');
+    
+    if (isLoading) {
+        submitBtn.disabled = true;
+        submitBtn.classList.add('loading');
+        submitText.textContent = 'Sending...';
+        
+        if (submitIcon) submitIcon.classList.add('hidden');
+        if (loadingSpinner) loadingSpinner.classList.remove('hidden');
+    } else {
+        submitBtn.disabled = false;
+        submitBtn.classList.remove('loading');
+        submitText.textContent = 'Send Message';
+        
+        if (submitIcon) submitIcon.classList.remove('hidden');
+        if (loadingSpinner) loadingSpinner.classList.add('hidden');
+    }
+}
+
+function showContactFormMessage(message, type) {
+    const formMessage = document.getElementById('form-message');
+    if (!formMessage) return;
+    
+    // Set message content and type
+    formMessage.textContent = message;
+    formMessage.className = `form-message ${type} mb-6`;
+    formMessage.classList.remove('hidden');
+    
+    // Auto-hide after 8 seconds
+    setTimeout(() => {
+        formMessage.classList.add('hidden');
+    }, 8000);
+}
+
+
+// Enhanced accessibility announcements
+function announceToScreenReader(message, priority = 'polite') {
+    const liveRegion = document.getElementById('live-region');
+    if (liveRegion) {
+        liveRegion.setAttribute('aria-live', priority);
+        liveRegion.textContent = message;
+        
+        // Clear after announcement
+        setTimeout(() => {
+            liveRegion.textContent = '';
+        }, 1000);
+    }
+}
+
 // Form validation helper
 function isValidEmail(email) {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
 }
 
-// Show form messages
+// Show form messages (legacy support)
 function showFormMessage(message, type) {
-    const messageContainer = document.getElementById('form-message');
-    if (messageContainer) {
-        messageContainer.textContent = message;
-        messageContainer.className = `form-message ${type}`;
-        messageContainer.style.display = 'block';
-        
-        // Hide message after 5 seconds
-        setTimeout(() => {
-            messageContainer.style.display = 'none';
-        }, 5000);
-    }
+    showContactFormMessage(message, type);
 }
 
 // Theme Toggle with Enhanced Accessibility

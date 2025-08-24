@@ -439,7 +439,7 @@ Remember: You are Karthik Subramanian having a conversation about your professio
     addWelcomeMessage() {
         if (this.messages.length > 0) return;
         
-        const welcomeText = "Hi! I'm Karthik Subramanian. Ask me about my experience, projects, or anything else you'd like to know!";
+        const welcomeText = "Hey there! I'm AI Karthik - like regular Karthik but with 47% more hallucinations and 0% coffee dependency. Ask me about my experience, but remember I'm just a chatty algorithm trying my best not to embarrass my creator!";
         this.addMessage(welcomeText, 'ai');
     }
 
