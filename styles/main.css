@@ -4515,6 +4515,338 @@ Chat Interface Positioning */
     }
 }
 
+/* Fun AI Download Animation Styles */
+.ai-download-animation {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 0;
+    position: relative;
+}
+
+/* AI Brain Animation Container */
+.ai-brain-container {
+    position: relative;
+    width: 120px;
+    height: 120px;
+    margin-bottom: 2rem;
+}
+
+/* AI Brain Shape */
+.ai-brain {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.brain-left,
+.brain-right {
+    width: 50px;
+    height: 60px;
+    background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+    border-radius: 50px 50px 30px 30px;
+    position: absolute;
+    opacity: 0.8;
+}
+
+.brain-left {
+    left: 15px;
+    transform: rotate(-10deg);
+    animation: brainPulse 2s ease-in-out infinite;
+}
+
+.brain-right {
+    right: 15px;
+    transform: rotate(10deg);
+    animation: brainPulse 2s ease-in-out infinite 0.5s;
+}
+
+@keyframes brainPulse {
+    0%, 100% {
+        opacity: 0.6;
+        transform: rotate(-10deg) scale(1);
+    }
+    50% {
+        opacity: 1;
+        transform: rotate(-10deg) scale(1.05);
+    }
+}
+
+.brain-right {
+    animation-name: brainPulseRight;
+}
+
+@keyframes brainPulseRight {
+    0%, 100% {
+        opacity: 0.6;
+        transform: rotate(10deg) scale(1);
+    }
+    50% {
+        opacity: 1;
+        transform: rotate(10deg) scale(1.05);
+    }
+}
+
+/* Data Streams Animation */
+.ai-data-streams {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+}
+
+.data-stream {
+    position: absolute;
+    width: 3px;
+    background: linear-gradient(to bottom, transparent, #60a5fa, transparent);
+    border-radius: 2px;
+    opacity: 0.7;
+}
+
+.data-stream.stream-1 {
+    height: 40px;
+    top: 10px;
+    left: 30px;
+    animation: dataFlow 1.5s ease-in-out infinite;
+}
+
+.data-stream.stream-2 {
+    height: 35px;
+    top: 15px;
+    right: 25px;
+    animation: dataFlow 1.5s ease-in-out infinite 0.3s;
+}
+
+.data-stream.stream-3 {
+    height: 30px;
+    bottom: 20px;
+    left: 40px;
+    animation: dataFlow 1.5s ease-in-out infinite 0.6s;
+}
+
+.data-stream.stream-4 {
+    height: 38px;
+    bottom: 15px;
+    right: 35px;
+    animation: dataFlow 1.5s ease-in-out infinite 0.9s;
+}
+
+@keyframes dataFlow {
+    0%, 100% {
+        opacity: 0.3;
+        transform: translateY(0) scaleY(0.8);
+    }
+    50% {
+        opacity: 0.9;
+        transform: translateY(-5px) scaleY(1.2);
+    }
+}
+
+/* Loading Dots Animation */
+.loading-dots {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 1rem;
+}
+
+.loading-dots .dot {
+    width: 12px;
+    height: 12px;
+    background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%);
+    border-radius: 50%;
+    animation: dotBounce 1.4s ease-in-out infinite both;
+}
+
+.loading-dots .dot-1 {
+    animation-delay: -0.32s;
+}
+
+.loading-dots .dot-2 {
+    animation-delay: -0.16s;
+}
+
+.loading-dots .dot-3 {
+    animation-delay: 0s;
+}
+
+@keyframes dotBounce {
+    0%, 80%, 100% {
+        transform: scale(0.8);
+        opacity: 0.6;
+    }
+    40% {
+        transform: scale(1.2);
+        opacity: 1;
+    }
+}
+
+/* Responsive Animation Adjustments */
+@media (max-width: 768px) {
+    .ai-brain-container {
+        width: 100px;
+        height: 100px;
+        margin-bottom: 1.5rem;
+    }
+    
+    .brain-left,
+    .brain-right {
+        width: 40px;
+        height: 50px;
+    }
+    
+    .brain-left {
+        left: 12px;
+    }
+    
+    .brain-right {
+        right: 12px;
+    }
+    
+    .data-stream {
+        width: 2px;
+    }
+    
+    .data-stream.stream-1 {
+        height: 30px;
+        left: 25px;
+    }
+    
+    .data-stream.stream-2 {
+        height: 28px;
+        right: 20px;
+    }
+    
+    .data-stream.stream-3 {
+        height: 25px;
+        left: 32px;
+    }
+    
+    .data-stream.stream-4 {
+        height: 30px;
+        right: 28px;
+    }
+    
+    .loading-dots .dot {
+        width: 10px;
+        height: 10px;
+    }
+}
+
+/* High Contrast Mode for Animation */
+@media (prefers-contrast: high) {
+    .brain-left,
+    .brain-right {
+        background: #ffffff !important;
+        border: 2px solid #000000 !important;
+    }
+    
+    .data-stream {
+        background: linear-gradient(to bottom, transparent, #ffffff, transparent) !important;
+    }
+    
+    .loading-dots .dot {
+        background: #ffffff !important;
+        border: 2px solid #000000 !important;
+    }
+}
+
+/* Reduced Motion Support for Animation */
+@media (prefers-reduced-motion: reduce) {
+    .brain-left,
+    .brain-right,
+    .data-stream,
+    .loading-dots .dot {
+        animation: none !important;
+    }
+    
+    .brain-left,
+    .brain-right {
+        opacity: 0.8 !important;
+        transform: none !important;
+    }
+    
+    .data-stream {
+        opacity: 0.5 !important;
+        transform: none !important;
+    }
+    
+    .loading-dots .dot {
+        opacity: 0.8 !important;
+        transform: none !important;
+    }
+}
+
+/* AI Progress Modal Specific Adjustments */
+.ai-progress-content .ai-download-animation {
+    padding: 1rem 0;
+}
+
+.ai-progress-content .ai-brain-container {
+    margin-bottom: 1.5rem;
+}
+
+/* Enhanced Animation with Additional Effects */
+.ai-brain-container::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 140px;
+    height: 140px;
+    border: 2px solid rgba(96, 165, 250, 0.2);
+    border-radius: 50%;
+    animation: brainGlow 3s ease-in-out infinite;
+}
+
+.ai-brain-container::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 160px;
+    height: 160px;
+    border: 1px solid rgba(96, 165, 250, 0.1);
+    border-radius: 50%;
+    animation: brainGlow 3s ease-in-out infinite 1s;
+}
+
+@keyframes brainGlow {
+    0%, 100% {
+        opacity: 0.3;
+        transform: translate(-50%, -50%) scale(1);
+    }
+    50% {
+        opacity: 0.6;
+        transform: translate(-50%, -50%) scale(1.05);
+    }
+}
+
+/* Disable glow effects on mobile for performance */
+@media (max-width: 768px) {
+    .ai-brain-container::before,
+    .ai-brain-container::after {
+        display: none;
+    }
+}
+
+/* Disable glow effects for reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    .ai-brain-container::before,
+    .ai-brain-container::after {
+        display: none !important;
+    }
+}
+
 /* Print Styles for Contact Form */
 @media print {
     .contact-form-container {

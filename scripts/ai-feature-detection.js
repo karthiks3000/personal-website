@@ -449,19 +449,42 @@ class AIFeatureDetector {
             // Add download progress monitoring if not already provided
             if (!options.monitor && this.capabilities?.available === 'downloadable') {
                 sessionOptions.monitor = (m) => {
+                    this.log('📊 Download progress monitor attached - tracking REAL Chrome events only');
+                    
+                    let eventCount = 0;
+                    let startTime = null;
+                    
+                    // Set up the real progress event listener - NO SIMULATION
                     m.addEventListener('downloadprogress', (e) => {
-                        const progress = Math.round((e.loaded / e.total) * 100);
-                        this.log(`Model download progress: ${progress}%`);
+                        eventCount++;
+                        if (!startTime) startTime = Date.now();
                         
-                        // Dispatch custom event for UI updates
-                        window.dispatchEvent(new CustomEvent('aiModelDownloadProgress', {
+                        const progress = Math.round(e.loaded * 100);
+                        const elapsed = startTime ? Date.now() - startTime : 0;
+                        
+                        this.log(`🔄 REAL Chrome Progress Event #${eventCount}:`);
+                        this.log(`   Progress: ${progress}% (e.loaded: ${e.loaded}, e.total: ${e.total})`);
+                        this.log(`   Time elapsed: ${elapsed}ms`);
+                        this.log(`   Raw event object:`, e);
+                        
+                        // Dispatch custom event for UI updates - ONLY real events
+                        const progressEvent = new CustomEvent('aiModelDownloadProgress', {
                             detail: {
                                 loaded: e.loaded,
                                 total: e.total,
-                                progress: progress
+                                progress: progress,
+                                eventNumber: eventCount,
+                                elapsed: elapsed,
+                                real: true // Mark as real event
                             }
-                        }));
+                        });
+                        
+                        this.log('📡 Dispatching REAL progress event to UI:', progressEvent.detail);
+                        window.dispatchEvent(progressEvent);
                     });
+                    
+                    // Log when monitor is ready
+                    this.log('✅ Real progress event listener attached - NO simulation, Chrome events only');
                 };
             } else if (options.monitor) {
                 sessionOptions.monitor = options.monitor;

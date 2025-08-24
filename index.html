@@ -1512,13 +1512,13 @@
                     </svg>
                 </div>
                 <p class="ai-modal-text">
-                    Would you like to chat with AI Karthik? This uses Chrome's built-in Gemini Nano model which needs to be downloaded first.
+                    Would you like to chat with AI Karthik? This uses Chrome's built-in Gemini Nano model which needs to be downloaded first. Don't worry, once downloaded you can use it for any site that supports chrome's built-in AI.
                 </p>
                 <div class="ai-modal-info">
                     <ul>
                         <li>✓ Free Chrome AI feature</li>
                         <li>✓ Works offline once downloaded</li>
-                        <li>✓ About ~1.5GB download</li>
+                        <li>✓ About ~4.5GB download</li>
                     </ul>
                 </div>
             </div>
@@ -1537,24 +1537,30 @@
                 <h3>Downloading AI Model</h3>
             </div>
             <div class="ai-progress-body">
-                <div class="ai-progress-icon">
-                    <svg class="w-12 h-12 text-blue-400 animate-spin" fill="none" viewBox="0 0 24 24">
-                        <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" class="opacity-25"></circle>
-                        <path fill="currentColor" d="m4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" class="opacity-75"></path>
-                    </svg>
+                <!-- Fun AI Download Animation -->
+                <div class="ai-download-animation">
+                    <div class="ai-brain-container">
+                        <div class="ai-brain">
+                            <div class="brain-left pulse-1"></div>
+                            <div class="brain-right pulse-2"></div>
+                        </div>
+                        <div class="ai-data-streams">
+                            <div class="data-stream stream-1"></div>
+                            <div class="data-stream stream-2"></div>
+                            <div class="data-stream stream-3"></div>
+                            <div class="data-stream stream-4"></div>
+                        </div>
+                    </div>
+                    <div class="loading-dots">
+                        <span class="dot dot-1"></span>
+                        <span class="dot dot-2"></span>
+                        <span class="dot dot-3"></span>
+                    </div>
                 </div>
+                
                 <p class="ai-progress-text">Downloading Chrome's Gemini Nano model...</p>
-                <div class="ai-progress-bar-container">
-                    <div class="ai-progress-bar">
-                        <div class="ai-progress-fill" style="width: 0%"></div>
-                    </div>
-                    <div class="ai-progress-stats">
-                        <span id="ai-progress-percent">0%</span>
-                        <span id="ai-progress-size">0 MB / 0 MB</span>
-                    </div>
-                </div>
                 <div class="ai-progress-info">
-                    <p>This may take a few minutes depending on your connection.</p>
+                    <p id="download-status">This may take a few minutes depending on your connection.</p>
                     <p><strong>Please keep this tab open</strong> during the download.</p>
                 </div>
             </div>
