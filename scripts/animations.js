@@ -497,7 +497,92 @@ function initScrollProgressIndicator() {
 window.AnimationUtils = {
     addStaggeredAnimation,
     prefersReducedMotion,
-    announceToScreenReader
+    announceToScreenReader,
+    
+    // Initialize all animations
+    initAllAnimations: function() {
+        if (!prefersReducedMotion) {
+            initFadeInAnimations();
+            initInteractiveSkills();
+            initExperienceAnimations();
+            initProjectsAnimations();
+        }
+    },
+    
+    // Initialize basic animations (for low-end devices)
+    initBasicAnimations: function() {
+        // Just initialize essential animations with reduced motion
+        const sections = document.querySelectorAll('section');
+        sections.forEach(section => {
+            section.classList.add('animate-fade-in-up');
+        });
+    },
+    
+    // Initialize particles (placeholder function)
+    initParticles: function() {
+        console.log('Particles initialization - placeholder function');
+        // This would typically initialize a particle system
+        // For now, we'll just add a simple background effect
+        const hero = document.getElementById('hero');
+        if (hero && !prefersReducedMotion) {
+            hero.style.background = 'linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(147, 51, 234, 0.1) 100%)';
+        }
+    },
+    
+    // Add hover effects
+    addHoverEffects: function() {
+        if (prefersReducedMotion) return;
+        
+        // Add hover effects to interactive elements
+        const interactiveElements = document.querySelectorAll('.btn-primary, .btn-secondary, .project-card, .skill-card');
+        interactiveElements.forEach(element => {
+            element.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-2px)';
+                this.style.transition = 'transform 0.2s ease';
+            });
+            
+            element.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0)';
+            });
+        });
+    },
+    
+    // Initialize micro-interactions
+    initMicroInteractions: function() {
+        if (prefersReducedMotion) return;
+        
+        // Add subtle micro-interactions to buttons and links
+        const buttons = document.querySelectorAll('button, a');
+        buttons.forEach(button => {
+            button.addEventListener('click', function() {
+                this.style.transform = 'scale(0.98)';
+                setTimeout(() => {
+                    this.style.transform = 'scale(1)';
+                }, 100);
+            });
+        });
+    },
+    
+    // Typewriter effect
+    typewriterEffect: function(element, text, speed = 100) {
+        if (!element || prefersReducedMotion) {
+            if (element) element.textContent = text;
+            return;
+        }
+        
+        element.textContent = '';
+        let i = 0;
+        
+        function typeChar() {
+            if (i < text.length) {
+                element.textContent += text.charAt(i);
+                i++;
+                setTimeout(typeChar, speed);
+            }
+        }
+        
+        typeChar();
+    }
 };
 /**
  
