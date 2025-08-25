@@ -5705,3 +5705,185 @@ Chat Interface Positioning */
         }
     }
 }
+
+/* Word Rotation Animation Styles */
+#rotating-word {
+    display: inline-block;
+    position: relative;
+    min-width: 6rem; /* Prevents layout shift during word changes */
+    text-align: center;
+    transition: opacity 500ms ease-in-out;
+    font-weight: inherit;
+    color: inherit;
+}
+
+/* Ensure consistent spacing and prevent layout shifts */
+#rotating-word::before {
+    content: attr(data-word);
+    visibility: hidden;
+    height: 0;
+    overflow: hidden;
+    display: block;
+    font-weight: inherit;
+    font-size: inherit;
+    line-height: inherit;
+    font-family: inherit;
+}
+
+/* Smooth transition between words */
+.rotating-word-transition {
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Optional: Add subtle glow effect on word change */
+.rotating-word-highlight {
+    text-shadow: 0 0 10px rgba(96, 165, 250, 0.3);
+    transition: text-shadow 0.5s ease;
+}
+
+/* Mobile responsive adjustments */
+@media (max-width: 768px) {
+    #rotating-word {
+        min-width: 5rem;
+        font-size: inherit;
+    }
+}
+
+/* Tablet responsive adjustments */
+@media (min-width: 769px) and (max-width: 1024px) {
+    #rotating-word {
+        min-width: 6.5rem;
+    }
+}
+
+/* Large screen adjustments */
+@media (min-width: 1025px) {
+    #rotating-word {
+        min-width: 7rem;
+    }
+}
+
+/* High contrast mode support for rotating word */
+@media (prefers-contrast: high) {
+    #rotating-word {
+        color: #ffffff !important;
+        text-shadow: 0 0 2px #000000 !important;
+    }
+    
+    .rotating-word-highlight {
+        text-shadow: 0 0 4px #000000 !important;
+    }
+}
+
+/* Reduced motion support - disable transitions */
+@media (prefers-reduced-motion: reduce) {
+    #rotating-word {
+        transition: none !important;
+    }
+    
+    .rotating-word-transition {
+        transition: none !important;
+    }
+    
+    .rotating-word-highlight {
+        text-shadow: none !important;
+        transition: none !important;
+    }
+}
+
+/* Print support for rotating word */
+@media print {
+    #rotating-word {
+        color: #000000 !important;
+        text-shadow: none !important;
+        transition: none !important;
+    }
+    
+    #rotating-word::after {
+        content: " (Software Engineer)";
+        font-size: 0.875em;
+        color: #666666;
+    }
+}
+
+/* Focus styles for rotating word (for accessibility) */
+#rotating-word:focus {
+    outline: 2px solid var(--accent-blue);
+    outline-offset: 2px;
+    border-radius: 0.25rem;
+    background-color: rgba(96, 165, 250, 0.1);
+}
+
+/* Enhanced accessibility for screen readers */
+#rotating-word[aria-live="polite"] {
+    /* Ensure screen readers can announce word changes */
+    position: relative;
+}
+
+/* Touch device optimizations */
+@media (max-width: 768px) and (pointer: coarse) {
+    #rotating-word {
+        /* Prevent zoom on tap for iOS */
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+    }
+}
+
+/* Dark theme specific adjustments */
+.dark #rotating-word {
+    color: #60a5fa; /* Maintain blue-400 color in dark theme */
+}
+
+/* Ensure proper color inheritance from parent */
+#rotating-word {
+    color: inherit;
+    font-family: inherit;
+    font-weight: inherit;
+    font-style: inherit;
+    text-decoration: inherit;
+}
+
+/* Enhanced transition effects for smooth word swapping */
+.word-fade-out {
+    opacity: 0;
+    transform: translateY(-5px);
+}
+
+.word-fade-in {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Optional subtle scaling effect */
+.word-transition-scale {
+    transform: scale(0.95);
+    transition: transform 0.25s ease, opacity 0.25s ease;
+}
+
+.word-transition-scale.active {
+    transform: scale(1);
+    opacity: 1;
+}
+
+/* Prevent flickering during transitions */
+#rotating-word {
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    transform: translateZ(0);
+    -webkit-transform: translateZ(0);
+}
+
+/* Improved animation performance */
+.rotating-word-container {
+    will-change: contents;
+    contain: style layout;
+}
+
+/* Remove will-change after animation completes */
+#rotating-word.animation-complete {
+    will-change: auto;
+}

@@ -943,12 +943,119 @@ function initLogoTypewriter() {
     }
 }
 
+// Initialize word rotation animation
+function initWordRotation() {
+    const rotatingElement = document.getElementById('rotating-word');
+    if (!rotatingElement) {
+        console.warn('Rotating word element not found');
+        return;
+    }
+    
+    // Configuration
+    const words = ['Javaphile', 'Tech Nerd', 'Drone Pilot'];
+    const displayDuration = 2000; // How long each word is displayed (3 seconds)
+    const transitionDuration = 500; // How long the fade transition takes (0.5 seconds)
+    
+    // Check for reduced motion preference
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    
+    if (prefersReducedMotion) {
+        // For users who prefer reduced motion, just show the first word
+        rotatingElement.textContent = words[0];
+        rotatingElement.setAttribute('aria-label', `Professional title: ${words[0]}`);
+        return;
+    }
+    
+    let currentIndex = 0;
+    let rotationInterval;
+    let isPaused = false;
+    
+    // Set initial word
+    rotatingElement.textContent = words[currentIndex];
+    rotatingElement.setAttribute('aria-label', `Professional title: ${words[currentIndex]} (rotating)`);
+    
+    // Add CSS for smooth transitions
+    rotatingElement.style.transition = `opacity ${transitionDuration}ms ease-in-out`;
+    rotatingElement.style.display = 'inline-block';
+    
+    function changeWord() {
+        if (isPaused) return;
+        
+        // Fade out current word
+        rotatingElement.style.opacity = '0';
+        
+        setTimeout(() => {
+            // Change to next word
+            currentIndex = (currentIndex + 1) % words.length;
+            rotatingElement.textContent = words[currentIndex];
+            
+            // Update accessibility info
+            rotatingElement.setAttribute('aria-label', `Professional title: ${words[currentIndex]} (rotating)`);
+            
+            // Fade in new word
+            rotatingElement.style.opacity = '1';
+        }, transitionDuration / 2);
+    }
+    
+    // Start the rotation
+    function startRotation() {
+        if (rotationInterval) clearInterval(rotationInterval);
+        rotationInterval = setInterval(changeWord, displayDuration);
+    }
+    
+    // Stop the rotation
+    function stopRotation() {
+        if (rotationInterval) {
+            clearInterval(rotationInterval);
+            rotationInterval = null;
+        }
+    }
+    
+    // Pause/resume on hover for better UX
+    rotatingElement.addEventListener('mouseenter', () => {
+        isPaused = true;
+    });
+    
+    rotatingElement.addEventListener('mouseleave', () => {
+        isPaused = false;
+    });
+    
+    // Pause/resume on focus for keyboard users
+    rotatingElement.addEventListener('focus', () => {
+        isPaused = true;
+    });
+    
+    rotatingElement.addEventListener('blur', () => {
+        isPaused = false;
+    });
+    
+    // Handle visibility changes (pause when tab is not visible)
+    document.addEventListener('visibilitychange', () => {
+        if (document.hidden) {
+            stopRotation();
+        } else {
+            startRotation();
+        }
+    });
+    
+    // Start the animation
+    startRotation();
+    
+    // Store cleanup function for potential future use
+    window.stopWordRotation = stopRotation;
+    
+    console.log('Word rotation initialized with words:', words);
+}
+
 // Initialize hero section
 function initHeroSection() {
     // Initialize particles
     if (window.AnimationUtils) {
         window.AnimationUtils.initParticles();
     }
+    
+    // Initialize word rotation
+    initWordRotation();
     
     // Add smooth scroll behavior for scroll indicator
     const scrollIndicator = document.querySelector('.scroll-indicator');
