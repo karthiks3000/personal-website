@@ -1587,6 +1587,44 @@ d Skills Section Styling */
     box-shadow: 0 0 20px rgba(96, 165, 250, 0.6), 0 0 0 6px rgba(96, 165, 250, 0.3);
 }
 
+/* Timeline Flag Nodes */
+.timeline-flag-node {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    background: rgba(17, 24, 39, 0.95);
+    border: 3px solid #374151;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 0 4px rgba(96, 165, 250, 0.1), 0 4px 12px rgba(0, 0, 0, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.timeline-flag-node:hover {
+    transform: translateX(-50%) scale(1.2);
+    box-shadow: 0 0 20px rgba(96, 165, 250, 0.4), 0 0 0 4px rgba(96, 165, 250, 0.2), 0 8px 20px rgba(0, 0, 0, 0.4);
+    border-color: #60a5fa;
+}
+
+.timeline-flag {
+    font-size: 1.125rem;
+    line-height: 1;
+    display: block;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+    transition: all 0.3s ease;
+}
+
+.timeline-flag-node:hover .timeline-flag {
+    transform: scale(1.1);
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.4));
+}
+
 /* Experience Cards with Alternating Positioning */
 .experience-card {
     transition: all 0.4s ease;
@@ -1810,6 +1848,23 @@ d Skills Section Styling */
         transform: translateX(-50%) scale(1.2);
     }
     
+    /* Mobile Timeline Flag Nodes */
+    .timeline-flag-node {
+        left: 1.5rem;
+        transform: translateX(-50%);
+        width: 1.75rem;
+        height: 1.75rem;
+        border: 2px solid #374151;
+    }
+    
+    .timeline-flag-node:hover {
+        transform: translateX(-50%) scale(1.15);
+    }
+    
+    .timeline-flag {
+        font-size: 1rem;
+    }
+    
     .experience-item {
         margin-bottom: 2.5rem;
         min-height: auto;
@@ -2005,6 +2060,9 @@ d Skills Section Styling */
     transition: all 0.3s ease;
     position: relative;
     overflow: hidden;
+    min-height: 400px;
+    display: flex;
+    flex-direction: column;
 }
 
 .project-card:hover {
@@ -2027,6 +2085,79 @@ d Skills Section Styling */
 
 .project-card:hover::before {
     transform: translateX(100%);
+}
+
+/* Project Card Content Layout */
+.project-card .relative.z-10 {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+/* Project Header Adjustments for 3-column */
+.project-card .flex.items-start.justify-between {
+    margin-bottom: 1rem;
+}
+
+.project-card .w-12.h-12 {
+    width: 2.5rem;
+    height: 2.5rem;
+}
+
+.project-card .w-12.h-12 svg {
+    width: 1.25rem;
+    height: 1.25rem;
+}
+
+/* Project Title Adjustments */
+.project-card h3 {
+    font-size: 1.125rem;
+    line-height: 1.4;
+    margin-bottom: 0.25rem;
+}
+
+.project-card .text-sm {
+    font-size: 0.75rem;
+}
+
+/* Project Description */
+.project-card .text-gray-300.mb-6 {
+    font-size: 0.875rem;
+    line-height: 1.5;
+    margin-bottom: 1rem;
+    flex: 1;
+}
+
+/* Technology Stack Section */
+.project-card .mb-6:has(.text-sm.font-medium.text-gray-400) {
+    margin-bottom: 1rem;
+}
+
+.project-card .text-sm.font-medium.text-gray-400 {
+    font-size: 0.75rem;
+    margin-bottom: 0.5rem;
+}
+
+/* Technology Tags */
+.project-card .px-3.py-1 {
+    padding: 0.375rem 0.75rem;
+    font-size: 0.75rem;
+}
+
+/* Project Links */
+.project-card .flex.flex-wrap.gap-3 {
+    gap: 0.5rem;
+    margin-top: auto;
+}
+
+.project-card .inline-flex.items-center {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.75rem;
+}
+
+.project-card .inline-flex.items-center svg {
+    width: 0.875rem;
+    height: 0.875rem;
 }
 
 /* Project Technology Tags */
@@ -4161,6 +4292,205 @@ Chat Interface Positioning */
     transform: translateY(-50%) rotate(180deg);
 }
 
+/* Personal Introduction Card Styles */
+.personal-card-content {
+    max-width: 36rem;
+    width: 100%;
+}
+
+.personal-card-body {
+    text-align: center;
+    padding: 1.5rem;
+}
+
+.personal-card-avatar {
+    margin-bottom: 1.5rem;
+    position: relative;
+}
+
+.personal-card-avatar img {
+    transition: all 0.3s ease;
+    border-width: 3px;
+    border-style: solid;
+    border-image: linear-gradient(135deg, #60a5fa, #3b82f6) 1;
+    animation: avatarGlow 3s ease-in-out infinite alternate;
+}
+
+@keyframes avatarGlow {
+    0% {
+        box-shadow: 0 0 20px rgba(96, 165, 250, 0.3);
+        transform: scale(1);
+    }
+    100% {
+        box-shadow: 0 0 30px rgba(96, 165, 250, 0.5);
+        transform: scale(1.02);
+    }
+}
+
+.personal-card-intro {
+    max-width: 32rem;
+    margin: 0 auto;
+}
+
+.personal-intro-text {
+    text-align: left;
+    margin-bottom: 2rem;
+}
+
+.personal-intro-text p {
+    margin-bottom: 1rem;
+    line-height: 1.7;
+}
+
+.personal-intro-text p:last-child {
+    margin-bottom: 0;
+}
+
+.personal-card-highlights {
+    background: rgba(17, 24, 39, 0.3);
+    border: 1px solid rgba(75, 85, 99, 0.2);
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+    margin-top: 2rem;
+}
+
+.highlight-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+}
+
+.highlight-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 1rem;
+    background: rgba(31, 41, 55, 0.3);
+    border: 1px solid rgba(75, 85, 99, 0.2);
+    border-radius: 0.5rem;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.highlight-item:hover {
+    background: rgba(31, 41, 55, 0.5);
+    border-color: rgba(96, 165, 250, 0.3);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+}
+
+.highlight-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, rgba(96, 165, 250, 0.6), transparent);
+    transition: left 0.5s ease;
+}
+
+.highlight-item:hover::before {
+    left: 100%;
+}
+
+.highlight-icon {
+    font-size: 1.5rem;
+    line-height: 1;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+    transition: all 0.3s ease;
+}
+
+.highlight-item:hover .highlight-icon {
+    transform: scale(1.1);
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.4));
+}
+
+.highlight-text {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #d1d5db;
+    text-align: center;
+    transition: color 0.3s ease;
+}
+
+.highlight-item:hover .highlight-text {
+    color: #f3f4f6;
+}
+
+/* Personal Card Animation */
+.personal-card-content {
+    animation: personalCardSlideIn 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes personalCardSlideIn {
+    from {
+        opacity: 0;
+        transform: scale(0.95) translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+/* Mobile Responsive for Personal Card */
+@media (max-width: 768px) {
+    .personal-card-content {
+        max-width: calc(100vw - 2rem);
+        margin: 1rem;
+        max-height: calc(100vh - 2rem);
+    }
+    
+    .personal-card-body {
+        padding: 1rem;
+    }
+    
+    .personal-card-avatar {
+        margin-bottom: 1rem;
+    }
+    
+    .personal-card-avatar img {
+        width: 4rem;
+        height: 4rem;
+    }
+    
+    .personal-intro-text {
+        font-size: 0.875rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .personal-card-highlights {
+        padding: 1rem;
+        margin-top: 1.5rem;
+    }
+    
+    .highlight-grid {
+        grid-template-columns: 1fr;
+        gap: 0.75rem;
+    }
+    
+    .highlight-item {
+        flex-direction: row;
+        justify-content: flex-start;
+        text-align: left;
+        padding: 0.75rem;
+    }
+    
+    .highlight-icon {
+        font-size: 1.25rem;
+        flex-shrink: 0;
+    }
+    
+    .highlight-text {
+        font-size: 0.8125rem;
+        text-align: left;
+        margin-left: 0.5rem;
+    }
+}
+
 /* Enhanced Mobile Responsiveness for Requirements */
 @media (max-width: 768px) {
     .ai-requirements-grid {
@@ -5002,6 +5332,346 @@ Chat Interface Positioning */
     .requirements-section .text-red-300,
     .requirements-section .text-red-200 {
         color: #ff6666 !important;
+    }
+}
+
+/* 3D Flip Card Styles */
+.flip-card-container {
+    perspective: 1000px;
+    width: 100%;
+    max-width: 56rem;
+    height: auto;
+    min-height: 380px;
+    margin: 0 auto;
+}
+
+.perspective-1000 {
+    perspective: 1000px;
+}
+
+.flip-card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    transform-style: preserve-3d;
+    min-height: 380px;
+}
+
+.flip-card-inner.flipped {
+    transform: rotateY(180deg);
+}
+
+.flip-card-front,
+.flip-card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    border-radius: 0.75rem;
+    min-height: 380px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.flip-card-front {
+    transform: rotateY(0deg);
+}
+
+.flip-card-back {
+    transform: rotateY(180deg);
+}
+
+.flip-card-back .bg-gradient-to-br {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    padding: 0.75rem;
+}
+
+.flip-card-back .h-full {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+.flip-card-back .personal-intro-text {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    overflow: hidden;
+}
+
+.flip-card-back .personal-intro-text p {
+    margin-bottom: 1.25rem;
+    line-height: 1.6;
+}
+
+.flip-card-back .personal-intro-text p:last-child {
+    margin-bottom: 0;
+}
+
+/* Personal Card Small Highlights */
+.highlight-item-small {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem;
+    background: rgba(31, 41, 55, 0.3);
+    border: 1px solid rgba(52, 211, 153, 0.2);
+    border-radius: 0.5rem;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.highlight-item-small:hover {
+    background: rgba(31, 41, 55, 0.5);
+    border-color: rgba(52, 211, 153, 0.4);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+}
+
+.highlight-item-small::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, rgba(52, 211, 153, 0.6), transparent);
+    transition: left 0.5s ease;
+}
+
+.highlight-item-small:hover::before {
+    left: 100%;
+}
+
+.highlight-icon-small {
+    font-size: 1.25rem;
+    line-height: 1;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+    transition: all 0.3s ease;
+}
+
+.highlight-item-small:hover .highlight-icon-small {
+    transform: scale(1.1);
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.4));
+}
+
+.highlight-text-small {
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: #d1d5db;
+    text-align: center;
+    transition: color 0.3s ease;
+}
+
+.highlight-item-small:hover .highlight-text-small {
+    color: #f3f4f6;
+}
+
+/* Avatar styling for flip card */
+.personal-card-avatar img {
+    transition: all 0.3s ease;
+    border-width: 2px;
+    border-style: solid;
+    border-color: #10b981;
+    box-shadow: 0 0 20px rgba(16, 185, 129, 0.3);
+}
+
+/* Flip card entrance animation */
+.flip-card-container {
+    animation: flipCardEntrance 0.5s ease-out;
+}
+
+@keyframes flipCardEntrance {
+    from {
+        opacity: 0;
+        transform: scale(0.95) translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+/* Mobile responsive adjustments for flip card */
+@media (max-width: 768px) {
+    .flip-card-container {
+        min-height: 280px;
+    }
+    
+    .flip-card-inner {
+        min-height: 280px;
+    }
+    
+    .flip-card-front,
+    .flip-card-back {
+        min-height: 280px;
+    }
+    
+    .flip-card-back .bg-gradient-to-br {
+        padding: 0.75rem;
+    }
+    
+    .flip-card-back .personal-intro-text {
+        padding: 0.25rem 0;
+    }
+    
+    .flip-card-back .personal-intro-text p {
+        font-size: 0.8125rem;
+        margin-bottom: 0.625rem;
+        line-height: 1.4;
+    }
+    
+    .flip-card-back .personal-intro-text p:last-child {
+        margin-bottom: 0;
+    }
+    
+    .flip-card-back .text-center.mt-4 {
+        margin-top: 0.5rem;
+        flex-shrink: 0;
+    }
+}
+
+/* Tablet responsive adjustments for flip card */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .flip-card-container {
+        min-height: 380px;
+    }
+    
+    .flip-card-inner {
+        min-height: 380px;
+    }
+    
+    .flip-card-front,
+    .flip-card-back {
+        min-height: 380px;
+    }
+    
+    .flip-card-back .personal-intro-text p {
+        font-size: 0.875rem;
+        margin-bottom: 0.875rem;
+        line-height: 1.6;
+    }
+}
+
+/* Extra small screens */
+@media (max-width: 480px) {
+    .flip-card-container {
+        min-height: 320px;
+    }
+    
+    .flip-card-inner {
+        min-height: 320px;
+    }
+    
+    .flip-card-front,
+    .flip-card-back {
+        min-height: 320px;
+    }
+    
+    .flip-card-back .bg-gradient-to-br {
+        padding: 0.875rem;
+    }
+    
+    .flip-card-back .personal-intro-text p {
+        font-size: 0.75rem;
+        margin-bottom: 0.625rem;
+        line-height: 1.4;
+    }
+    
+    .flip-card-front h3 {
+        font-size: 1.125rem;
+    }
+    
+    .flip-card-front p {
+        font-size: 0.8125rem;
+    }
+    
+    .flip-card-front .flex.flex-col.sm\:flex-row {
+        gap: 0.5rem;
+    }
+    
+    .flip-card-front button {
+        padding: 0.625rem 1rem;
+        font-size: 0.8125rem;
+    }
+}
+
+/* High contrast mode for flip card */
+@media (prefers-contrast: high) {
+    .flip-card-front .bg-gradient-to-br,
+    .flip-card-back .bg-gradient-to-br {
+        background: #000000 !important;
+        border: 2px solid #ffffff !important;
+    }
+    
+    .flip-card-back .text-gray-100,
+    .flip-card-back .text-gray-300 {
+        color: #ffffff !important;
+    }
+    
+    .highlight-item-small {
+        background: #000000 !important;
+        border: 1px solid #ffffff !important;
+        color: #ffffff !important;
+    }
+    
+    .highlight-text-small {
+        color: #ffffff !important;
+    }
+    
+    .personal-card-avatar img {
+        border-color: #ffffff !important;
+    }
+}
+
+/* Reduced motion for flip card */
+@media (prefers-reduced-motion: reduce) {
+    .flip-card-inner {
+        transition: none !important;
+    }
+    
+    .flip-card-container {
+        animation: none !important;
+    }
+    
+    .highlight-item-small {
+        transition: none !important;
+    }
+    
+    .highlight-item-small:hover {
+        transform: none !important;
+    }
+    
+    .highlight-item-small::before {
+        display: none !important;
+    }
+    
+    .highlight-icon-small {
+        transition: none !important;
+    }
+    
+    .highlight-item-small:hover .highlight-icon-small {
+        transform: none !important;
+        filter: none !important;
+    }
+    
+    @keyframes flipCardEntrance {
+        from, to {
+            opacity: 1;
+            transform: none;
+        }
     }
 }
 

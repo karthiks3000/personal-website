@@ -140,142 +140,56 @@
                     <span id="ai-status-text">Checking AI capabilities...</span>
                 </div>
                 
-                <!-- AI Chat Teaser Section -->
+                <!-- Interactive Flip Card Section -->
                 <div id="ai-teaser-section" class="hidden mt-8 max-w-2xl mx-auto">
-                    <div class="bg-gradient-to-br from-blue-500/10 to-blue-600/5 border border-blue-500/20 rounded-xl p-6 backdrop-blur-sm">
-                        <div class="text-center">
-                            <div class="flex items-center justify-center mb-4">
-                                <div class="w-12 h-12 bg-blue-500/20 rounded-full flex items-center justify-center mr-3">
-                                    <svg class="w-6 h-6 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
-                                    </svg>
-                                </div>
-                                
-                            </div>
-                            <h3 class="text-xl font-semibold text-gray-100 mb-3">Psst... wanna chat with an AI version of me?</h3>
-                            <p id="ai-teaser-inline-text" class="text-gray-300 text-sm mb-4 leading-relaxed">
-                                You could chat with an AI version of me, but it's not available on your current setup.
-                            </p>
-                            <button id="ai-tell-me-more-inline" class="inline-flex items-center text-blue-400 hover:text-blue-300 font-medium text-sm transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-gray-900 rounded-lg px-3 py-2">
-                                Tell me more
-                                <svg class="w-4 h-4 ml-1 transform transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                                </svg>
-                            </button>
-                        </div>
-                        
-                        <!-- Expandable Information Section -->
-                        <div id="ai-requirements-inline" class="requirements-section hidden">
-                            <div class="mt-6 pt-6 border-t border-blue-500/20">
-                                <!-- Content when AI is available -->
-                                <div id="ai-available-content" class="hidden">
-                                    <h4 class="text-lg font-semibold text-gray-100 mb-4 text-center">About AI Chat</h4>
-                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                                        <div class="bg-green-900/20 rounded-lg p-4 border border-green-500/30">
-                                            <h5 class="font-semibold text-green-300 mb-2 flex items-center">
-                                                <svg class="w-4 h-4 mr-2 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                                </svg>
-                                                Powered by Chrome AI
-                                            </h5>
-                                            <ul class="text-sm text-green-200 space-y-1">
-                                                <li>• Uses Gemini Nano model</li>
-                                                <li>• Runs locally in your browser</li>
-                                                <li>• No data sent to servers</li>
-                                                <li>• Instant responses</li>
-                                            </ul>
-                                        </div>
-                                        <div class="bg-blue-900/20 rounded-lg p-4 border border-blue-500/30">
-                                            <h5 class="font-semibold text-blue-300 mb-2 flex items-center">
-                                                <svg class="w-4 h-4 mr-2 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
-                                                </svg>
-                                                What You Can Ask
-                                            </h5>
-                                            <ul class="text-sm text-blue-200 space-y-1">
-                                                <li>• My work experience</li>
-                                                <li>• Technical projects</li>
-                                                <li>• Skills and expertise</li>
-                                                <li>• Career journey</li>
-                                            </ul>
-                                        </div>
-                                    </div>
+                    <div class="flip-card-container perspective-1000">
+                        <div class="flip-card-inner" id="flip-card-inner">
+                            <!-- Front Side: Options Interface -->
+                            <div class="flip-card-front">
+                                <div class="bg-gradient-to-br from-blue-500/10 to-blue-600/5 border border-blue-500/20 rounded-xl p-6 backdrop-blur-sm">
                                     <div class="text-center">
-                                        <p class="text-gray-300 text-sm mb-4">This AI chat runs entirely in your browser using Chrome's built-in Gemini Nano model. Your conversations stay private and secure.</p>
+                                        <h3 class="text-xl font-semibold text-gray-100 mb-3">Wanna know more about me?</h3>
+                                        <p id="ai-teaser-inline-text" class="text-gray-300 text-sm mb-4 leading-relaxed">
+                                            You can either flip this card and view my info or chat with AI Karthik and get a sneak peek with hidden insights (and hallucinations 😉)
+                                        </p>
+                                        <div class="flex flex-col sm:flex-row gap-3 justify-center">
+                                            <button id="flip-card-inline-btn" class="inline-flex items-center justify-center bg-blue-500/10 text-blue-400 hover:bg-blue-500/20 hover:text-blue-300 font-medium text-sm transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-gray-900 rounded-lg px-4 py-2">
+                                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                                                </svg>
+                                                No Thanks, I like boring
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
-                                
-                                <!-- Content when AI is unavailable (requirements) -->
-                                <div id="ai-unavailable-content">
-                                    <h4 class="text-lg font-semibold text-gray-100 mb-4 text-center">System Requirements</h4>
-                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                                        <div class="bg-gray-800/50 rounded-lg p-4 border border-gray-700">
-                                            <h5 class="font-semibold text-gray-200 mb-2 flex items-center">
-                                                <svg class="w-4 h-4 mr-2 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
-                                                </svg>
-                                                Operating System
-                                            </h5>
-                                            <ul class="text-sm text-gray-300 space-y-1">
-                                                <li>• Windows 10 or 11</li>
-                                                <li>• macOS 13+ (Ventura and onwards)</li>
-                                                <li>• Linux</li>
-                                            </ul>
+                            </div>
+                            
+                            <!-- Back Side: Personal Introduction -->
+                            <div class="flip-card-back">
+                                <div class="bg-gradient-to-br from-emerald-500/10 to-emerald-600/5 border border-emerald-500/20 rounded-xl backdrop-blur-sm h-full">
+                                    <div class="h-full flex flex-col justify-between">
+                                        <div class="personal-intro-text text-left flex-1 flex flex-col justify-center">
+                                            <p class="text-gray-300 text-sm mb-4 leading-relaxed">
+                                                I'm a software engineer and proud twin dad blessed with a boy and a girl. My journey started in Mumbai where I began my career, then took me through nearly 7 years in New York before finding my way to Canada - first Toronto, and now calling Waterloo home.
+                                            </p>
+                                            
+                                            <p class="text-gray-300 text-sm mb-4 leading-relaxed">
+                                                Over the past decade, I've built scalable web applications and led engineering teams at companies like Scholastic and Viacom. What started as writing code in Mumbai has evolved into architecting cloud solutions and mentoring developers across different continents.
+                                            </p>
+                                            
+                                            <p class="text-gray-300 text-sm leading-relaxed">
+                                                When I'm not busy with work or playing with the kids, you'll find me savoring the perfect cup of coffee, diving into RPG adventures, or flying my drone around Waterloo. I believe the best code tells a story, and I love sharing those stories through technical writing and open source contributions.
+                                            </p>
                                         </div>
-                                        <div class="bg-gray-800/50 rounded-lg p-4 border border-gray-700">
-                                            <h5 class="font-semibold text-gray-200 mb-2 flex items-center">
-                                                <svg class="w-4 h-4 mr-2 text-blue-400" fill="currentColor" viewBox="0 0 24 24">
-                                                    <path d="M12.017 0C5.396 0 .029 5.367.029 11.987c0 5.079 3.158 9.417 7.618 11.174-.105-.949-.199-2.403.041-3.439.219-.937 1.406-5.957 1.406-5.957s-.359-.72-.359-1.781c0-1.663.967-2.911 2.168-2.911 1.024 0 1.518.769 1.518 1.688 0 1.029-.653 2.567-.992 3.992-.285 1.193.6 2.165 1.775 2.165 2.128 0 3.768-2.245 3.768-5.487 0-2.861-2.063-4.869-5.008-4.869-3.41 0-5.409 2.562-5.409 5.199 0 1.033.394 2.143.889 2.741.097.118.112.221.083.342-.09.375-.293 1.199-.334 1.363-.053.225-.172.271-.402.165-1.495-.69-2.433-2.878-2.433-4.646 0-3.776 2.748-7.252 7.92-7.252 4.158 0 7.392 2.967 7.392 6.923 0 4.135-2.607 7.462-6.233 7.462-1.214 0-2.357-.629-2.746-1.378l-.748 2.853c-.271 1.043-1.002 2.35-1.492 3.146C9.57 23.812 10.763 24.009 12.017 24.009c6.624 0 11.99-5.367 11.99-11.988C24.007 5.367 18.641.001.012.001z"/>
+                                        
+                                        <div class="text-center">
+                                            <button id="flip-back-btn" class="inline-flex items-center justify-center bg-emerald-500/10 text-emerald-400 hover:bg-emerald-500/20 hover:text-emerald-300 font-medium text-sm transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:ring-offset-2 focus:ring-offset-gray-900 rounded-lg px-4 py-2">
+                                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
                                                 </svg>
-                                                Browser
-                                            </h5>
-                                            <ul class="text-sm text-gray-300 space-y-1">
-                                                <li>• Chrome Canary or Chrome Dev</li>
-                                                <li>• Version 127+ required</li>
-                                                <li>• AI flags must be enabled</li>
-                                            </ul>
+                                                Back
+                                            </button>
                                         </div>
-                                        <div class="bg-gray-800/50 rounded-lg p-4 border border-gray-700">
-                                            <h5 class="font-semibold text-gray-200 mb-2 flex items-center">
-                                                <svg class="w-4 h-4 mr-2 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4"></path>
-                                                </svg>
-                                                Storage
-                                            </h5>
-                                            <ul class="text-sm text-gray-300 space-y-1">
-                                                <li>• At least 22 GB free space</li>
-                                                <li>• On volume with Chrome profile</li>
-                                            </ul>
-                                        </div>
-                                        <div class="bg-red-900/20 rounded-lg p-4 border border-red-500/30">
-                                            <h5 class="font-semibold text-red-300 mb-2 flex items-center">
-                                                <svg class="w-4 h-4 mr-2 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L5.268 16.5c-.77.833.192 2.5 1.732 2.5z"></path>
-                                                </svg>
-                                                Not Yet Supported
-                                            </h5>
-                                            <ul class="text-sm text-red-200 space-y-1">
-                                                <li>• Chrome for Android</li>
-                                                <li>• Chrome for iOS</li>
-                                                <li>• Chrome for ChromeOS</li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <div class="flex flex-wrap justify-center gap-3">
-                                        <a href="https://www.google.com/chrome/canary/" target="_blank" rel="noopener noreferrer" 
-                                           class="inline-flex items-center px-4 py-2 bg-blue-500/10 text-blue-400 rounded-lg hover:bg-blue-500/20 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-gray-900">
-                                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
-                                            </svg>
-                                            Download Chrome Canary
-                                        </a>
-                                        <a href="https://developer.chrome.com/docs/ai/built-in" target="_blank" rel="noopener noreferrer"
-                                           class="inline-flex items-center px-4 py-2 bg-gray-700/50 text-gray-300 rounded-lg hover:bg-gray-600/50 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 focus:ring-offset-gray-900">
-                                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
-                                            </svg>
-                                            Setup Guide
-                                        </a>
                                     </div>
                                 </div>
                             </div>
@@ -300,367 +214,311 @@
         <!-- Live region for screen reader announcements -->
         <div id="live-region" aria-live="polite" aria-atomic="true" class="sr-only"></div>
 
-        <!-- Core Skills Section -->
+        <!-- Skills & Superpowers Section -->
         <section id="skills" class="py-16 sm:py-20 bg-gray-800 relative overflow-hidden" aria-labelledby="skills-heading" role="region">
             <!-- Background Pattern -->
             <div class="absolute inset-0 opacity-5">
-                <div class="absolute inset-0" style="background-image: radial-gradient(circle at 1px 1px, rgba(255,255,255,0.15) 1px, transparent 0); background-size: 20px 20px;"></div>
+                <div class="absolute inset-0" style="background-image: radial-gradient(circle at 1px 1px, rgba(96,165,250,0.15) 1px, transparent 0); background-size: 25px 25px;"></div>
             </div>
             
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
                 <div class="text-center mb-12 sm:mb-16">
-                    <h2 id="skills-heading" class="text-3xl sm:text-4xl font-bold text-gray-100 mb-4">Core Skills</h2>
+                    <h2 id="skills-heading" class="text-3xl sm:text-4xl font-bold text-gray-100 mb-4">Skills & Superpowers</h2>
                     <p class="text-lg sm:text-xl text-gray-400 max-w-3xl mx-auto">
-                        Technical expertise spanning backend systems, frontend development, and cloud architecture
+                        AI innovations, technical expertise, and leadership adventures in modern software development
                     </p>
                 </div>
                 
-                <!-- Skills Overview Cards -->
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 mb-12 animate-on-scroll">
-                    <!-- Backend Card -->
-                    <div class="group relative bg-gradient-to-br from-gray-900 to-gray-800 rounded-xl p-6 sm:p-8 border border-gray-700 hover:border-blue-500/50 transition-all duration-500 skill-overview-card cursor-pointer" data-category="backend">
-                        <div class="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-transparent rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                        <div class="relative z-10">
-                            <div class="flex items-center justify-between mb-6">
-                                <div class="w-14 h-14 bg-blue-500/10 rounded-xl flex items-center justify-center group-hover:bg-blue-500/20 transition-colors duration-300">
-                                    <svg class="w-7 h-7 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01"/>
-                                    </svg>
-                                </div>
-                                <div class="text-right">
-                                    <div class="text-2xl font-bold text-blue-400">95%</div>
-                                    <div class="text-xs text-gray-500">Expertise</div>
-                                </div>
-                            </div>
-                            <h3 class="text-xl font-semibold text-gray-100 mb-2">Backend & Systems</h3>
-                            <p class="text-gray-400 text-sm mb-4">Scalable architecture and robust systems</p>
-                            <div class="flex flex-wrap gap-2">
-                                <span class="px-2 py-1 bg-blue-500/10 text-blue-400 text-xs rounded-full">Node.js</span>
-                                <span class="px-2 py-1 bg-blue-500/10 text-blue-400 text-xs rounded-full">Python</span>
-                                <span class="px-2 py-1 bg-blue-500/10 text-blue-400 text-xs rounded-full">APIs</span>
-                                <span class="px-2 py-1 bg-blue-500/10 text-blue-400 text-xs rounded-full">+3 more</span>
-                            </div>
-                        </div>
+                <!-- AI Superpowers Section -->
+                <div class="mb-16 animate-on-scroll">
+                    <div class="text-center mb-8">
+                        <h3 class="text-2xl font-bold text-gray-100 mb-3">🤖 AI Superpowers</h3>
+                        <p class="text-gray-400">Real accomplishments with artificial intelligence</p>
                     </div>
                     
-                    <!-- Frontend Card -->
-                    <div class="group relative bg-gradient-to-br from-gray-900 to-gray-800 rounded-xl p-6 sm:p-8 border border-gray-700 hover:border-emerald-500/50 transition-all duration-500 skill-overview-card cursor-pointer" data-category="frontend">
-                        <div class="absolute inset-0 bg-gradient-to-br from-emerald-500/5 to-transparent rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                        <div class="relative z-10">
-                            <div class="flex items-center justify-between mb-6">
-                                <div class="w-14 h-14 bg-emerald-500/10 rounded-xl flex items-center justify-center group-hover:bg-emerald-500/20 transition-colors duration-300">
-                                    <svg class="w-7 h-7 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
-                                    </svg>
+                    <!-- AI Achievement Cards -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                        <!-- Multi-AI Conductor -->
+                        <div class="group relative bg-gradient-to-br from-gray-900 to-gray-800 rounded-xl p-6 border border-gray-700 hover:border-violet-500/50 transition-all duration-500">
+                            <div class="absolute inset-0 bg-gradient-to-br from-violet-500/5 to-transparent rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                            <div class="relative z-10">
+                                <div class="flex items-center mb-4">
+                                    <div class="w-12 h-12 bg-violet-500/10 rounded-xl flex items-center justify-center group-hover:bg-violet-500/20 transition-colors duration-300 mr-4">
+                                        <svg class="w-6 h-6 text-violet-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"/>
+                                        </svg>
+                                    </div>
+                                    <h4 class="text-xl font-semibold text-gray-100 group-hover:text-violet-400 transition-colors duration-300">
+                                        AI Whisperer
+                                    </h4>
                                 </div>
-                                <div class="text-right">
-                                    <div class="text-2xl font-bold text-emerald-400">88%</div>
-                                    <div class="text-xs text-gray-500">Expertise</div>
+                                <p class="text-gray-300 text-sm leading-relaxed mb-3">
+                                    <em>"Master of AI diplomatic relations - can negotiate with AI to produce clean, deployable code with strategic prompt engineering."</em>
+                                </p>
+                                <div class="flex flex-wrap gap-2">
+                                    <span class="px-2 py-1 bg-violet-500/10 text-violet-400 text-xs rounded-full">Cline</span>
+                                    <span class="px-2 py-1 bg-violet-500/10 text-violet-400 text-xs rounded-full">GitHub Copilot</span>
+                                    <span class="px-2 py-1 bg-violet-500/10 text-violet-400 text-xs rounded-full">Claude Code</span>
+                                    <span class="px-2 py-1 bg-violet-500/10 text-violet-400 text-xs rounded-full">Kiro</span>
+                                    <span class="px-2 py-1 bg-violet-500/10 text-violet-400 text-xs rounded-full">Amazon Q Developer</span>
+                                    <span class="px-2 py-1 bg-violet-500/10 text-violet-400 text-xs rounded-full">Jules</span>
                                 </div>
-                            </div>
-                            <h3 class="text-xl font-semibold text-gray-100 mb-2">Frontend & UI</h3>
-                            <p class="text-gray-400 text-sm mb-4">Modern web interfaces and experiences</p>
-                            <div class="flex flex-wrap gap-2">
-                                <span class="px-2 py-1 bg-emerald-500/10 text-emerald-400 text-xs rounded-full">React</span>
-                                <span class="px-2 py-1 bg-emerald-500/10 text-emerald-400 text-xs rounded-full">TypeScript</span>
-                                <span class="px-2 py-1 bg-emerald-500/10 text-emerald-400 text-xs rounded-full">CSS</span>
-                                <span class="px-2 py-1 bg-emerald-500/10 text-emerald-400 text-xs rounded-full">+3 more</span>
                             </div>
                         </div>
-                    </div>
-                    
-                    <!-- Cloud Card -->
-                    <div class="group relative bg-gradient-to-br from-gray-900 to-gray-800 rounded-xl p-6 sm:p-8 border border-gray-700 hover:border-orange-500/50 transition-all duration-500 skill-overview-card cursor-pointer" data-category="cloud">
-                        <div class="absolute inset-0 bg-gradient-to-br from-orange-500/5 to-transparent rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                        <div class="relative z-10">
-                            <div class="flex items-center justify-between mb-6">
-                                <div class="w-14 h-14 bg-orange-500/10 rounded-xl flex items-center justify-center group-hover:bg-orange-500/20 transition-colors duration-300">
-                                    <svg class="w-7 h-7 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z"/>
-                                    </svg>
+                        
+                        <!-- RAG & GraphRAG Architect -->
+                        <div class="group relative bg-gradient-to-br from-gray-900 to-gray-800 rounded-xl p-6 border border-gray-700 hover:border-cyan-500/50 transition-all duration-500">
+                            <div class="absolute inset-0 bg-gradient-to-br from-cyan-500/5 to-transparent rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                            <div class="relative z-10">
+                                <div class="flex items-center mb-4">
+                                    <div class="w-12 h-12 bg-cyan-500/10 rounded-xl flex items-center justify-center group-hover:bg-cyan-500/20 transition-colors duration-300 mr-4">
+                                        <svg class="w-6 h-6 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
+                                        </svg>
+                                    </div>
+                                    <h4 class="text-xl font-semibold text-gray-100 group-hover:text-cyan-400 transition-colors duration-300">
+                                        Context Curator
+                                    </h4>
                                 </div>
-                                <div class="text-right">
-                                    <div class="text-2xl font-bold text-orange-400">92%</div>
-                                    <div class="text-xs text-gray-500">Expertise</div>
+                                <p class="text-gray-300 text-sm leading-relaxed mb-3">
+                                    <em>"RAG wizard who turns chaotic data into precise AI context using AWS Bedrock, PostgreSQL & Neptune DB. Specializes in making AI actually helpful instead of confidently wrong."</em>
+                                </p>
+                                <div class="flex flex-wrap gap-2">
+                                    <span class="px-2 py-1 bg-cyan-500/10 text-cyan-400 text-xs rounded-full">AWS Bedrock</span>
+                                    <span class="px-2 py-1 bg-cyan-500/10 text-cyan-400 text-xs rounded-full">PostgreSQL</span>
+                                    <span class="px-2 py-1 bg-cyan-500/10 text-cyan-400 text-xs rounded-full">Neptune DB</span>
+                                    <span class="px-2 py-1 bg-cyan-500/10 text-cyan-400 text-xs rounded-full">GraphRAG</span>
                                 </div>
                             </div>
-                            <h3 class="text-xl font-semibold text-gray-100 mb-2">Cloud & DevOps</h3>
-                            <p class="text-gray-400 text-sm mb-4">Scalable infrastructure and deployment</p>
-                            <div class="flex flex-wrap gap-2">
-                                <span class="px-2 py-1 bg-orange-500/10 text-orange-400 text-xs rounded-full">AWS</span>
-                                <span class="px-2 py-1 bg-orange-500/10 text-orange-400 text-xs rounded-full">Serverless</span>
-                                <span class="px-2 py-1 bg-orange-500/10 text-orange-400 text-xs rounded-full">IaC</span>
-                                <span class="px-2 py-1 bg-orange-500/10 text-orange-400 text-xs rounded-full">+3 more</span>
+                        </div>
+                        
+                        <!-- Local AI Pioneer -->
+                        <div class="group relative bg-gradient-to-br from-gray-900 to-gray-800 rounded-xl p-6 border border-gray-700 hover:border-emerald-500/50 transition-all duration-500">
+                            <div class="absolute inset-0 bg-gradient-to-br from-emerald-500/5 to-transparent rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                            <div class="relative z-10">
+                                <div class="flex items-center mb-4">
+                                    <div class="w-12 h-12 bg-emerald-500/10 rounded-xl flex items-center justify-center group-hover:bg-emerald-500/20 transition-colors duration-300 mr-4">
+                                        <svg class="w-6 h-6 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                                        </svg>
+                                    </div>
+                                    <h4 class="text-xl font-semibold text-gray-100 group-hover:text-emerald-400 transition-colors duration-300">
+                                        Local AI Pioneer
+                                    </h4>
+                                </div>
+                                <p class="text-gray-300 text-sm leading-relaxed mb-3">
+                                    <em>"Keeps AI conversations local with Chrome's Gemini Nano - your browser, your data, your business (for those with trust issues)."</em>
+                                </p>
+                                <div class="flex flex-wrap gap-2">
+                                    <span class="px-2 py-1 bg-emerald-500/10 text-emerald-400 text-xs rounded-full">Chrome AI</span>
+                                    <span class="px-2 py-1 bg-emerald-500/10 text-emerald-400 text-xs rounded-full">Gemini Nano</span>
+                                    <span class="px-2 py-1 bg-emerald-500/10 text-emerald-400 text-xs rounded-full">Local LLM</span>
+                                    <span class="px-2 py-1 bg-emerald-500/10 text-emerald-400 text-xs rounded-full">No Server</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- AI Workflow Orchestrator -->
+                        <div class="group relative bg-gradient-to-br from-gray-900 to-gray-800 rounded-xl p-6 border border-gray-700 hover:border-amber-500/50 transition-all duration-500">
+                            <div class="absolute inset-0 bg-gradient-to-br from-amber-500/5 to-transparent rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                            <div class="relative z-10">
+                                <div class="flex items-center mb-4">
+                                    <div class="w-12 h-12 bg-amber-500/10 rounded-xl flex items-center justify-center group-hover:bg-amber-500/20 transition-colors duration-300 mr-4">
+                                        <svg class="w-6 h-6 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                                        </svg>
+                                    </div>
+                                    <h4 class="text-xl font-semibold text-gray-100 group-hover:text-amber-400 transition-colors duration-300">
+                                        AI Workflow Orchestrator
+                                    </h4>
+                                </div>
+                                <p class="text-gray-300 text-sm leading-relaxed mb-3">
+                                    <em>"Designed classification and content orchestration systems using AWS Step Functions and Bedrock - making AI workflows dance to business logic"</em>
+                                </p>
+                                <div class="flex flex-wrap gap-2">
+                                    <span class="px-2 py-1 bg-amber-500/10 text-amber-400 text-xs rounded-full">Step Functions</span>
+                                    <span class="px-2 py-1 bg-amber-500/10 text-amber-400 text-xs rounded-full">AWS Bedrock</span>
+                                    <span class="px-2 py-1 bg-amber-500/10 text-amber-400 text-xs rounded-full">Classification</span>
+                                    <span class="px-2 py-1 bg-amber-500/10 text-amber-400 text-xs rounded-full">Orchestration</span>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
                 
-                <!-- Detailed Skills Display -->
-                <div class="skills-detail-container">
-                    <!-- Backend Details -->
-                    <div class="skills-detail-panel active" data-category="backend">
-                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                            <div class="skill-badge">
-                                <div class="flex items-center justify-between mb-2">
-                                    <span class="font-medium text-gray-200">Node.js</span>
-                                    <div class="flex items-center space-x-1">
-                                        <div class="w-2 h-2 bg-blue-400 rounded-full"></div>
-                                        <div class="w-2 h-2 bg-blue-400 rounded-full"></div>
-                                        <div class="w-2 h-2 bg-blue-400 rounded-full"></div>
-                                        <div class="w-2 h-2 bg-blue-400 rounded-full"></div>
-                                        <div class="w-2 h-2 bg-blue-400 rounded-full"></div>
-                                    </div>
+                <!-- Technical Toolbox Section -->
+                <div class="mb-16 animate-on-scroll">
+                    <div class="text-center mb-8">
+                        <h3 class="text-2xl font-bold text-gray-100 mb-3">💻 Digital Toolbox</h3>
+                        <p class="text-gray-400">Weapons of choice for turning coffee and requirements into actual software</p>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- Languages and Frameworks Column -->
+                        <div class="space-y-6">
+                            <!-- Languages -->
+                            <div class="bg-gradient-to-br from-gray-900 to-gray-800 rounded-xl p-6 border border-gray-700">
+                                <h4 class="text-lg font-semibold text-gray-100 mb-4 flex items-center">
+                                    <span class="mr-3">🔤</span>Languages
+                                </h4>
+                                <div class="flex flex-wrap gap-2">
+                                    <span class="px-3 py-1 bg-blue-500/10 text-blue-400 text-sm rounded-full">JavaScript</span>
+                                    <span class="px-3 py-1 bg-blue-500/10 text-blue-400 text-sm rounded-full">TypeScript</span>
+                                    <span class="px-3 py-1 bg-blue-500/10 text-blue-400 text-sm rounded-full">Python</span>
+                                    <span class="px-3 py-1 bg-blue-500/10 text-blue-400 text-sm rounded-full">Java</span>
                                 </div>
-                                <div class="text-xs text-gray-400">5+ years • Expert level</div>
                             </div>
                             
-                            <div class="skill-badge">
-                                <div class="flex items-center justify-between mb-2">
-                                    <span class="font-medium text-gray-200">Python</span>
-                                    <div class="flex items-center space-x-1">
-                                        <div class="w-2 h-2 bg-blue-400 rounded-full"></div>
-                                        <div class="w-2 h-2 bg-blue-400 rounded-full"></div>
-                                        <div class="w-2 h-2 bg-blue-400 rounded-full"></div>
-                                        <div class="w-2 h-2 bg-blue-400 rounded-full"></div>
-                                        <div class="w-2 h-2 bg-gray-600 rounded-full"></div>
-                                    </div>
+                            <!-- Frameworks & Tools -->
+                            <div class="bg-gradient-to-br from-gray-900 to-gray-800 rounded-xl p-6 border border-gray-700">
+                                <h4 class="text-lg font-semibold text-gray-100 mb-4 flex items-center">
+                                    <span class="mr-3">🛠️</span>Frameworks
+                                </h4>
+                                <div class="flex flex-wrap gap-2">
+                                    <span class="px-3 py-1 bg-emerald-500/10 text-emerald-400 text-sm rounded-full">SpringBoot</span>
+                                    <span class="px-3 py-1 bg-emerald-500/10 text-emerald-400 text-sm rounded-full">Django</span>
+                                    <span class="px-3 py-1 bg-emerald-500/10 text-emerald-400 text-sm rounded-full">React</span>
+                                    <span class="px-3 py-1 bg-emerald-500/10 text-emerald-400 text-sm rounded-full">Node.js</span>
+                                    <span class="px-3 py-1 bg-emerald-500/10 text-emerald-400 text-sm rounded-full">Tailwind CSS</span>
                                 </div>
-                                <div class="text-xs text-gray-400">4+ years • Advanced level</div>
                             </div>
-                            
-                            <div class="skill-badge">
-                                <div class="flex items-center justify-between mb-2">
-                                    <span class="font-medium text-gray-200">System Architecture</span>
-                                    <div class="flex items-center space-x-1">
-                                        <div class="w-2 h-2 bg-blue-400 rounded-full"></div>
-                                        <div class="w-2 h-2 bg-blue-400 rounded-full"></div>
-                                        <div class="w-2 h-2 bg-blue-400 rounded-full"></div>
-                                        <div class="w-2 h-2 bg-blue-400 rounded-full"></div>
-                                        <div class="w-2 h-2 bg-blue-400 rounded-full"></div>
-                                    </div>
-                                </div>
-                                <div class="text-xs text-gray-400">6+ years • Expert level</div>
-                            </div>
-                            
-                            <div class="skill-badge">
-                                <div class="flex items-center justify-between mb-2">
-                                    <span class="font-medium text-gray-200">API Design</span>
-                                    <div class="flex items-center space-x-1">
-                                        <div class="w-2 h-2 bg-blue-400 rounded-full"></div>
-                                        <div class="w-2 h-2 bg-blue-400 rounded-full"></div>
-                                        <div class="w-2 h-2 bg-blue-400 rounded-full"></div>
-                                        <div class="w-2 h-2 bg-blue-400 rounded-full"></div>
-                                        <div class="w-2 h-2 bg-blue-400 rounded-full"></div>
-                                    </div>
-                                </div>
-                                <div class="text-xs text-gray-400">5+ years • Expert level</div>
-                            </div>
-                            
-                            <div class="skill-badge">
-                                <div class="flex items-center justify-between mb-2">
-                                    <span class="font-medium text-gray-200">Database Design</span>
-                                    <div class="flex items-center space-x-1">
-                                        <div class="w-2 h-2 bg-blue-400 rounded-full"></div>
-                                        <div class="w-2 h-2 bg-blue-400 rounded-full"></div>
-                                        <div class="w-2 h-2 bg-blue-400 rounded-full"></div>
-                                        <div class="w-2 h-2 bg-blue-400 rounded-full"></div>
-                                        <div class="w-2 h-2 bg-gray-600 rounded-full"></div>
-                                    </div>
-                                </div>
-                                <div class="text-xs text-gray-400">4+ years • Advanced level</div>
-                            </div>
-                            
-                            <div class="skill-badge">
-                                <div class="flex items-center justify-between mb-2">
-                                    <span class="font-medium text-gray-200">Java</span>
-                                    <div class="flex items-center space-x-1">
-                                        <div class="w-2 h-2 bg-blue-400 rounded-full"></div>
-                                        <div class="w-2 h-2 bg-blue-400 rounded-full"></div>
-                                        <div class="w-2 h-2 bg-blue-400 rounded-full"></div>
-                                        <div class="w-2 h-2 bg-blue-400 rounded-full"></div>
-                                        <div class="w-2 h-2 bg-gray-600 rounded-full"></div>
-                                    </div>
-                                </div>
-                                <div class="text-xs text-gray-400">3+ years • Advanced level</div>
+                        </div>
+                        
+                        <!-- AWS Column -->
+                        <div class="bg-gradient-to-br from-gray-900 to-gray-800 rounded-xl p-6 border border-gray-700">
+                            <h4 class="text-lg font-semibold text-gray-100 mb-4 flex items-center">
+                                <span class="mr-3">☁️</span>AWS
+                            </h4>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-3 py-1 bg-orange-500/10 text-orange-400 text-sm rounded-full">API Gateway</span>
+                                <span class="px-3 py-1 bg-orange-500/10 text-orange-400 text-sm rounded-full">Aurora Postgres</span>
+                                <span class="px-3 py-1 bg-orange-500/10 text-orange-400 text-sm rounded-full">Bedrock</span>
+                                <span class="px-3 py-1 bg-orange-500/10 text-orange-400 text-sm rounded-full">CDK</span>
+                                <span class="px-3 py-1 bg-orange-500/10 text-orange-400 text-sm rounded-full">CloudFormation</span>
+                                <span class="px-3 py-1 bg-orange-500/10 text-orange-400 text-sm rounded-full">CloudFront</span>
+                                <span class="px-3 py-1 bg-orange-500/10 text-orange-400 text-sm rounded-full">Cloudwatch</span>
+                                <span class="px-3 py-1 bg-orange-500/10 text-orange-400 text-sm rounded-full">DMS</span>
+                                <span class="px-3 py-1 bg-orange-500/10 text-orange-400 text-sm rounded-full">DynamoDB</span>
+                                <span class="px-3 py-1 bg-orange-500/10 text-orange-400 text-sm rounded-full">EC2</span>
+                                <span class="px-3 py-1 bg-orange-500/10 text-orange-400 text-sm rounded-full">ECS</span>
+                                <span class="px-3 py-1 bg-orange-500/10 text-orange-400 text-sm rounded-full">Kinesis Analytics</span>
+                                <span class="px-3 py-1 bg-orange-500/10 text-orange-400 text-sm rounded-full">Kinesis Data Streams</span>
+                                <span class="px-3 py-1 bg-orange-500/10 text-orange-400 text-sm rounded-full">Kinesis Firehose</span>
+                                <span class="px-3 py-1 bg-orange-500/10 text-orange-400 text-sm rounded-full">Lambda</span>
+                                <span class="px-3 py-1 bg-orange-500/10 text-orange-400 text-sm rounded-full">NeptuneDB</span>
+                                <span class="px-3 py-1 bg-orange-500/10 text-orange-400 text-sm rounded-full">Neptune Analytics</span>
+                                <span class="px-3 py-1 bg-orange-500/10 text-orange-400 text-sm rounded-full">OpenSearch</span>
+                                <span class="px-3 py-1 bg-orange-500/10 text-orange-400 text-sm rounded-full">S3</span>
+                                <span class="px-3 py-1 bg-orange-500/10 text-orange-400 text-sm rounded-full">SNS</span>
+                                <span class="px-3 py-1 bg-orange-500/10 text-orange-400 text-sm rounded-full">SQS</span>
+                                <span class="px-3 py-1 bg-orange-500/10 text-orange-400 text-sm rounded-full">Step Functions</span>
                             </div>
                         </div>
                     </div>
-                    
-                    <!-- Frontend Details -->
-                    <div class="skills-detail-panel" data-category="frontend">
-                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                            <div class="skill-badge">
-                                <div class="flex items-center justify-between mb-2">
-                                    <span class="font-medium text-gray-200">JavaScript/TypeScript</span>
-                                    <div class="flex items-center space-x-1">
-                                        <div class="w-2 h-2 bg-emerald-400 rounded-full"></div>
-                                        <div class="w-2 h-2 bg-emerald-400 rounded-full"></div>
-                                        <div class="w-2 h-2 bg-emerald-400 rounded-full"></div>
-                                        <div class="w-2 h-2 bg-emerald-400 rounded-full"></div>
-                                        <div class="w-2 h-2 bg-gray-600 rounded-full"></div>
-                                    </div>
-                                </div>
-                                <div class="text-xs text-gray-400">5+ years • Advanced level</div>
-                            </div>
-                            
-                            <div class="skill-badge">
-                                <div class="flex items-center justify-between mb-2">
-                                    <span class="font-medium text-gray-200">HTML/CSS</span>
-                                    <div class="flex items-center space-x-1">
-                                        <div class="w-2 h-2 bg-emerald-400 rounded-full"></div>
-                                        <div class="w-2 h-2 bg-emerald-400 rounded-full"></div>
-                                        <div class="w-2 h-2 bg-emerald-400 rounded-full"></div>
-                                        <div class="w-2 h-2 bg-emerald-400 rounded-full"></div>
-                                        <div class="w-2 h-2 bg-gray-600 rounded-full"></div>
-                                    </div>
-                                </div>
-                                <div class="text-xs text-gray-400">6+ years • Advanced level</div>
-                            </div>
-                            
-                            <div class="skill-badge">
-                                <div class="flex items-center justify-between mb-2">
-                                    <span class="font-medium text-gray-200">React</span>
-                                    <div class="flex items-center space-x-1">
-                                        <div class="w-2 h-2 bg-emerald-400 rounded-full"></div>
-                                        <div class="w-2 h-2 bg-emerald-400 rounded-full"></div>
-                                        <div class="w-2 h-2 bg-emerald-400 rounded-full"></div>
-                                        <div class="w-2 h-2 bg-emerald-400 rounded-full"></div>
-                                        <div class="w-2 h-2 bg-gray-600 rounded-full"></div>
-                                    </div>
-                                </div>
-                                <div class="text-xs text-gray-400">3+ years • Advanced level</div>
-                            </div>
-                            
-                            <div class="skill-badge">
-                                <div class="flex items-center justify-between mb-2">
-                                    <span class="font-medium text-gray-200">Responsive Design</span>
-                                    <div class="flex items-center space-x-1">
-                                        <div class="w-2 h-2 bg-emerald-400 rounded-full"></div>
-                                        <div class="w-2 h-2 bg-emerald-400 rounded-full"></div>
-                                        <div class="w-2 h-2 bg-emerald-400 rounded-full"></div>
-                                        <div class="w-2 h-2 bg-emerald-400 rounded-full"></div>
-                                        <div class="w-2 h-2 bg-gray-600 rounded-full"></div>
-                                    </div>
-                                </div>
-                                <div class="text-xs text-gray-400">4+ years • Advanced level</div>
-                            </div>
-                            
-                            <div class="skill-badge">
-                                <div class="flex items-center justify-between mb-2">
-                                    <span class="font-medium text-gray-200">Modern Web APIs</span>
-                                    <div class="flex items-center space-x-1">
-                                        <div class="w-2 h-2 bg-emerald-400 rounded-full"></div>
-                                        <div class="w-2 h-2 bg-emerald-400 rounded-full"></div>
-                                        <div class="w-2 h-2 bg-emerald-400 rounded-full"></div>
-                                        <div class="w-2 h-2 bg-emerald-400 rounded-full"></div>
-                                        <div class="w-2 h-2 bg-gray-600 rounded-full"></div>
-                                    </div>
-                                </div>
-                                <div class="text-xs text-gray-400">3+ years • Advanced level</div>
-                            </div>
-                            
-                            <div class="skill-badge">
-                                <div class="flex items-center justify-between mb-2">
-                                    <span class="font-medium text-gray-200">UI/UX Principles</span>
-                                    <div class="flex items-center space-x-1">
-                                        <div class="w-2 h-2 bg-emerald-400 rounded-full"></div>
-                                        <div class="w-2 h-2 bg-emerald-400 rounded-full"></div>
-                                        <div class="w-2 h-2 bg-emerald-400 rounded-full"></div>
-                                        <div class="w-2 h-2 bg-gray-600 rounded-full"></div>
-                                        <div class="w-2 h-2 bg-gray-600 rounded-full"></div>
-                                    </div>
-                                </div>
-                                <div class="text-xs text-gray-400">2+ years • Intermediate level</div>
-                            </div>
-                        </div>
+                </div>
+                
+                <!-- Leadership Skills Section -->
+                <div class="mb-16 animate-on-scroll">
+                    <div class="text-center mb-8">
+                        <h3 class="text-2xl font-bold text-gray-100 mb-3">🤝 Leadership Philosophy</h3>
+                        <p class="text-gray-400">Leadership skills with a sense of humor and a people-first approach</p>
                     </div>
                     
-                    <!-- Cloud Details -->
-                    <div class="skills-detail-panel" data-category="cloud">
-                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                            <div class="skill-badge">
-                                <div class="flex items-center justify-between mb-2">
-                                    <span class="font-medium text-gray-200">AWS Services</span>
-                                    <div class="flex items-center space-x-1">
-                                        <div class="w-2 h-2 bg-orange-400 rounded-full"></div>
-                                        <div class="w-2 h-2 bg-orange-400 rounded-full"></div>
-                                        <div class="w-2 h-2 bg-orange-400 rounded-full"></div>
-                                        <div class="w-2 h-2 bg-orange-400 rounded-full"></div>
-                                        <div class="w-2 h-2 bg-orange-400 rounded-full"></div>
-                                    </div>
+                    <!-- Leadership Skills Grid -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <!-- Team Whisperer -->
+                        <div class="group relative bg-gradient-to-br from-gray-900 to-gray-800 rounded-xl p-6 border border-gray-700 hover:border-blue-500/50 transition-all duration-500">
+                            <div class="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-transparent rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                            <div class="relative z-10">
+                                <div class="text-center mb-4">
+                                    <div class="text-3xl mb-2">🗣️</div>
+                                    <h4 class="text-lg font-semibold text-gray-100 group-hover:text-blue-400 transition-colors duration-300">
+                                        Team Whisperer
+                                    </h4>
                                 </div>
-                                <div class="text-xs text-gray-400">6+ years • Expert level</div>
+                                <p class="text-gray-300 text-sm leading-relaxed italic text-center">
+                                    "Successfully translated 'it's just a small change' into proper project timelines (while keeping everyone's sanity intact)"
+                                </p>
                             </div>
-                            
-                            <div class="skill-badge">
-                                <div class="flex items-center justify-between mb-2">
-                                    <span class="font-medium text-gray-200">Serverless Architecture</span>
-                                    <div class="flex items-center space-x-1">
-                                        <div class="w-2 h-2 bg-orange-400 rounded-full"></div>
-                                        <div class="w-2 h-2 bg-orange-400 rounded-full"></div>
-                                        <div class="w-2 h-2 bg-orange-400 rounded-full"></div>
-                                        <div class="w-2 h-2 bg-orange-400 rounded-full"></div>
-                                        <div class="w-2 h-2 bg-orange-400 rounded-full"></div>
-                                    </div>
+                        </div>
+                        
+                        <!-- Meeting Efficiency Expert -->
+                        <div class="group relative bg-gradient-to-br from-gray-900 to-gray-800 rounded-xl p-6 border border-gray-700 hover:border-emerald-500/50 transition-all duration-500">
+                            <div class="absolute inset-0 bg-gradient-to-br from-emerald-500/5 to-transparent rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                            <div class="relative z-10">
+                                <div class="text-center mb-4">
+                                    <div class="text-3xl mb-2">🥷</div>
+                                    <h4 class="text-lg font-semibold text-gray-100 group-hover:text-emerald-400 transition-colors duration-300">
+                                        Meeting Efficiency Expert
+                                    </h4>
                                 </div>
-                                <div class="text-xs text-gray-400">4+ years • Expert level</div>
+                                <p class="text-gray-300 text-sm leading-relaxed italic text-center">
+                                    "Can turn a 2-hour debate into a 10-minute decision by making sure everyone feels heard first (coffee still helps)"
+                                </p>
                             </div>
-                            
-                            <div class="skill-badge">
-                                <div class="flex items-center justify-between mb-2">
-                                    <span class="font-medium text-gray-200">Infrastructure as Code</span>
-                                    <div class="flex items-center space-x-1">
-                                        <div class="w-2 h-2 bg-orange-400 rounded-full"></div>
-                                        <div class="w-2 h-2 bg-orange-400 rounded-full"></div>
-                                        <div class="w-2 h-2 bg-orange-400 rounded-full"></div>
-                                        <div class="w-2 h-2 bg-orange-400 rounded-full"></div>
-                                        <div class="w-2 h-2 bg-gray-600 rounded-full"></div>
-                                    </div>
+                        </div>
+                        
+                        <!-- Deadline Juggler -->
+                        <div class="group relative bg-gradient-to-br from-gray-900 to-gray-800 rounded-xl p-6 border border-gray-700 hover:border-purple-500/50 transition-all duration-500">
+                            <div class="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-transparent rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                            <div class="relative z-10">
+                                <div class="text-center mb-4">
+                                    <div class="text-3xl mb-2">🤹</div>
+                                    <h4 class="text-lg font-semibold text-gray-100 group-hover:text-purple-400 transition-colors duration-300">
+                                        Priority Juggler
+                                    </h4>
                                 </div>
-                                <div class="text-xs text-gray-400">3+ years • Advanced level</div>
+                                <p class="text-gray-300 text-sm leading-relaxed italic text-center">
+                                    "Gently reminds stakeholders that if everything is a priority, then we're just really expensive firefighters with laptops"
+                                </p>
                             </div>
-                            
-                            <div class="skill-badge">
-                                <div class="flex items-center justify-between mb-2">
-                                    <span class="font-medium text-gray-200">Monitoring & Logging</span>
-                                    <div class="flex items-center space-x-1">
-                                        <div class="w-2 h-2 bg-orange-400 rounded-full"></div>
-                                        <div class="w-2 h-2 bg-orange-400 rounded-full"></div>
-                                        <div class="w-2 h-2 bg-orange-400 rounded-full"></div>
-                                        <div class="w-2 h-2 bg-orange-400 rounded-full"></div>
-                                        <div class="w-2 h-2 bg-gray-600 rounded-full"></div>
-                                    </div>
+                        </div>
+                        
+                        <!-- Growth Enabler -->
+                        <div class="group relative bg-gradient-to-br from-gray-900 to-gray-800 rounded-xl p-6 border border-gray-700 hover:border-rose-500/50 transition-all duration-500">
+                            <div class="absolute inset-0 bg-gradient-to-br from-rose-500/5 to-transparent rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                            <div class="relative z-10">
+                                <div class="text-center mb-4">
+                                    <div class="text-3xl mb-2">🧘</div>
+                                    <h4 class="text-lg font-semibold text-gray-100 group-hover:text-rose-400 transition-colors duration-300">
+                                        Growth Enabler
+                                    </h4>
                                 </div>
-                                <div class="text-xs text-gray-400">4+ years • Advanced level</div>
+                                <p class="text-gray-300 text-sm leading-relaxed italic text-center">
+                                    "Helps junior devs discover the joy of reading error messages - then celebrates their wins louder than their failures"
+                                </p>
                             </div>
-                            
-                            <div class="skill-badge">
-                                <div class="flex items-center justify-between mb-2">
-                                    <span class="font-medium text-gray-200">CI/CD Pipelines</span>
-                                    <div class="flex items-center space-x-1">
-                                        <div class="w-2 h-2 bg-orange-400 rounded-full"></div>
-                                        <div class="w-2 h-2 bg-orange-400 rounded-full"></div>
-                                        <div class="w-2 h-2 bg-orange-400 rounded-full"></div>
-                                        <div class="w-2 h-2 bg-orange-400 rounded-full"></div>
-                                        <div class="w-2 h-2 bg-gray-600 rounded-full"></div>
-                                    </div>
+                        </div>
+                        
+                        <!-- Crisis Absorber -->
+                        <div class="group relative bg-gradient-to-br from-gray-900 to-gray-800 rounded-xl p-6 border border-gray-700 hover:border-red-500/50 transition-all duration-500">
+                            <div class="absolute inset-0 bg-gradient-to-br from-red-500/5 to-transparent rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                            <div class="relative z-10">
+                                <div class="text-center mb-4">
+                                    <div class="text-3xl mb-2">🚨</div>
+                                    <h4 class="text-lg font-semibold text-gray-100 group-hover:text-red-400 transition-colors duration-300">
+                                        Crisis Absorber
+                                    </h4>
                                 </div>
-                                <div class="text-xs text-gray-400">3+ years • Advanced level</div>
+                                <p class="text-gray-300 text-sm leading-relaxed italic text-center">
+                                    "Remains calm when production goes down... after the initial 30 seconds of panic (then handles the uncomfortable calls)"
+                                </p>
                             </div>
-                            
-                            <div class="skill-badge">
-                                <div class="flex items-center justify-between mb-2">
-                                    <span class="font-medium text-gray-200">Docker</span>
-                                    <div class="flex items-center space-x-1">
-                                        <div class="w-2 h-2 bg-orange-400 rounded-full"></div>
-                                        <div class="w-2 h-2 bg-orange-400 rounded-full"></div>
-                                        <div class="w-2 h-2 bg-orange-400 rounded-full"></div>
-                                        <div class="w-2 h-2 bg-gray-600 rounded-full"></div>
-                                        <div class="w-2 h-2 bg-gray-600 rounded-full"></div>
-                                    </div>
+                        </div>
+                        
+                        <!-- Innovation Catalyst -->
+                        <div class="group relative bg-gradient-to-br from-gray-900 to-gray-800 rounded-xl p-6 border border-gray-700 hover:border-yellow-500/50 transition-all duration-500">
+                            <div class="absolute inset-0 bg-gradient-to-br from-yellow-500/5 to-transparent rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                            <div class="relative z-10">
+                                <div class="text-center mb-4">
+                                    <div class="text-3xl mb-2">💡</div>
+                                    <h4 class="text-lg font-semibold text-gray-100 group-hover:text-yellow-400 transition-colors duration-300">
+                                        Innovation Catalyst
+                                    </h4>
                                 </div>
-                                <div class="text-xs text-gray-400">2+ years • Intermediate level</div>
+                                <p class="text-gray-300 text-sm leading-relaxed italic text-center">
+                                    "Embraces rapid prototyping because 'perfect' is the enemy of 'shipped' (and shipped pays the bills)"
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -679,219 +537,21 @@
                 <div class="text-center mb-12 sm:mb-16">
                     <h2 id="experience-heading" class="text-3xl sm:text-4xl font-bold text-gray-100 mb-4">Professional Experience</h2>
                     <p class="text-lg sm:text-xl text-gray-400 max-w-3xl mx-auto">
-                        Career progression from software engineer to technical leadership roles
+                        Evolution from writing code that works to building teams that deliver
                     </p>
                 </div>
                 
                 <!-- Experience Timeline -->
-                <div class="relative max-w-6xl mx-auto experience-timeline">
+                <div class="relative max-w-6xl mx-auto">
                     <!-- Timeline Line -->
                     <div class="absolute left-4 md:left-1/2 transform md:-translate-x-px top-0 bottom-0 w-0.5 bg-gradient-to-b from-blue-400 via-blue-500 to-blue-600"></div>
                     
-                    <!-- Experience Items -->
-                    <div class="space-y-12 animate-on-scroll">
-                        <!-- Scholastic Inc. - Senior Software Engineering Manager -->
-                        <div class="relative flex items-start experience-item">
-                            <!-- Timeline Dot -->
-                            <div class="absolute left-4 md:left-1/2 transform -translate-x-1/2 w-4 h-4 bg-blue-400 rounded-full border-4 border-gray-900 z-10 timeline-dot"></div>
-                            
-                            <!-- Content -->
-                            <div class="ml-12 md:ml-0 md:w-1/2 md:pr-8 md:text-right">
-                                <div class="bg-gradient-to-br from-gray-800 to-gray-900 rounded-xl p-6 border border-gray-700 hover:border-blue-500/50 transition-all duration-300 group experience-card">
-                                    <div class="flex flex-col md:items-end md:group-even:items-start">
-                                        <div class="text-sm text-blue-400 font-medium mb-2">Oct 2022 - Present</div>
-                                        <h3 class="text-xl font-semibold text-gray-100 mb-1">Senior Software Engineering Manager</h3>
-                                        <div class="text-lg text-gray-300 mb-4">Scholastic Inc. • Remote</div>
-                                        <p class="text-gray-400 text-sm mb-4 leading-relaxed">
-                                            Leading software engineering teams and driving technical strategy for educational technology solutions at one of the world's largest publishers and distributors of children's books.
-                                        </p>
-                                        
-                                        <!-- Key Achievements -->
-                                        <div class="mb-4">
-                                            <h4 class="text-sm font-medium text-gray-200 mb-2">Key Achievements:</h4>
-                                            <ul class="text-sm text-gray-400 space-y-1 achievement-list">
-                                                <li class="flex items-start achievement-item">
-                                                    <span class="text-blue-400 mr-2 mt-1 achievement-bullet">•</span>
-                                                    <span>Managing and mentoring senior software engineering teams</span>
-                                                </li>
-                                                <li class="flex items-start achievement-item">
-                                                    <span class="text-blue-400 mr-2 mt-1 achievement-bullet">•</span>
-                                                    <span>Driving technical architecture decisions for scalable educational platforms</span>
-                                                </li>
-                                                <li class="flex items-start achievement-item">
-                                                    <span class="text-blue-400 mr-2 mt-1 achievement-bullet">•</span>
-                                                    <span>Implementing best practices for software development lifecycle</span>
-                                                </li>
-                                                <li class="flex items-start achievement-item">
-                                                    <span class="text-blue-400 mr-2 mt-1 achievement-bullet">•</span>
-                                                    <span>Collaborating with product teams to deliver innovative educational solutions</span>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                        
-                                        <!-- Technologies -->
-                                        <div class="flex flex-wrap gap-2 tech-tags">
-                                            <span class="px-3 py-1 bg-blue-500/10 text-blue-400 text-xs rounded-full border border-blue-500/20 tech-tag">Team Leadership</span>
-                                            <span class="px-3 py-1 bg-blue-500/10 text-blue-400 text-xs rounded-full border border-blue-500/20 tech-tag">Software Architecture</span>
-                                            <span class="px-3 py-1 bg-blue-500/10 text-blue-400 text-xs rounded-full border border-blue-500/20 tech-tag">Educational Technology</span>
-                                            <span class="px-3 py-1 bg-blue-500/10 text-blue-400 text-xs rounded-full border border-blue-500/20 tech-tag">Agile Methodologies</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- Renaissance Learning - Technical Lead -->
-                        <div class="relative flex items-start experience-item">
-                            <!-- Timeline Dot -->
-                            <div class="absolute left-4 md:left-1/2 transform -translate-x-1/2 w-4 h-4 bg-emerald-400 rounded-full border-4 border-gray-900 z-10 timeline-dot"></div>
-                            
-                            <!-- Content -->
-                            <div class="ml-12 md:ml-0 md:w-1/2 md:ml-auto md:pl-8 md:text-left">
-                                <div class="bg-gradient-to-br from-gray-800 to-gray-900 rounded-xl p-6 border border-gray-700 hover:border-emerald-500/50 transition-all duration-300 group experience-card">
-                                    <div class="flex flex-col">
-                                        <div class="text-sm text-emerald-400 font-medium mb-2">Mar 2022 - Oct 2022</div>
-                                        <h3 class="text-xl font-semibold text-gray-100 mb-1">Technical Lead</h3>
-                                        <div class="text-lg text-gray-300 mb-4">Renaissance Learning • Remote</div>
-                                        <p class="text-gray-400 text-sm mb-4 leading-relaxed">
-                                            Led technical initiatives for educational assessment and learning analytics platforms, focusing on scalable solutions for K-12 education.
-                                        </p>
-                                        
-                                        <!-- Key Achievements -->
-                                        <div class="mb-4">
-                                            <h4 class="text-sm font-medium text-gray-200 mb-2">Key Achievements:</h4>
-                                            <ul class="text-sm text-gray-400 space-y-1 achievement-list">
-                                                <li class="flex items-start achievement-item">
-                                                    <span class="text-emerald-400 mr-2 mt-1 achievement-bullet">•</span>
-                                                    <span>Architected and implemented scalable learning analytics solutions</span>
-                                                </li>
-                                                <li class="flex items-start achievement-item">
-                                                    <span class="text-emerald-400 mr-2 mt-1 achievement-bullet">•</span>
-                                                    <span>Led cross-functional teams in delivering educational assessment tools</span>
-                                                </li>
-                                                <li class="flex items-start achievement-item">
-                                                    <span class="text-emerald-400 mr-2 mt-1 achievement-bullet">•</span>
-                                                    <span>Optimized system performance for high-volume educational data processing</span>
-                                                </li>
-                                                <li class="flex items-start achievement-item">
-                                                    <span class="text-emerald-400 mr-2 mt-1 achievement-bullet">•</span>
-                                                    <span>Mentored junior developers and established coding standards</span>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                        
-                                        <!-- Technologies -->
-                                        <div class="flex flex-wrap gap-2 tech-tags">
-                                            <span class="px-3 py-1 bg-emerald-500/10 text-emerald-400 text-xs rounded-full border border-emerald-500/20 tech-tag">Technical Leadership</span>
-                                            <span class="px-3 py-1 bg-emerald-500/10 text-emerald-400 text-xs rounded-full border border-emerald-500/20 tech-tag">Learning Analytics</span>
-                                            <span class="px-3 py-1 bg-emerald-500/10 text-emerald-400 text-xs rounded-full border border-emerald-500/20 tech-tag">Data Processing</span>
-                                            <span class="px-3 py-1 bg-emerald-500/10 text-emerald-400 text-xs rounded-full border border-emerald-500/20 tech-tag">Educational Software</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- Scholastic Inc. - Senior Software Engineer Consultant -->
-                        <div class="relative flex items-start experience-item">
-                            <!-- Timeline Dot -->
-                            <div class="absolute left-4 md:left-1/2 transform -translate-x-1/2 w-4 h-4 bg-orange-400 rounded-full border-4 border-gray-900 z-10 timeline-dot"></div>
-                            
-                            <!-- Content -->
-                            <div class="ml-12 md:ml-0 md:w-1/2 md:pr-8 md:text-right">
-                                <div class="bg-gradient-to-br from-gray-800 to-gray-900 rounded-xl p-6 border border-gray-700 hover:border-orange-500/50 transition-all duration-300 group experience-card">
-                                    <div class="flex flex-col md:items-end">
-                                        <div class="text-sm text-orange-400 font-medium mb-2">Apr 2018 - Mar 2022</div>
-                                        <h3 class="text-xl font-semibold text-gray-100 mb-1">Senior Software Engineer Consultant</h3>
-                                        <div class="text-lg text-gray-300 mb-4">Scholastic Inc. • Remote</div>
-                                        <p class="text-gray-400 text-sm mb-4 leading-relaxed">
-                                            Developed and maintained large-scale educational software solutions, focusing on digital learning platforms and content management systems.
-                                        </p>
-                                        
-                                        <!-- Key Achievements -->
-                                        <div class="mb-4">
-                                            <h4 class="text-sm font-medium text-gray-200 mb-2">Key Achievements:</h4>
-                                            <ul class="text-sm text-gray-400 space-y-1 achievement-list">
-                                                <li class="flex items-start achievement-item">
-                                                    <span class="text-orange-400 mr-2 mt-1 achievement-bullet">•</span>
-                                                    <span>Built scalable web applications for educational content delivery</span>
-                                                </li>
-                                                <li class="flex items-start achievement-item">
-                                                    <span class="text-orange-400 mr-2 mt-1 achievement-bullet">•</span>
-                                                    <span>Implemented robust APIs for educational data management</span>
-                                                </li>
-                                                <li class="flex items-start achievement-item">
-                                                    <span class="text-orange-400 mr-2 mt-1 achievement-bullet">•</span>
-                                                    <span>Optimized application performance for millions of student users</span>
-                                                </li>
-                                                <li class="flex items-start achievement-item">
-                                                    <span class="text-orange-400 mr-2 mt-1 achievement-bullet">•</span>
-                                                    <span>Collaborated with UX teams to create engaging educational interfaces</span>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                        
-                                        <!-- Technologies -->
-                                        <div class="flex flex-wrap gap-2 tech-tags">
-                                            <span class="px-3 py-1 bg-orange-500/10 text-orange-400 text-xs rounded-full border border-orange-500/20 tech-tag">Full-Stack Development</span>
-                                            <span class="px-3 py-1 bg-orange-500/10 text-orange-400 text-xs rounded-full border border-orange-500/20 tech-tag">API Design</span>
-                                            <span class="px-3 py-1 bg-orange-500/10 text-orange-400 text-xs rounded-full border border-orange-500/20 tech-tag">Educational Platforms</span>
-                                            <span class="px-3 py-1 bg-orange-500/10 text-orange-400 text-xs rounded-full border border-orange-500/20 tech-tag">Performance Optimization</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- Viacom Inc. - Technical Lead Consultant -->
-                        <div class="relative flex items-start experience-item">
-                            <!-- Timeline Dot -->
-                            <div class="absolute left-4 md:left-1/2 transform -translate-x-1/2 w-4 h-4 bg-purple-400 rounded-full border-4 border-gray-900 z-10 timeline-dot"></div>
-                            
-                            <!-- Content -->
-                            <div class="ml-12 md:ml-0 md:w-1/2 md:ml-auto md:pl-8 md:text-left">
-                                <div class="bg-gradient-to-br from-gray-800 to-gray-900 rounded-xl p-6 border border-gray-700 hover:border-purple-500/50 transition-all duration-300 group experience-card">
-                                    <div class="flex flex-col">
-                                        <div class="text-sm text-purple-400 font-medium mb-2">Jun 2011 - Apr 2018</div>
-                                        <h3 class="text-xl font-semibold text-gray-100 mb-1">Technical Lead Consultant</h3>
-                                        <div class="text-lg text-gray-300 mb-4">Viacom Inc. • New York, NY</div>
-                                        <p class="text-gray-400 text-sm mb-4 leading-relaxed">
-                                            Led technical development for media and entertainment platforms, focusing on content management systems and digital media delivery solutions.
-                                        </p>
-                                        
-                                        <!-- Key Achievements -->
-                                        <div class="mb-4">
-                                            <h4 class="text-sm font-medium text-gray-200 mb-2">Key Achievements:</h4>
-                                            <ul class="text-sm text-gray-400 space-y-1 achievement-list">
-                                                <li class="flex items-start achievement-item">
-                                                    <span class="text-purple-400 mr-2 mt-1 achievement-bullet">•</span>
-                                                    <span>Architected content management systems for major media brands</span>
-                                                </li>
-                                                <li class="flex items-start achievement-item">
-                                                    <span class="text-purple-400 mr-2 mt-1 achievement-bullet">•</span>
-                                                    <span>Led development teams for high-traffic entertainment websites</span>
-                                                </li>
-                                                <li class="flex items-start achievement-item">
-                                                    <span class="text-purple-400 mr-2 mt-1 achievement-bullet">•</span>
-                                                    <span>Implemented scalable video streaming and content delivery solutions</span>
-                                                </li>
-                                                <li class="flex items-start achievement-item">
-                                                    <span class="text-purple-400 mr-2 mt-1 achievement-bullet">•</span>
-                                                    <span>Established technical standards and development processes</span>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                        
-                                        <!-- Technologies -->
-                                        <div class="flex flex-wrap gap-2 tech-tags">
-                                            <span class="px-3 py-1 bg-purple-500/10 text-purple-400 text-xs rounded-full border border-purple-500/20 tech-tag">Media Technology</span>
-                                            <span class="px-3 py-1 bg-purple-500/10 text-purple-400 text-xs rounded-full border border-purple-500/20 tech-tag">Content Management</span>
-                                            <span class="px-3 py-1 bg-purple-500/10 text-purple-400 text-xs rounded-full border border-purple-500/20 tech-tag">Video Streaming</span>
-                                            <span class="px-3 py-1 bg-purple-500/10 text-purple-400 text-xs rounded-full border border-purple-500/20 tech-tag">High-Traffic Systems</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                    <!-- Dynamic Experience Timeline Container -->
+                    <div id="experience-timeline" class="space-y-12 animate-on-scroll">
+                        <!-- Experience items will be dynamically generated by JavaScript -->
+                        <div class="text-center py-12">
+                            <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-400 mx-auto mb-4"></div>
+                            <p class="text-gray-400 text-sm">Loading experience timeline...</p>
                         </div>
                     </div>
                 </div>
@@ -914,274 +574,14 @@
                 </div>
                 
                 <!-- Projects Grid -->
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 animate-on-scroll">
-                    <!-- TriviaSnake Game Project -->
-                    <article class="group relative bg-gradient-to-br from-gray-900 to-gray-800 rounded-xl p-6 sm:p-8 border border-gray-700 hover:border-blue-500/50 transition-all duration-500 project-card cursor-pointer">
-                        <div class="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-transparent rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                        <div class="relative z-10">
-                            <!-- Project Header -->
-                            <div class="flex items-start justify-between mb-6">
-                                <div class="flex-1">
-                                    <div class="flex items-center mb-2">
-                                        <div class="w-12 h-12 bg-blue-500/10 rounded-lg flex items-center justify-center group-hover:bg-blue-500/20 transition-colors duration-300 mr-4">
-                                            <svg class="w-6 h-6 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h1m4 0h1m-6 4h.01M15 14h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                                            </svg>
-                                        </div>
-                                        <div>
-                                            <h3 class="text-xl font-semibold text-gray-100 group-hover:text-blue-400 transition-colors duration-300">
-                                                Multiplayer TriviaSnake Game
-                                            </h3>
-                                            <p class="text-sm text-blue-400 font-medium">Featured Project</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="flex items-center space-x-2 ml-4">
-                                    <span class="px-2 py-1 bg-blue-500/10 text-blue-400 text-xs rounded-full">Game Dev</span>
-                                </div>
-                            </div>
-                            
-                            <!-- Project Description -->
-                            <p class="text-gray-300 mb-6 leading-relaxed">
-                                Built with Amazon Q Developer - an innovative multiplayer game combining trivia and snake gameplay mechanics. Features real-time multiplayer functionality, WebSocket connections, and engaging game mechanics that challenge both knowledge and reflexes.
-                            </p>
-                            
-                            <!-- Technology Stack -->
-                            <div class="mb-6">
-                                <h4 class="text-sm font-medium text-gray-400 mb-3">Technologies Used</h4>
-                                <div class="flex flex-wrap gap-2">
-                                    <span class="px-3 py-1 bg-gray-700/50 text-gray-300 text-sm rounded-full border border-gray-600 hover:border-blue-500/50 transition-colors duration-200">JavaScript</span>
-                                    <span class="px-3 py-1 bg-gray-700/50 text-gray-300 text-sm rounded-full border border-gray-600 hover:border-blue-500/50 transition-colors duration-200">AWS</span>
-                                    <span class="px-3 py-1 bg-gray-700/50 text-gray-300 text-sm rounded-full border border-gray-600 hover:border-blue-500/50 transition-colors duration-200">WebSockets</span>
-                                    <span class="px-3 py-1 bg-gray-700/50 text-gray-300 text-sm rounded-full border border-gray-600 hover:border-blue-500/50 transition-colors duration-200">HTML5 Canvas</span>
-                                    <span class="px-3 py-1 bg-gray-700/50 text-gray-300 text-sm rounded-full border border-gray-600 hover:border-blue-500/50 transition-colors duration-200">Amazon Q</span>
-                                </div>
-                            </div>
-                            
-                            <!-- Project Links -->
-                            <div class="flex flex-wrap gap-3">
-                                <a href="https://dj3xrj5xgqclx.cloudfront.net/" 
-                                   target="_blank" rel="noopener noreferrer"
-                                   class="inline-flex items-center px-4 py-2 bg-blue-500/10 text-blue-400 rounded-lg hover:bg-blue-500/20 focus:bg-blue-500/20 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-gray-900"
-                                   aria-label="Play TriviaSnake Game (opens in new tab)">
-                                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h1m4 0h1m-6 4h.01M15 14h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                                    </svg>
-                                    Play Game
-                                </a>
-                                <a href="https://github.com/karthiks3000/triviasnake" 
-                                   target="_blank" rel="noopener noreferrer"
-                                   class="inline-flex items-center px-4 py-2 bg-gray-700/50 text-gray-300 rounded-lg hover:bg-gray-600/50 focus:bg-gray-600/50 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 focus:ring-offset-gray-900"
-                                   aria-label="View TriviaSnake source code on GitHub (opens in new tab)">
-                                    <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 24 24">
-                                        <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
-                                    </svg>
-                                    GitHub
-                                </a>
-                                <a href="https://dev.to/aws-builders/building-a-multiplayer-triviasnake-game-with-amazon-q-developer-15j3" 
-                                   target="_blank" rel="noopener noreferrer"
-                                   class="inline-flex items-center px-4 py-2 bg-gray-700/50 text-gray-300 rounded-lg hover:bg-gray-600/50 focus:bg-gray-600/50 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 focus:ring-offset-gray-900"
-                                   aria-label="Read article about TriviaSnake development (opens in new tab)">
-                                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
-                                    </svg>
-                                    Article
-                                </a>
-                            </div>
-                        </div>
-                    </article>
-                    
-                    <!-- AWS Serverless Tutorial Project -->
-                    <article class="group relative bg-gradient-to-br from-gray-900 to-gray-800 rounded-xl p-6 sm:p-8 border border-gray-700 hover:border-emerald-500/50 transition-all duration-500 project-card cursor-pointer">
-                        <div class="absolute inset-0 bg-gradient-to-br from-emerald-500/5 to-transparent rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                        <div class="relative z-10">
-                            <!-- Project Header -->
-                            <div class="flex items-start justify-between mb-6">
-                                <div class="flex-1">
-                                    <div class="flex items-center mb-2">
-                                        <div class="w-12 h-12 bg-emerald-500/10 rounded-lg flex items-center justify-center group-hover:bg-emerald-500/20 transition-colors duration-300 mr-4">
-                                            <svg class="w-6 h-6 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z"/>
-                                            </svg>
-                                        </div>
-                                        <div>
-                                            <h3 class="text-xl font-semibold text-gray-100 group-hover:text-emerald-400 transition-colors duration-300">
-                                                AWS Serverless Architecture with SAM
-                                            </h3>
-                                            <p class="text-sm text-emerald-400 font-medium">Featured Tutorial</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="flex items-center space-x-2 ml-4">
-                                    <span class="px-2 py-1 bg-emerald-500/10 text-emerald-400 text-xs rounded-full">Cloud</span>
-                                </div>
-                            </div>
-                            
-                            <!-- Project Description -->
-                            <p class="text-gray-300 mb-6 leading-relaxed">
-                                Comprehensive tutorial series on building serverless applications with AWS SAM. Covers setup, deployment, best practices, and real-world implementation examples for scalable cloud architecture.
-                            </p>
-                            
-                            <!-- Technology Stack -->
-                            <div class="mb-6">
-                                <h4 class="text-sm font-medium text-gray-400 mb-3">Technologies Used</h4>
-                                <div class="flex flex-wrap gap-2">
-                                    <span class="px-3 py-1 bg-gray-700/50 text-gray-300 text-sm rounded-full border border-gray-600 hover:border-emerald-500/50 transition-colors duration-200">AWS Lambda</span>
-                                    <span class="px-3 py-1 bg-gray-700/50 text-gray-300 text-sm rounded-full border border-gray-600 hover:border-emerald-500/50 transition-colors duration-200">API Gateway</span>
-                                    <span class="px-3 py-1 bg-gray-700/50 text-gray-300 text-sm rounded-full border border-gray-600 hover:border-emerald-500/50 transition-colors duration-200">DynamoDB</span>
-                                    <span class="px-3 py-1 bg-gray-700/50 text-gray-300 text-sm rounded-full border border-gray-600 hover:border-emerald-500/50 transition-colors duration-200">SAM</span>
-                                    <span class="px-3 py-1 bg-gray-700/50 text-gray-300 text-sm rounded-full border border-gray-600 hover:border-emerald-500/50 transition-colors duration-200">CloudFormation</span>
-                                </div>
-                            </div>
-                            
-                            <!-- Project Links -->
-                            <div class="flex flex-wrap gap-3">
-                                <a href="https://dev.to/aws-builders/aws-serverless-architecture-with-sam-part-1-3fj1" 
-                                   target="_blank" rel="noopener noreferrer"
-                                   class="inline-flex items-center px-4 py-2 bg-emerald-500/10 text-emerald-400 rounded-lg hover:bg-emerald-500/20 focus:bg-emerald-500/20 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:ring-offset-2 focus:ring-offset-gray-900"
-                                   aria-label="Read AWS Serverless tutorial (opens in new tab)">
-                                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
-                                    </svg>
-                                    Read Tutorial
-                                </a>
-                                <a href="https://github.com/karthiks3000/aws-sam-tutorial" 
-                                   target="_blank" rel="noopener noreferrer"
-                                   class="inline-flex items-center px-4 py-2 bg-gray-700/50 text-gray-300 rounded-lg hover:bg-gray-600/50 focus:bg-gray-600/50 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 focus:ring-offset-gray-900"
-                                   aria-label="View AWS SAM tutorial source code on GitHub (opens in new tab)">
-                                    <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 24 24">
-                                        <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
-                                    </svg>
-                                    GitHub
-                                </a>
-                            </div>
-                        </div>
-                    </article>
-                    
-                    <!-- Rapid Prototyping Insights Project -->
-                    <article class="group relative bg-gradient-to-br from-gray-900 to-gray-800 rounded-xl p-6 sm:p-8 border border-gray-700 hover:border-orange-500/50 transition-all duration-500 project-card cursor-pointer">
-                        <div class="absolute inset-0 bg-gradient-to-br from-orange-500/5 to-transparent rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                        <div class="relative z-10">
-                            <!-- Project Header -->
-                            <div class="flex items-start justify-between mb-6">
-                                <div class="flex-1">
-                                    <div class="flex items-center mb-2">
-                                        <div class="w-12 h-12 bg-orange-500/10 rounded-lg flex items-center justify-center group-hover:bg-orange-500/20 transition-colors duration-300 mr-4">
-                                            <svg class="w-6 h-6 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
-                                            </svg>
-                                        </div>
-                                        <div>
-                                            <h3 class="text-xl font-semibold text-gray-100 group-hover:text-orange-400 transition-colors duration-300">
-                                                Rapid Prototyping Insights
-                                            </h3>
-                                            <p class="text-sm text-orange-400 font-medium">Technical Article</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="flex items-center space-x-2 ml-4">
-                                    <span class="px-2 py-1 bg-orange-500/10 text-orange-400 text-xs rounded-full">Insights</span>
-                                </div>
-                            </div>
-                            
-                            <!-- Project Description -->
-                            <p class="text-gray-300 mb-6 leading-relaxed">
-                                Technical article sharing key insights and lessons learned from rapid prototyping experiences in software development. Covers methodologies, tools, and best practices for efficient development cycles.
-                            </p>
-                            
-                            <!-- Technology Stack -->
-                            <div class="mb-6">
-                                <h4 class="text-sm font-medium text-gray-400 mb-3">Focus Areas</h4>
-                                <div class="flex flex-wrap gap-2">
-                                    <span class="px-3 py-1 bg-gray-700/50 text-gray-300 text-sm rounded-full border border-gray-600 hover:border-orange-500/50 transition-colors duration-200">Prototyping</span>
-                                    <span class="px-3 py-1 bg-gray-700/50 text-gray-300 text-sm rounded-full border border-gray-600 hover:border-orange-500/50 transition-colors duration-200">Best Practices</span>
-                                    <span class="px-3 py-1 bg-gray-700/50 text-gray-300 text-sm rounded-full border border-gray-600 hover:border-orange-500/50 transition-colors duration-200">Technical Writing</span>
-                                    <span class="px-3 py-1 bg-gray-700/50 text-gray-300 text-sm rounded-full border border-gray-600 hover:border-orange-500/50 transition-colors duration-200">Development</span>
-                                </div>
-                            </div>
-                            
-                            <!-- Project Links -->
-                            <div class="flex flex-wrap gap-3">
-                                <a href="https://dev.to/aws-builders/rapid-learnings-from-rapid-prototyping-54pe" 
-                                   target="_blank" rel="noopener noreferrer"
-                                   class="inline-flex items-center px-4 py-2 bg-orange-500/10 text-orange-400 rounded-lg hover:bg-orange-500/20 focus:bg-orange-500/20 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:ring-offset-2 focus:ring-offset-gray-900"
-                                   aria-label="Read rapid prototyping insights article (opens in new tab)">
-                                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
-                                    </svg>
-                                    Read Article
-                                </a>
-                            </div>
-                        </div>
-                    </article>
-                    
-                    <!-- Personal Portfolio Website Project -->
-                    <article class="group relative bg-gradient-to-br from-gray-900 to-gray-800 rounded-xl p-6 sm:p-8 border border-gray-700 hover:border-purple-500/50 transition-all duration-500 project-card cursor-pointer">
-                        <div class="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-transparent rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                        <div class="relative z-10">
-                            <!-- Project Header -->
-                            <div class="flex items-start justify-between mb-6">
-                                <div class="flex-1">
-                                    <div class="flex items-center mb-2">
-                                        <div class="w-12 h-12 bg-purple-500/10 rounded-lg flex items-center justify-center group-hover:bg-purple-500/20 transition-colors duration-300 mr-4">
-                                            <svg class="w-6 h-6 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
-                                            </svg>
-                                        </div>
-                                        <div>
-                                            <h3 class="text-xl font-semibold text-gray-100 group-hover:text-purple-400 transition-colors duration-300">
-                                                Personal Portfolio Website
-                                            </h3>
-                                            <p class="text-sm text-purple-400 font-medium">This Website</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="flex items-center space-x-2 ml-4">
-                                    <span class="px-2 py-1 bg-purple-500/10 text-purple-400 text-xs rounded-full">Web Dev</span>
-                                </div>
-                            </div>
-                            
-                            <!-- Project Description -->
-                            <p class="text-gray-300 mb-6 leading-relaxed">
-                                Modern, responsive personal website built with vanilla JavaScript, Tailwind CSS, and advanced animations. Features interactive timeline, project showcase, and optimized performance with accessibility compliance.
-                            </p>
-                            
-                            <!-- Technology Stack -->
-                            <div class="mb-6">
-                                <h4 class="text-sm font-medium text-gray-400 mb-3">Technologies Used</h4>
-                                <div class="flex flex-wrap gap-2">
-                                    <span class="px-3 py-1 bg-gray-700/50 text-gray-300 text-sm rounded-full border border-gray-600 hover:border-purple-500/50 transition-colors duration-200">JavaScript</span>
-                                    <span class="px-3 py-1 bg-gray-700/50 text-gray-300 text-sm rounded-full border border-gray-600 hover:border-purple-500/50 transition-colors duration-200">Tailwind CSS</span>
-                                    <span class="px-3 py-1 bg-gray-700/50 text-gray-300 text-sm rounded-full border border-gray-600 hover:border-purple-500/50 transition-colors duration-200">HTML5</span>
-                                    <span class="px-3 py-1 bg-gray-700/50 text-gray-300 text-sm rounded-full border border-gray-600 hover:border-purple-500/50 transition-colors duration-200">Responsive Design</span>
-                                    <span class="px-3 py-1 bg-gray-700/50 text-gray-300 text-sm rounded-full border border-gray-600 hover:border-purple-500/50 transition-colors duration-200">Accessibility</span>
-                                </div>
-                            </div>
-                            
-                            <!-- Project Links -->
-                            <div class="flex flex-wrap gap-3">
-                                <a href="#hero" 
-                                   class="inline-flex items-center px-4 py-2 bg-purple-500/10 text-purple-400 rounded-lg hover:bg-purple-500/20 focus:bg-purple-500/20 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:ring-offset-2 focus:ring-offset-gray-900"
-                                   aria-label="View this website">
-                                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
-                                    </svg>
-                                    View Live
-                                </a>
-                                <a href="https://github.com/karthiks3000" 
-                                   target="_blank" rel="noopener noreferrer"
-                                   class="inline-flex items-center px-4 py-2 bg-gray-700/50 text-gray-300 rounded-lg hover:bg-gray-600/50 focus:bg-gray-600/50 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 focus:ring-offset-gray-900"
-                                   aria-label="View portfolio source code on GitHub (opens in new tab)">
-                                    <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 24 24">
-                                        <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
-                                    </svg>
-                                    GitHub
-                                </a>
-                            </div>
-                        </div>
-                    </article>
+                <div id="projects-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 animate-on-scroll">
+                    <!-- Projects will be dynamically generated by JavaScript -->
+                    <div class="col-span-full text-center py-12">
+                        <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-400 mx-auto mb-4"></div>
+                        <p class="text-gray-400 text-sm">Loading featured projects...</p>
+                    </div>
                 </div>
+            </div>
                 
                 <!-- Additional Projects Link -->
                 <div class="text-center mt-12">
@@ -1570,12 +970,12 @@
         </div>
     </div>
 
-    <!-- AI Unavailable Modal with Teaser -->
+    <!-- AI Unavailable Modal with Two Options -->
     <div id="ai-unavailable-modal" class="ai-modal hidden" aria-hidden="true">
         <div class="ai-modal-backdrop"></div>
         <div class="ai-modal-content">
             <div class="ai-modal-header">
-                <h3 id="ai-teaser-title">Psst... wanna chat with an AI version of me?</h3>
+                <h3 id="ai-teaser-title">Wanna know more about me?</h3>
                 <button class="ai-modal-close" aria-label="Close modal">×</button>
             </div>
             <div class="ai-modal-body">
@@ -1585,13 +985,13 @@
                     </svg>
                 </div>
                 <p class="ai-modal-text" id="ai-teaser-text">
-                    You could chat with an AI version of me, but it's not available on your current setup.
+                    You can either flip this card and view my info or chat with AI Karthik and get a sneak peek with hidden insights (and hallucinations 😉)
                 </p>
                 
                 <!-- Requirements Section (initially hidden) -->
                 <div id="ai-requirements-section" class="ai-modal-requirements hidden">
                     <div class="ai-requirements-divider"></div>
-                    <h4>System Requirements:</h4>
+                    <h4>System Requirements for AI Chat:</h4>
                     <div class="ai-requirements-grid">
                         <div class="ai-requirement-item">
                             <strong>Operating System:</strong>
@@ -1642,8 +1042,18 @@
                 </div>
             </div>
             <div class="ai-modal-actions">
-                <button id="ai-tell-me-more" class="ai-btn ai-btn-primary">Tell me more</button>
-                <button class="ai-modal-close ai-btn ai-btn-secondary">Maybe later</button>
+                <button id="flip-card-btn" class="ai-btn ai-btn-primary">
+                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                    </svg>
+                    Flip this Card
+                </button>
+                <button id="ai-chat-btn" class="ai-btn ai-btn-secondary">
+                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+                    </svg>
+                    Chat with AI Karthik
+                </button>
             </div>
         </div>
     </div>

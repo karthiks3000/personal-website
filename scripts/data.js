@@ -47,6 +47,8 @@ const experience = [
         position: "Senior Software Engineering Manager",
         duration: "Oct 2022 - Present",
         location: "Remote",
+        flag: "🇨🇦",
+        country: "Canada",
         description: "Leading software engineering teams and driving technical strategy for educational technology solutions at one of the world's largest publishers and distributors of children's books.",
         achievements: [
             "Managing and mentoring senior software engineering teams",
@@ -61,6 +63,8 @@ const experience = [
         position: "Technical Lead",
         duration: "Mar 2022 - Oct 2022",
         location: "Remote",
+        flag: "🇨🇦",
+        country: "Canada",
         description: "Led technical initiatives for educational assessment and learning analytics platforms, focusing on scalable solutions for K-12 education.",
         achievements: [
             "Architected and implemented scalable learning analytics solutions",
@@ -74,7 +78,9 @@ const experience = [
         company: "Scholastic Inc.",
         position: "Senior Software Engineer Consultant",
         duration: "Apr 2018 - Mar 2022",
-        location: "Remote",
+        location: "New York City & Toronto",
+        flag: "🇺🇸",
+        country: "USA",
         description: "Developed and maintained large-scale educational software solutions, focusing on digital learning platforms and content management systems.",
         achievements: [
             "Built scalable web applications for educational content delivery",
@@ -87,8 +93,10 @@ const experience = [
     {
         company: "Viacom Inc.",
         position: "Technical Lead Consultant",
-        duration: "Jun 2011 - Apr 2018",
-        location: "New York, NY",
+        duration: "2014 - Apr 2018",
+        location: "New York City",
+        flag: "🇺🇸",
+        country: "USA",
         description: "Led technical development for media and entertainment platforms, focusing on content management systems and digital media delivery solutions.",
         achievements: [
             "Architected content management systems for major media brands",
@@ -97,22 +105,59 @@ const experience = [
             "Established technical standards and development processes"
         ],
         technologies: ["Media Technology", "Content Management", "Video Streaming", "High-Traffic Systems"]
+    },
+    {
+        company: "Viacom Inc.",
+        position: "Software Engineer",
+        duration: "Jun 2011 - 2014",
+        location: "Mumbai",
+        flag: "🇮🇳",
+        country: "India",
+        description: "Developed and maintained web applications and content management systems for media and entertainment platforms, gaining foundational experience in large-scale system development.",
+        achievements: [
+            "Built responsive web applications for entertainment content delivery",
+            "Developed content management interfaces for editorial teams",
+            "Implemented data processing workflows for media content",
+            "Collaborated with international teams across multiple time zones"
+        ],
+        technologies: ["Web Development", "Content Management", "Data Processing", "International Collaboration"]
     }
 ];
 
 // Featured Projects
 const projects = [
     {
+        title: "Budget Buddy - AI Financial Planning App",
+        description: "Privacy-first financial planning application with AI-powered insights, designed for couples and individuals. Features local storage, bank-level encryption, comprehensive budgeting tools, and multi-country support for Canada, USA, and India.",
+        image: null, // Will use placeholder
+        technologies: ["JavaScript", "AI/ML", "Local Storage", "Financial APIs", "Multi-currency", "AES-256 Encryption"],
+        liveUrl: "https://d3jl8ebe3s2hna.cloudfront.net/",
+        demoUrl: "https://d3jl8ebe3s2hna.cloudfront.net/",
+        githubUrl: null,
+        featured: true,
+        category: "Web Development"
+    },
+    {
         title: "Multiplayer TriviaSnake Game",
         description: "Built with Amazon Q Developer - an innovative multiplayer game combining trivia and snake gameplay mechanics. Features real-time multiplayer functionality, trivia questions, and classic snake game elements.",
         image: null, // Will use placeholder
         technologies: ["JavaScript", "AWS", "WebSockets", "HTML5 Canvas", "Amazon Q Developer"],
-        liveUrl: "https://dev.to/aws-builders/building-a-multiplayer-triviasnake-game-with-amazon-q-developer-15j3",
+        liveUrl: "https://dj3xrj5xgqclx.cloudfront.net/",
         demoUrl: "https://dj3xrj5xgqclx.cloudfront.net/",
         videoUrl: "https://www.youtube.com/watch?v=s6iQiddfELA",
         githubUrl: "https://github.com/karthiks3000/triviasnake",
         featured: true,
         category: "Game Development"
+    },
+    {
+        title: "Personal Portfolio Website",
+        description: "Modern, responsive personal website built with vanilla JavaScript, Tailwind CSS, and advanced animations. Features interactive timeline, project showcase, optimized performance, and AI chat integration.",
+        image: null, // Will use placeholder
+        technologies: ["JavaScript", "Tailwind CSS", "HTML5", "Responsive Design", "AI Integration"],
+        liveUrl: "#hero",
+        githubUrl: "https://github.com/karthiks3000/personal-website",
+        featured: true,
+        category: "Web Development"
     },
     {
         title: "AWS Serverless Architecture with SAM",
@@ -125,6 +170,16 @@ const projects = [
         category: "Cloud Architecture"
     },
     {
+        title: "Kinesis Analytics & Apache Flink Tutorial Series",
+        description: "Comprehensive documentation and video tutorial series covering Apache Flink and AWS Kinesis Analytics. Features practical examples, lessons learned, and real-world stream processing implementations with example code.",
+        image: null, // Will use placeholder
+        technologies: ["Apache Flink", "Kinesis Analytics", "Java 11", "Kinesis Data Streams", "S3", "Stream Processing"],
+        liveUrl: "https://dev.to/aws-builders/the-kinesis-analytics-apache-flink-playlist-2h6n",
+        githubUrl: "https://github.com/karthiks3000/kinesis-analytics-example",
+        featured: true,
+        category: "Cloud Architecture"
+    },
+    {
         title: "Rapid Prototyping Insights",
         description: "Technical article sharing key insights and lessons learned from rapid prototyping experiences in software development. Covers methodologies, tools, and best practices.",
         image: null, // Will use placeholder
@@ -132,16 +187,6 @@ const projects = [
         liveUrl: "https://dev.to/aws-builders/rapid-learnings-from-rapid-prototyping-54pe",
         featured: true,
         category: "Technical Writing"
-    },
-    {
-        title: "Personal Portfolio Website",
-        description: "Modern, responsive personal website built with vanilla JavaScript, Tailwind CSS, and advanced animations. Features interactive timeline, project showcase, and optimized performance.",
-        image: null, // Will use placeholder
-        technologies: ["JavaScript", "Tailwind CSS", "GSAP", "AOS", "HTML5"],
-        liveUrl: "#",
-        githubUrl: "https://github.com/karthiks3000",
-        featured: false,
-        category: "Web Development"
     },
     {
         title: "AWS Community Builder Content",

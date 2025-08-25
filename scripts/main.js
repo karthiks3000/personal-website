@@ -20,6 +20,9 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initialize AI chat message handling
     initAIChatHandling();
     
+    // Initialize personal card modal handling
+    initPersonalCardModal();
+    
     // Initialize performance-aware components
     initializeWithPerformanceCheck();
 });
@@ -1966,77 +1969,58 @@ function initExperienceTimeline() {
         return;
     }
 
-    // Generate timeline items
-    timelineContainer.innerHTML = experience.map((job, index) => `
-        <div class="timeline-item" data-aos="fade-${index % 2 === 0 ? 'right' : 'left'}" data-aos-delay="${index * 200}">
-            <!-- Timeline Node -->
-            <div class="timeline-node">
-                <i data-lucide="briefcase"></i>
-            </div>
-            
-            <!-- Experience Card -->
-            <div class="experience-card" data-job-index="${index}">
-                <!-- Company Header -->
-                <div class="flex items-start justify-between mb-4">
-                    <div class="flex items-center space-x-4">
-                        <div class="company-logo">
-                            ${job.company.split(' ')[0].substring(0, 2).toUpperCase()}
-                        </div>
-                        <div>
-                            <h3 class="text-xl font-bold text-slate-800 mb-1">${job.position}</h3>
-                            <h4 class="text-lg font-semibold text-blue-600 mb-1">${job.company}</h4>
-                            <div class="flex flex-col sm:flex-row sm:items-center sm:space-x-4 text-sm text-slate-500">
-                                <span class="flex items-center">
-                                    <i data-lucide="calendar" class="w-4 h-4 mr-1"></i>
-                                    ${job.duration}
-                                </span>
-                                <span class="flex items-center">
-                                    <i data-lucide="clock" class="w-4 h-4 mr-1"></i>
-                                    ${calculateDuration(job.duration)}
-                                </span>
-                                <span class="flex items-center">
-                                    <i data-lucide="map-pin" class="w-4 h-4 mr-1"></i>
-                                    ${job.location}
-                                </span>
+    // Generate timeline items with proper alternating layout
+    timelineContainer.innerHTML = experience.map((job, index) => {
+        const accentColor = index === 0 ? 'blue' : 
+                           index === 1 ? 'emerald' : 
+                           index === 2 ? 'orange' : 
+                           index === 3 ? 'purple' : 
+                           index === 4 ? 'pink' : 'blue';
+        
+        return `
+            <!-- Experience Item ${index + 1} -->
+            <div class="relative flex items-start experience-item">
+                <!-- Timeline Flag Node -->
+                <div class="absolute left-4 md:left-1/2 transform -translate-x-1/2 w-8 h-8 bg-gray-900 rounded-full border-4 border-gray-900 z-10 timeline-flag-node flex items-center justify-center" title="${job.country}">
+                    <span class="timeline-flag" aria-label="${job.country}">${job.flag}</span>
+                </div>
+                
+                <!-- Content -->
+                <div class="ml-12 md:ml-0 md:w-1/2 ${index % 2 === 0 ? 'md:pr-8 md:text-right' : 'md:ml-auto md:pl-8 md:text-left'}">
+                    <div class="bg-gradient-to-br from-gray-800 to-gray-900 rounded-xl p-6 border border-gray-700 hover:border-${accentColor}-500/50 transition-all duration-300 group experience-card">
+                        <div class="flex flex-col ${index % 2 === 0 ? 'md:items-end' : ''}">
+                            <div class="text-sm text-${accentColor}-400 font-medium mb-2">${job.duration}</div>
+                            <h3 class="text-xl font-semibold text-gray-100 mb-1">${job.position}</h3>
+                            <div class="text-lg text-gray-300 mb-4">${job.company} • ${job.location}</div>
+                            <p class="text-gray-400 text-sm mb-4 leading-relaxed">
+                                ${job.description}
+                            </p>
+                            
+                            <!-- Key Achievements -->
+                            <div class="mb-4">
+                                <h4 class="text-sm font-medium text-gray-200 mb-2">Key Achievements:</h4>
+                                <ul class="text-sm text-gray-400 space-y-1 achievement-list">
+                                    ${job.achievements.map(achievement => `
+                                        <li class="flex items-start achievement-item">
+                                            <span class="text-${accentColor}-400 mr-2 mt-1 achievement-bullet">•</span>
+                                            <span>${achievement}</span>
+                                        </li>
+                                    `).join('')}
+                                </ul>
+                            </div>
+                            
+                            <!-- Technologies -->
+                            <div class="flex flex-wrap gap-2 tech-tags">
+                                ${job.technologies.map(tech => `
+                                    <span class="px-3 py-1 bg-${accentColor}-500/10 text-${accentColor}-400 text-xs rounded-full border border-${accentColor}-500/20 tech-tag">${tech}</span>
+                                `).join('')}
                             </div>
                         </div>
                     </div>
                 </div>
-
-                <!-- Job Description -->
-                <p class="text-slate-600 leading-relaxed mb-4">${job.description}</p>
-
-                <!-- Technology Badges -->
-                <div class="tech-badges">
-                    ${job.technologies.map(tech => `
-                        <span class="tech-badge">${tech}</span>
-                    `).join('')}
-                </div>
-
-                <!-- Expand Button -->
-                <button class="expand-button" 
-                        onclick="toggleExperience(${index})"
-                        aria-expanded="false"
-                        aria-controls="achievements-${index}"
-                        aria-label="Toggle achievements for ${job.position} at ${job.company}">
-                    <span class="expand-text">View Achievements</span>
-                    <i data-lucide="chevron-down"></i>
-                </button>
-
-                <!-- Achievements Grid (Initially Hidden) -->
-                <div class="achievements-grid" id="achievements-${index}" role="region" aria-label="Achievements for ${job.position}">
-                    ${job.achievements.map((achievement, achIndex) => `
-                        <div class="achievement-card">
-                            <div class="flex items-start space-x-3">
-                                <div class="w-2 h-2 bg-blue-600 rounded-full mt-2 flex-shrink-0"></div>
-                                <p class="text-sm text-slate-700 leading-relaxed">${achievement}</p>
-                            </div>
-                        </div>
-                    `).join('')}
-                </div>
             </div>
-        </div>
-    `).join('');
+        `;
+    }).join('');
 
     // Re-initialize Lucide icons
     if (typeof lucide !== 'undefined') {
@@ -2404,14 +2388,17 @@ function initProjectsSection() {
         console.warn('Projects data not available or empty');
         projectsGrid.innerHTML = `
             <div class="col-span-full text-center py-12">
-                <p class="text-slate-600">Projects information is currently being loaded...</p>
+                <p class="text-gray-400">Projects information is currently being loaded...</p>
             </div>
         `;
         return;
     }
 
+    // Filter only featured projects
+    const featuredProjects = projects.filter(project => project.featured === true);
+    
     // Generate project cards
-    renderProjects(projects);
+    renderProjects(featuredProjects);
     
     // Initialize filter functionality
     initProjectFilters();
@@ -2443,97 +2430,125 @@ function renderProjectCards(projectsToRender) {
     const projectsGrid = document.getElementById('projects-grid');
     if (!projectsGrid) return;
 
-    projectsGrid.innerHTML = projectsToRender.map((project, index) => `
-        <article class="project-card ${project.featured ? 'featured' : ''}" 
-                 data-category="${project.category}" 
-                 data-aos="fade-up" 
-                 data-aos-delay="${index * 100}"
-                 role="article"
-                 aria-label="Project: ${project.title}">
-            
-            <!-- Project Image -->
-            <div class="relative overflow-hidden aspect-video bg-gradient-to-br from-slate-100 to-slate-200" role="img" aria-label="Project preview for ${project.title}">
-                ${project.image ? 
-                    `<img data-src="${project.image}" 
-                          data-fallback="assets/projects/placeholder.svg"
-                          alt="Preview of ${project.title}" 
-                          class="project-image w-full h-full object-cover lazy-loading" 
-                          loading="lazy" 
-                          decoding="async"
-                          width="400"
-                          height="225"
-                          style="aspect-ratio: 16/9;">` :
-                    `<div class="project-image-placeholder w-full h-full flex items-center justify-center">
-                        <div class="text-center">
-                            <i data-lucide="folder" class="w-16 h-16 text-slate-400 mx-auto mb-2"></i>
-                            <p class="text-sm text-slate-500">${project.category}</p>
+    // Helper function to get project icon
+    function getProjectIcon(category, title) {
+        if (title.toLowerCase().includes('budget')) return 'dollar-sign';
+        if (title.toLowerCase().includes('game')) return 'gamepad-2';
+        if (title.toLowerCase().includes('portfolio')) return 'monitor';
+        if (title.toLowerCase().includes('serverless')) return 'cloud';
+        if (title.toLowerCase().includes('kinesis')) return 'activity';
+        if (title.toLowerCase().includes('prototyping')) return 'zap';
+        return 'folder';
+    }
+
+    // Helper function to get accent color
+    function getAccentColor(index) {
+        const colors = ['blue', 'emerald', 'purple', 'orange', 'cyan', 'pink'];
+        return colors[index % colors.length];
+    }
+
+    // Helper function to get SVG path
+    function getSvgPath(iconType) {
+        const iconPaths = {
+            'dollar-sign': 'M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z',
+            'gamepad-2': 'M14.828 14.828a4 4 0 01-5.656 0M9 10h1m4 0h1m-6 4h.01M15 14h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z',
+            'monitor': 'M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z',
+            'cloud': 'M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z',
+            'activity': 'M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z',
+            'zap': 'M13 10V3L4 14h7v7l9-11h-7z',
+            'folder': 'M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2 2z'
+        };
+        return iconPaths[iconType] || iconPaths.folder;
+    }
+
+    projectsGrid.innerHTML = projectsToRender.map((project, index) => {
+        const accentColor = getAccentColor(index);
+        const projectIcon = getProjectIcon(project.category, project.title);
+        const svgPath = getSvgPath(projectIcon);
+        
+        // Determine button text based on URL
+        let buttonText = 'View Project';
+        if (project.liveUrl) {
+            if (project.liveUrl.includes('d3jl8ebe3s2hna')) buttonText = 'Launch App';
+            else if (project.liveUrl.includes('dj3xrj5xgqclx')) buttonText = 'Play Game';
+            else if (project.liveUrl.includes('#')) buttonText = 'View Site';
+            else buttonText = 'View Tutorial';
+        }
+        
+        return `
+            <article class="group relative bg-gradient-to-br from-gray-900 to-gray-800 rounded-xl p-6 border border-gray-700 hover:border-${accentColor}-500/50 transition-all duration-500 project-card cursor-pointer" 
+                     data-category="${project.category}" 
+                     data-aos="fade-up" 
+                     data-aos-delay="${index * 100}"
+                     role="article"
+                     aria-label="Project: ${project.title}">
+                
+                <div class="absolute inset-0 bg-gradient-to-br from-${accentColor}-500/5 to-transparent rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                <div class="relative z-10">
+                    <!-- Project Header -->
+                    <div class="flex items-start justify-between mb-4">
+                        <div class="flex-1">
+                            <div class="flex items-center mb-2">
+                                <div class="w-12 h-12 bg-${accentColor}-500/10 rounded-lg flex items-center justify-center group-hover:bg-${accentColor}-500/20 transition-colors duration-300 mr-3">
+                                    <svg class="w-6 h-6 text-${accentColor}-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="${svgPath}"/>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h3 class="text-lg font-semibold text-gray-100 group-hover:text-${accentColor}-400 transition-colors duration-300">
+                                        ${project.title}
+                                    </h3>
+                                    <p class="text-xs text-${accentColor}-400 font-medium">${project.category}</p>
+                                </div>
+                            </div>
                         </div>
-                    </div>`
-                }
-            </div>
-            
-            <!-- Project Content -->
-            <div class="project-content">
-                <!-- Project Title -->
-                <h3 class="project-title">${project.title}</h3>
-                
-                <!-- Project Description -->
-                <p class="project-description">${project.description}</p>
-                
-                <!-- Technology Stack -->
-                <div class="project-tech-stack">
-                    ${project.technologies.map(tech => `
-                        <span class="tech-stack-badge">${tech}</span>
-                    `).join('')}
-                </div>
-                
-                <!-- Project Links -->
-                <div class="project-links">
-                    <div class="flex space-x-3">
+                    </div>
+                    
+                    <!-- Project Description -->
+                    <p class="text-gray-300 mb-4 text-sm leading-relaxed flex-1">
+                        ${project.description}
+                    </p>
+                    
+                    <!-- Technology Stack -->
+                    <div class="mb-4">
+                        <h4 class="text-xs font-medium text-gray-400 mb-2">Technologies Used</h4>
+                        <div class="flex flex-wrap gap-1">
+                            ${project.technologies.map(tech => `
+                                <span class="px-2 py-1 bg-gray-700/50 text-gray-300 text-xs rounded-full border border-gray-600 hover:border-${accentColor}-500/50 transition-colors duration-200">${tech}</span>
+                            `).join('')}
+                        </div>
+                    </div>
+                    
+                    <!-- Project Links -->
+                    <div class="flex flex-wrap gap-2 mt-auto">
                         ${project.liveUrl ? `
                             <a href="${project.liveUrl}" 
                                target="_blank" rel="noopener noreferrer"
-                               class="project-link primary relative overflow-hidden"
-                               aria-label="View live demo of ${project.title}">
-                                <i data-lucide="external-link" class="w-4 h-4"></i>
-                                <span>Live Demo</span>
+                               class="inline-flex items-center px-3 py-2 bg-${accentColor}-500/10 text-${accentColor}-400 rounded-lg hover:bg-${accentColor}-500/20 focus:bg-${accentColor}-500/20 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-${accentColor}-400 focus:ring-offset-2 focus:ring-offset-gray-900 text-xs"
+                               aria-label="View ${project.title} (opens in new tab)">
+                                <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+                                </svg>
+                                ${buttonText}
                             </a>
                         ` : ''}
                         
-                        ${project.demoUrl && project.demoUrl !== project.liveUrl ? `
-                            <a href="${project.demoUrl}" 
-                               target="_blank" rel="noopener noreferrer"
-                               class="project-link secondary relative overflow-hidden"
-                               aria-label="View demo of ${project.title}">
-                                <i data-lucide="play" class="w-4 h-4"></i>
-                                <span>Demo</span>
-                            </a>
-                        ` : ''}
-                    </div>
-                    
-                    <div class="flex space-x-2">
                         ${project.githubUrl ? `
                             <a href="${project.githubUrl}" 
                                target="_blank" rel="noopener noreferrer"
-                               class="project-link github relative overflow-hidden"
-                               aria-label="View source code for ${project.title} on GitHub">
-                                <i data-lucide="github" class="w-4 h-4"></i>
-                            </a>
-                        ` : ''}
-                        
-                        ${project.videoUrl ? `
-                            <a href="${project.videoUrl}" 
-                               target="_blank" rel="noopener noreferrer"
-                               class="project-link secondary relative overflow-hidden"
-                               aria-label="Watch video demo of ${project.title}">
-                                <i data-lucide="video" class="w-4 h-4"></i>
+                               class="inline-flex items-center px-3 py-2 bg-gray-700/50 text-gray-300 rounded-lg hover:bg-gray-600/50 focus:bg-gray-600/50 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 focus:ring-offset-gray-900 text-xs"
+                               aria-label="View source code for ${project.title} on GitHub (opens in new tab)">
+                                <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                                </svg>
+                                GitHub
                             </a>
                         ` : ''}
                     </div>
                 </div>
-            </div>
-        </div>
-    `).join('');
+            </article>
+        `;
+    }).join('');
 
     // Re-initialize Lucide icons
     if (typeof lucide !== 'undefined') {
@@ -3866,6 +3881,256 @@ Keep responses concise and conversational. If asked about specific technical det
             console.log(`AI chat ready with availability: ${availability}`);
         }
     });
+}
+
+// Initialize Flip Card handling
+function initPersonalCardModal() {
+    console.log('Initializing flip card functionality...');
+    
+    // Get flip card elements
+    const flipCardInner = document.getElementById('flip-card-inner');
+    const flipCardInlineBtn = document.getElementById('flip-card-inline-btn');
+    const flipBackBtn = document.getElementById('flip-back-btn');
+    const aiChatInlineBtn = document.getElementById('ai-chat-inline-btn');
+    const aiUnavailableModal = document.getElementById('ai-unavailable-modal');
+    
+    if (!flipCardInner) {
+        console.warn('Flip card elements not found');
+        return;
+    }
+    
+    // Helper function to show modal
+    function showModal(modal) {
+        if (!modal) return;
+        modal.classList.remove('hidden');
+        modal.setAttribute('aria-hidden', 'false');
+        
+        // Smooth show animation
+        setTimeout(() => {
+            modal.classList.add('show');
+        }, 10);
+        
+        // Focus on the first focusable element
+        const firstFocusable = modal.querySelector('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+        if (firstFocusable) {
+            setTimeout(() => firstFocusable.focus(), 150);
+        }
+        
+        // Prevent body scroll
+        document.body.style.overflow = 'hidden';
+    }
+    
+    function hideModal(modal) {
+        if (!modal) return;
+        modal.classList.remove('show');
+        
+        // Hide after animation
+        setTimeout(() => {
+            modal.classList.add('hidden');
+            modal.setAttribute('aria-hidden', 'true');
+        }, 300);
+        
+        // Restore body scroll
+        document.body.style.overflow = '';
+    }
+    
+    // Flip card to show personal info
+    function flipToPersonal() {
+        if (!flipCardInner) return;
+        
+        flipCardInner.classList.add('flipped');
+        flipCardInner.setAttribute('aria-label', 'Personal information card - flipped');
+        
+        // Focus on the flip back button after animation completes
+        setTimeout(() => {
+            if (flipBackBtn) {
+                flipBackBtn.focus();
+            }
+        }, 600);
+        
+        // Announce change to screen readers
+        announceToScreenReader('Card flipped to show personal introduction');
+    }
+    
+    // Flip card back to options
+    function flipToOptions() {
+        if (!flipCardInner) return;
+        
+        flipCardInner.classList.remove('flipped');
+        flipCardInner.setAttribute('aria-label', 'Options card - front side');
+        
+        // Focus on the flip card button after animation completes
+        setTimeout(() => {
+            if (flipCardInlineBtn) {
+                flipCardInlineBtn.focus();
+            }
+        }, 600);
+        
+        // Announce change to screen readers
+        announceToScreenReader('Card flipped back to options');
+    }
+    
+    // Inline "Flip this Card" button handler
+    if (flipCardInlineBtn) {
+        flipCardInlineBtn.addEventListener('click', function() {
+            console.log('Inline flip card button clicked');
+            flipToPersonal();
+        });
+        
+        // Add keyboard support
+        flipCardInlineBtn.addEventListener('keydown', function(event) {
+            if (event.key === 'Enter' || event.key === ' ') {
+                event.preventDefault();
+                flipToPersonal();
+            }
+        });
+    }
+    
+    // "Back to Options" button handler
+    if (flipBackBtn) {
+        flipBackBtn.addEventListener('click', function() {
+            console.log('Flip back button clicked');
+            flipToOptions();
+        });
+        
+        // Add keyboard support
+        flipBackBtn.addEventListener('keydown', function(event) {
+            if (event.key === 'Enter' || event.key === ' ') {
+                event.preventDefault();
+                flipToOptions();
+            }
+        });
+    }
+    
+    // Inline "Chat with AI Karthik" button handler
+    if (aiChatInlineBtn) {
+        aiChatInlineBtn.addEventListener('click', function() {
+            console.log('Inline AI chat button clicked');
+            
+            // Show AI unavailable modal
+            showModal(aiUnavailableModal);
+            
+            // Announce change to screen readers
+            announceToScreenReader('Showing AI chat information');
+        });
+    }
+    
+    // Modal handlers for AI chat (keeping existing functionality)
+    const flipCardBtn = document.getElementById('flip-card-btn');
+    const aiChatBtn = document.getElementById('ai-chat-btn');
+    const aiTellMeMoreBtn = document.getElementById('ai-tell-me-more');
+    const aiRequirementsSection = document.getElementById('ai-requirements-section');
+    
+    // Modal "Chat with AI Karthik" button handler
+    if (aiChatBtn) {
+        aiChatBtn.addEventListener('click', function() {
+            console.log('AI chat button clicked');
+            
+            // Check if AI requirements are shown, if not show them
+            if (aiRequirementsSection && aiRequirementsSection.classList.contains('hidden')) {
+                // Show requirements section
+                aiRequirementsSection.classList.remove('hidden');
+                
+                // Scroll to requirements
+                setTimeout(() => {
+                    aiRequirementsSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }, 100);
+                
+                // Update button text
+                this.innerHTML = `
+                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+                    </svg>
+                    Got it, maybe later
+                `;
+                
+                announceToScreenReader('AI chat requirements displayed');
+            } else {
+                // Requirements are already shown, close modal
+                hideModal(aiUnavailableModal);
+                announceToScreenReader('AI chat setup information closed');
+            }
+        });
+    }
+    
+    // "Tell me more" button handler (existing functionality)
+    if (aiTellMeMoreBtn) {
+        aiTellMeMoreBtn.addEventListener('click', function() {
+            console.log('Tell me more button clicked');
+            
+            if (aiRequirementsSection) {
+                const isHidden = aiRequirementsSection.classList.contains('hidden');
+                
+                if (isHidden) {
+                    // Show requirements
+                    aiRequirementsSection.classList.remove('hidden');
+                    this.classList.add('expanded');
+                    
+                    // Update button text and icon
+                    this.innerHTML = `
+                        Hide requirements
+                        <svg class="w-4 h-4 ml-1 transform transition-transform duration-200 rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    `;
+                    
+                    announceToScreenReader('AI requirements information expanded');
+                } else {
+                    // Hide requirements
+                    aiRequirementsSection.classList.add('hidden');
+                    this.classList.remove('expanded');
+                    
+                    // Reset button text and icon
+                    this.innerHTML = `
+                        Tell me more
+                        <svg class="w-4 h-4 ml-1 transform transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    `;
+                    
+                    announceToScreenReader('AI requirements information collapsed');
+                }
+            }
+        });
+    }
+    
+    // Close modal handlers
+    const closeButtons = document.querySelectorAll('.ai-modal-close');
+    closeButtons.forEach(closeBtn => {
+        closeBtn.addEventListener('click', function() {
+            const modal = this.closest('.ai-modal');
+            hideModal(modal);
+        });
+    });
+    
+    // Close modals on backdrop click
+    const modalBackdrops = document.querySelectorAll('.ai-modal-backdrop');
+    modalBackdrops.forEach(backdrop => {
+        backdrop.addEventListener('click', function() {
+            const modal = this.closest('.ai-modal');
+            hideModal(modal);
+        });
+    });
+    
+    // Close modals on Escape key
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape') {
+            const visibleModal = document.querySelector('.ai-modal:not(.hidden)');
+            if (visibleModal) {
+                hideModal(visibleModal);
+            }
+        }
+    });
+    
+    // Auto-show AI unavailable modal on page load (for testing - can be removed later)
+    setTimeout(() => {
+        if (!window.aiSupported) {
+            console.log('Auto-showing AI unavailable modal for testing');
+            showModal(aiUnavailableModal);
+        }
+    }, 2000);
+    
+    console.log('Flip card functionality initialized successfully');
 }
 
 // Global function to show AI setup instructions (for debugging)
