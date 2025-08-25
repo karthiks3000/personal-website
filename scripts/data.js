@@ -4,9 +4,10 @@
 const personalInfo = {
     name: "Karthik Subramanian",
     title: "Senior Software Engineering Manager",
+    currentCompany: "Scholastic Inc.",
     tagline: "Building innovative solutions with AWS and modern web technologies",
-    email: "contact@karthiks3000.dev",
-    location: "Remote",
+    email: "karthiks3000@gmail.com",
+    location: "Waterloo, Canada",
     bio: "Passionate software engineer with extensive experience in cloud technologies, full-stack development, and AWS services. Currently leading engineering teams at Scholastic Inc. and contributing to the AWS community through technical articles and innovative projects.",
     profileImage: "assets/profile.jpg",
     resume: "assets/Karthik_Subramanian.pdf"
