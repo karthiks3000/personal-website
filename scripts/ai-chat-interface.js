@@ -31,43 +31,49 @@ class LightweightChat {
         }
 
         try {
-            console.log('🔄 Lazy loading AI session...');
+            console.log('💬 Initializing AI session for chat...');
             
-            if (!window.AIFeatureDetector || !window.AIFeatureDetector.isAISupported()) {
-                console.log('AI not supported - using keyword-based responses');
-                this.isAIEnabled = false;
-                return false;
-            }
-
-            // Check availability one more time
-            const availabilityCheck = await window.AIFeatureDetector.checkAvailabilityWithUserActivation();
-            console.log('AI availability check for session creation:', availabilityCheck);
-            
-            if (!availabilityCheck.canProceed || availabilityCheck.available !== 'available') {
-                console.log(`❌ Cannot create AI session: ${availabilityCheck.reason}`);
-                this.isAIEnabled = false;
-                return false;
-            }
-            
-            const systemPrompt = this.buildSystemPrompt();
-            
-            this.aiSession = await window.AIFeatureDetector.createSession({
-                initialPrompts: [
-                    { role: 'system', content: systemPrompt }
-                ]
-            });
-            
-            if (this.aiSession) {
-                this.isAIEnabled = true;
-                console.log('✅ AI session created successfully on-demand');
-                return true;
+            // Use consolidated AIManager
+            if (window.AIManager) {
+                const aiState = window.AIManager.getState();
+                
+                if (!aiState.isAvailable) {
+                    console.log(`❌ Cannot create AI session - state is: ${aiState.state}`);
+                    this.isAIEnabled = false;
+                    return false;
+                }
+                
+                // Add timeout for session creation (10 seconds)
+                const timeoutPromise = new Promise((_, reject) => {
+                    setTimeout(() => reject(new Error('Session initialization timeout')), 10000);
+                });
+                
+                // Race between session creation and timeout
+                this.aiSession = await Promise.race([
+                    window.AIManager.createSession(),
+                    timeoutPromise
+                ]);
+                
+                if (this.aiSession) {
+                    this.isAIEnabled = true;
+                    console.log('✅ AI session obtained from consolidated AIManager');
+                    return true;
+                } else {
+                    console.log('❌ Failed to get AI session from AIManager');
+                    this.isAIEnabled = false;
+                    return false;
+                }
             } else {
-                console.log('❌ Failed to create AI session - falling back to keyword responses');
+                console.log('❌ Consolidated AIManager not available - using fallback responses');
                 this.isAIEnabled = false;
                 return false;
             }
         } catch (error) {
-            console.error('Error creating AI session:', error);
+            if (error.message === 'Session initialization timeout') {
+                console.error('⏰ AI session initialization timed out after 10 seconds');
+            } else {
+                console.error('Error initializing AI session:', error);
+            }
             this.isAIEnabled = false;
             return false;
         }
@@ -267,17 +273,9 @@ Remember: You are Karthik Subramanian having a conversation about your professio
     async openChat() {
         if (!this.window || this.isOpen) return;
         
-        console.log('🔄 Opening chat - checking for AI session...');
+        console.log('🔄 Opening chat - will initialize AI session...');
         
-        // Lazy initialize AI session when user first opens chat
-        if (!this.aiSession) {
-            const sessionReady = await this.initializeAISession();
-            if (!sessionReady) {
-                console.log('⚠️ AI session not available, proceeding with keyword responses');
-            }
-        }
-        
-        // Show chat window
+        // Show chat window immediately
         this.window.classList.remove('hidden');
         this.window.classList.add('show');
         
@@ -286,15 +284,29 @@ Remember: You are Karthik Subramanian having a conversation about your professio
             this.toggle.style.display = 'none';
         }
         
-        // Focus input
+        this.isOpen = true;
+        console.log('Chat opened');
+        
+        // Show loading state and initialize AI session
+        if (!this.aiSession) {
+            this.showInitializationLoading();
+            const sessionReady = await this.initializeAISession();
+            this.hideInitializationLoading();
+            
+            if (!sessionReady) {
+                console.log('⚠️ AI session not available, will use keyword responses');
+                this.showInitializationError();
+            } else {
+                this.showInitializationSuccess();
+            }
+        }
+        
+        // Focus input after initialization
         setTimeout(() => {
-            if (this.input) {
+            if (this.input && !this.input.disabled) {
                 this.input.focus();
             }
         }, 100);
-        
-        this.isOpen = true;
-        console.log('Chat opened');
     }
 
     closeChat() {
@@ -526,6 +538,119 @@ Remember: You are Karthik Subramanian having a conversation about your professio
         return "That's a great question! I'd be happy to share more about my experience in software engineering, technical leadership, or any of my projects. Feel free to ask about my work at Scholastic, my AWS expertise, or anything else you'd like to know!";
     }
 
+    /**
+     * Show initialization loading state
+     */
+    showInitializationLoading() {
+        // Disable input and send button
+        if (this.input) {
+            this.input.disabled = true;
+            this.input.placeholder = "Initializing AI chat...";
+        }
+        if (this.sendBtn) {
+            this.sendBtn.disabled = true;
+        }
+        
+        // Add loading message
+        const loadingEl = document.createElement('div');
+        loadingEl.className = 'initialization-loading';
+        loadingEl.innerHTML = `
+            <div class="message-content">
+                <div class="avatar">K</div>
+                <div class="loading-bubble">
+                    <span class="loading-text">Initializing AI chat...</span>
+                    <div class="loading-dots">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        this.messagesWrapper.appendChild(loadingEl);
+        this.scrollToBottom();
+    }
+    
+    /**
+     * Hide initialization loading state
+     */
+    hideInitializationLoading() {
+        const loadingEl = this.messagesWrapper.querySelector('.initialization-loading');
+        if (loadingEl) {
+            loadingEl.remove();
+        }
+    }
+    
+    /**
+     * Show initialization error
+     */
+    showInitializationError() {
+        const errorEl = document.createElement('div');
+        errorEl.className = 'message ai-message initialization-error';
+        errorEl.innerHTML = `
+            <div class="message-content">
+                <div class="avatar">K</div>
+                <div class="ai-bubble error-bubble">
+                    <div class="flex items-center space-x-2 text-amber-600">
+                        <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"></path>
+                        </svg>
+                        <span class="font-medium">AI chat not available</span>
+                    </div>
+                    <p class="mt-2 text-sm">No worries though! I can still chat with you using keyword responses. Just ask me about my experience, skills, or projects!</p>
+                </div>
+            </div>
+        `;
+        
+        this.messagesWrapper.appendChild(errorEl);
+        this.scrollToBottom();
+        
+        // Re-enable input with fallback mode
+        if (this.input) {
+            this.input.disabled = false;
+            this.input.placeholder = "Ask about my experience, skills, projects...";
+        }
+        this.updateSendButton();
+    }
+    
+    /**
+     * Show initialization success
+     */
+    showInitializationSuccess() {
+        const successEl = document.createElement('div');
+        successEl.className = 'message ai-message initialization-success';
+        successEl.innerHTML = `
+            <div class="message-content">
+                <div class="avatar">K</div>
+                <div class="ai-bubble success-bubble">
+                    <p class="mt-2 text-sm">Session initialized...</p>
+                </div>
+            </div>
+        `;
+        
+        this.messagesWrapper.appendChild(successEl);
+        this.scrollToBottom();
+        
+        // Re-enable input
+        if (this.input) {
+            this.input.disabled = false;
+            this.input.placeholder = "Ask me anything about my background...";
+        }
+        this.updateSendButton();
+        
+        // Auto-hide success message after 4 seconds
+        setTimeout(() => {
+            if (successEl.parentNode) {
+                successEl.style.opacity = '0';
+                successEl.style.transform = 'translateY(-10px)';
+                successEl.style.transition = 'all 0.3s ease';
+                
+                setTimeout(() => successEl.remove(), 300);
+            }
+        }, 4000);
+    }
+
     escapeHtml(text) {
         const div = document.createElement('div');
         div.textContent = text;
@@ -550,664 +675,51 @@ Remember: You are Karthik Subramanian having a conversation about your professio
     }
 }
 
-// AI Download and Status Management
-class AIDownloadManager {
-    constructor() {
-        this.status = this.getStoredStatus();
-        this.progressInterval = null;
-        this.downloadStartTime = null;
-        this.bindEvents();
-    }
 
-    getStoredStatus() {
-        const stored = localStorage.getItem('aiChatStatus');
-        return stored ? JSON.parse(stored) : {
-            userDeclinedDownload: false,
-            lastDeclineTime: null,
-            downloadAttempted: false
-        };
-    }
-
-    setStoredStatus(status) {
-        this.status = { ...this.status, ...status };
-        localStorage.setItem('aiChatStatus', JSON.stringify(this.status));
-    }
-
-    bindEvents() {
-        console.log('🔗 AIDownloadManager binding events...');
-        
-        // Download modal events
-        const downloadYes = document.getElementById('ai-download-yes');
-        const downloadLater = document.getElementById('ai-download-later');
-        const modalCloses = document.querySelectorAll('.ai-modal-close');
-        const progressBackground = document.getElementById('ai-progress-background');
-        const tellMeMore = document.getElementById('ai-tell-me-more');
-
-        if (downloadYes) {
-            downloadYes.addEventListener('click', () => this.startDownload());
-            console.log('✅ Download Yes button event bound');
-        }
-
-        if (downloadLater) {
-            downloadLater.addEventListener('click', () => this.declineDownload());
-            console.log('✅ Download Later button event bound');
-        }
-
-        if (progressBackground) {
-            progressBackground.addEventListener('click', () => this.hideProgressModal());
-            console.log('✅ Progress background event bound');
-        }
-
-        if (tellMeMore) {
-            tellMeMore.addEventListener('click', () => this.toggleRequirements());
-            console.log('✅ Tell Me More button event bound');
-        }
-
-        modalCloses.forEach(close => {
-            close.addEventListener('click', (e) => {
-                const modal = e.target.closest('.ai-modal');
-                if (modal) this.hideModal(modal);
-            });
-        });
-        console.log(`✅ ${modalCloses.length} modal close buttons bound`);
-
-        // Listen for download progress events - handle completion only
-        window.addEventListener('aiModelDownloadProgress', (event) => {
-            console.log('📥 AIDownloadManager received download event:', event.detail);
-            this.handleDownloadEvent(event.detail);
-        });
-        console.log('✅ Download event listener attached to window');
-
-        // Close modals on backdrop click
-        document.addEventListener('click', (e) => {
-            if (e.target.classList.contains('ai-modal-backdrop')) {
-                const modal = e.target.closest('.ai-modal');
-                if (modal) this.hideModal(modal);
-            }
-        });
-
-        // Escape key to close modals
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') {
-                const openModal = document.querySelector('.ai-modal:not(.hidden)');
-                if (openModal) this.hideModal(openModal);
-            }
-        });
-        
-        console.log('🎯 All AIDownloadManager events bound successfully');
-    }
-
-    showModal(modalId) {
-        const modal = document.getElementById(modalId);
-        if (modal) {
-            modal.classList.remove('hidden');
-            modal.setAttribute('aria-hidden', 'false');
-            
-            // Focus management
-            const firstFocusable = modal.querySelector('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
-            if (firstFocusable) {
-                setTimeout(() => firstFocusable.focus(), 100);
-            }
-        }
-    }
-
-    hideModal(modal) {
-        if (modal) {
-            modal.classList.add('hidden');
-            modal.setAttribute('aria-hidden', 'true');
-        }
-    }
-
-    shouldShowDownloadPrompt() {
-        // Don't show if user declined recently (within 24 hours)
-        if (this.status.userDeclinedDownload && this.status.lastDeclineTime) {
-            const hoursSinceDecline = (Date.now() - this.status.lastDeclineTime) / (1000 * 60 * 60);
-            if (hoursSinceDecline < 24) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    async startDownload() {
-        console.log('Starting AI model download...');
-        
-        try {
-            // Check user activation before proceeding
-            if (!window.AIFeatureDetector.isUserActivationActive()) {
-                console.log('❌ User activation not active - download must be triggered from user interaction');
-                this.showDownloadError('User activation required. Please click the download button again.');
-                return;
-            }
-            
-            console.log('✅ User activation confirmed, proceeding with download...');
-            this.hideModal(document.getElementById('ai-download-modal'));
-            this.showModal('ai-progress-modal');
-            
-            this.setStoredStatus({ downloadAttempted: true });
-            this.downloadStartTime = Date.now();
-            
-            // Use the user activation-aware session creation method
-            // NOTE: Session creation triggers download but doesn't mean it's complete!
-            const session = await window.AIFeatureDetector.createSessionWithUserActivation({
-                initialPrompts: [
-                    { role: 'system', content: 'You are Karthik Subramanian, ready to chat about your professional experience and expertise.' }
-                ]
-            });
-
-            if (session) {
-                console.log('✅ Session creation initiated - download may still be in progress');
-                console.log('⏳ Waiting for actual download completion event before enabling chat');
-                
-                // DO NOT show chat interface here! Wait for the real completion event
-                // The handleDownloadEvent() method will handle showing the interface when detail.loaded === 1
-                
-                // Store the session for later use when download actually completes
-                this.pendingSession = session;
-            } else {
-                throw new Error('Failed to create AI session');
-            }
-        } catch (error) {
-            console.error('Error during AI model download:', error);
-            
-            // Handle specific user activation errors
-            if (error.message?.includes('User activation required')) {
-                this.showDownloadError('Please click the download button to start the AI model download.');
-            } else if (error.message?.includes('AI not supported')) {
-                this.showDownloadError('AI features are not supported on this device or browser.');
-            } else {
-                this.showDownloadError(error.message);
-            }
-        }
-    }
-
-    handleDownloadEvent(detail) {
-        console.log('🔄 AIDownloadManager handling download event:', detail);
-        
-        const downloadStatus = document.getElementById('download-status');
-        
-        if (detail.loaded === 0) {
-            // Download starting
-            console.log('🚀 AI model download starting...');
-            if (downloadStatus) {
-                downloadStatus.textContent = 'Download starting...';
-            }
-        } else if (detail.loaded === 1) {
-            // Download completed
-            console.log('🎯 AI model download completed!');
-            if (downloadStatus) {
-                downloadStatus.textContent = 'Download completed! Setting up AI chat...';
-            }
-            
-            // Hide progress modal and enable chat
-            setTimeout(() => {
-                this.hideModal(document.getElementById('ai-progress-modal'));
-                this.enableChatInterface();
-            }, 1500);
-        }
-    }
-
-    enableChatInterface() {
-        console.log('✅ Enabling AI chat interface after download completion');
-        
-        // Show chat interface
-        const chatInterface = document.getElementById('ai-chat-interface');
-        if (chatInterface) {
-            chatInterface.style.display = 'block';
-            chatInterface.classList.remove('hidden');
-        }
-        
-        // Update teaser message to show AI is now available
-        const teaserText = document.getElementById('ai-teaser-inline-text');
-        if (teaserText) {
-            teaserText.textContent = "Great! AI chat is now ready. Click the floating chat button to get started!";
-        }
-        
-        // Initialize chat interface with the pending session from download
-        if (!window.lightweightChat) {
-            this.initializeChatInterface(this.pendingSession);
-        } else if (this.pendingSession && window.lightweightChat) {
-            // If chat interface already exists, just assign the session
-            window.lightweightChat.aiSession = this.pendingSession;
-            window.lightweightChat.isAIEnabled = true;
-            console.log('✅ Assigned pending session to existing chat interface');
-        }
-        
-        // Clear the pending session
-        this.pendingSession = null;
-        
-        // Dispatch completion event for other parts of the app
-        window.dispatchEvent(new CustomEvent('aiModelDownloadComplete', {
-            detail: {
-                success: true,
-                timestamp: Date.now()
-            }
-        }));
-        
-        console.log('🎉 AI chat interface is now ready!');
-    }
-
-    formatBytes(bytes) {
-        if (bytes === 0) return '0 MB';
-        const mb = bytes / (1024 * 1024);
-        return mb.toFixed(1) + ' MB';
-    }
-
-    declineDownload() {
-        console.log('User declined AI model download');
-        this.setStoredStatus({
-            userDeclinedDownload: true,
-            lastDeclineTime: Date.now()
-        });
-        this.hideModal(document.getElementById('ai-download-modal'));
-        
-        // Hide chat interface
-        const chatInterface = document.getElementById('ai-chat-interface');
-        if (chatInterface) {
-            chatInterface.style.display = 'none';
-        }
-    }
-
-    hideProgressModal() {
-        console.log('📤 Hiding progress modal - download continues in background');
-        this.hideModal(document.getElementById('ai-progress-modal'));
-        
-        // DO NOT show chat interface here - it should only appear when download actually completes
-        // The download is still in progress, just hidden from view
-        console.log('⏳ Download still in progress in background - chat interface remains hidden until completion');
-    }
-
-    showDownloadError(message) {
-        this.hideModal(document.getElementById('ai-progress-modal'));
-        
-        // You could show an error modal here
-        console.error('Download failed:', message);
-        
-        // For now, show the unavailable modal
-        this.showModal('ai-unavailable-modal');
-    }
-
-    /**
-     * Show inline teaser with customized messaging based on browser/device info and AI availability
-     */
-    showTeaserModal(browserInfo, detectionResult = null) {
-        const teaserSection = document.getElementById('ai-teaser-section');
-        const inlineText = document.getElementById('ai-teaser-inline-text');
-        const requirementsSection = document.getElementById('ai-requirements-inline');
-        const tellMeMoreBtn = document.getElementById('ai-tell-me-more-inline');
-        
-        if (!teaserSection) return;
-        
-        // Reset requirements section to collapsed state
-        if (requirementsSection) {
-            requirementsSection.classList.add('hidden');
-        }
-        if (tellMeMoreBtn) {
-            tellMeMoreBtn.classList.remove('expanded');
-            
-            // Clear any existing event listeners
-            const newBtn = tellMeMoreBtn.cloneNode(true);
-            tellMeMoreBtn.parentNode.replaceChild(newBtn, tellMeMoreBtn);
-            
-            // Bind click event for inline button
-            newBtn.addEventListener('click', () => this.toggleInlineRequirements());
-        }
-        
-        // Check if chat interface is actually visible/available
-        const chatInterface = document.getElementById('ai-chat-interface');
-        const isChatInterfaceVisible = chatInterface && chatInterface.style.display !== 'none' && !chatInterface.classList.contains('hidden');
-        
-        // Determine if AI is available and working
-        const isAIAvailable = detectionResult?.isSupported && detectionResult?.capabilities?.available === 'available';
-        const isCompatible = browserInfo.isCompatibleDevice && browserInfo.isCompatibleBrowser;
-        
-        let customMessage = '';
-        let buttonText = 'Tell me more';
-        
-        // If chat interface is visible, AI is working - encourage them to try it!
-        if (isChatInterfaceVisible || isAIAvailable) {
-            customMessage = "Hey! Want to chat with an AI version of me? Click the floating chat button to get started!";
-            buttonText = 'About this feature';
-        } else if (isCompatible) {
-            // Compatible setup but AI features need to be enabled or downloaded
-            if (detectionResult?.isSupported) {
-                // AI detection succeeded but needs download
-                const availability = detectionResult?.capabilities?.available;
-                if (availability === 'downloadable') {
-                    customMessage = "You can chat with an AI version of me! The AI model just needs to be downloaded first.";
-                } else if (availability === 'downloading') {
-                    customMessage = "Great! The AI model is downloading. Soon you'll be able to chat with an AI version of me!";
-                } else {
-                    customMessage = "You could chat with an AI version of me, but it's not quite ready yet.";
-                }
-            } else {
-                // AI detection failed but browser/device is compatible - need to enable features
-                if (browserInfo.isChrome) {
-                    customMessage = "You can chat with an AI version of me! Just activate chrome://flags/#prompt-api-for-gemini-nano first.";
-                } else {
-                    customMessage = "You can chat with an AI version of me! You just need to enable Chrome's AI features first.";
-                }
-            }
-            buttonText = 'Tell me more';
-        } else {
-            // Not compatible device or browser
-            if (browserInfo.isMobile || browserInfo.isChromeOS) {
-                if (browserInfo.isAndroid) {
-                    customMessage = "You could chat with an AI version of me, but it's not available on Android devices yet.";
-                } else if (browserInfo.isIOS) {
-                    customMessage = "You could chat with an AI version of me, but it's not available on iOS devices yet.";
-                } else if (browserInfo.isChromeOS) {
-                    customMessage = "You could chat with an AI version of me, but it's not available on ChromeOS yet.";
-                } else {
-                    customMessage = "You could chat with an AI version of me, but it's not available on mobile devices yet.";
-                }
-            } else if (!browserInfo.isChrome) {
-                if (browserInfo.isSafari) {
-                    customMessage = "You could chat with an AI version of me, but it requires Chrome with special features enabled.";
-                } else if (browserInfo.isFirefox) {
-                    customMessage = "You could chat with an AI version of me, but it requires Chrome with special features enabled.";
-                } else if (browserInfo.isEdge) {
-                    customMessage = "You could chat with an AI version of me, but it requires Chrome (not Edge) with special features enabled.";
-                } else {
-                    customMessage = "You could chat with an AI version of me, but it requires Chrome with special features enabled.";
-                }
-            } else if (browserInfo.isChrome && browserInfo.chromeVersion < 127) {
-                customMessage = `You could chat with an AI version of me, but your Chrome version (${browserInfo.chromeVersion}) needs to be updated to 127 or higher.`;
-            } else {
-                customMessage = "You could chat with an AI version of me, but it requires Chrome with special AI features enabled.";
-            }
-            buttonText = 'Tell me more';
-        }
-        
-        // Update inline content
-        if (inlineText) {
-            inlineText.textContent = customMessage;
-        }
-        
-        // Update button text
-        const newTellMeMoreBtn = document.getElementById('ai-tell-me-more-inline');
-        if (newTellMeMoreBtn) {
-            newTellMeMoreBtn.innerHTML = `
-                ${buttonText}
-                <svg class="w-4 h-4 ml-1 transform transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                </svg>
-            `;
-        }
-        
-        // Show the teaser section
-        teaserSection.classList.remove('hidden');
-        teaserSection.style.display = 'block';
-        
-        console.log('Showing inline teaser with message:', customMessage);
-    }
-
-    /**
-     * Toggle the inline requirements section visibility
-     */
-    toggleInlineRequirements() {
-        const requirementsSection = document.getElementById('ai-requirements-inline');
-        const tellMeMoreBtn = document.getElementById('ai-tell-me-more-inline');
-        const availableContent = document.getElementById('ai-available-content');
-        const unavailableContent = document.getElementById('ai-unavailable-content');
-        
-        if (!requirementsSection || !tellMeMoreBtn) return;
-        
-        const isExpanded = !requirementsSection.classList.contains('hidden');
-        const currentButtonText = tellMeMoreBtn.textContent.trim();
-        
-        if (isExpanded) {
-            // Collapse
-            requirementsSection.classList.add('hidden');
-            tellMeMoreBtn.classList.remove('expanded');
-            
-            const buttonText = currentButtonText.includes('feature') ? 'About this feature' : 'Tell me more';
-            tellMeMoreBtn.innerHTML = `
-                ${buttonText}
-                <svg class="w-4 h-4 ml-1 transform transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                </svg>
-            `;
-            console.log('Inline requirements section collapsed');
-        } else {
-            // Expand and show appropriate content
-            requirementsSection.classList.remove('hidden');
-            tellMeMoreBtn.classList.add('expanded');
-            
-            // Determine which content to show based on current state
-            const isAIWorking = window.lightweightChat && document.getElementById('ai-chat-interface').style.display !== 'none';
-            
-            if (isAIWorking && availableContent && unavailableContent) {
-                // Show AI available content
-                availableContent.classList.remove('hidden');
-                unavailableContent.classList.add('hidden');
-                console.log('Showing AI available content');
-            } else if (unavailableContent && availableContent) {
-                // Show AI unavailable content (requirements)
-                unavailableContent.classList.remove('hidden');
-                availableContent.classList.add('hidden');
-                console.log('Showing AI unavailable content');
-            }
-            
-            tellMeMoreBtn.innerHTML = `
-                Show less
-                <svg class="w-4 h-4 ml-1 transform transition-transform duration-200 rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                </svg>
-            `;
-            console.log('Inline requirements section expanded');
-        }
-        
-        // Smooth scroll to show expanded content
-        if (!isExpanded) {
-            setTimeout(() => {
-                requirementsSection.scrollIntoView({ 
-                    behavior: 'smooth', 
-                    block: 'nearest' 
-                });
-            }, 200);
-        }
-    }
-
-    /**
-     * Toggle the modal requirements section visibility (kept for modal fallback)
-     */
-    toggleRequirements() {
-        const requirementsSection = document.getElementById('ai-requirements-section');
-        const tellMeMoreBtn = document.getElementById('ai-tell-me-more');
-        
-        if (!requirementsSection || !tellMeMoreBtn) return;
-        
-        const isExpanded = !requirementsSection.classList.contains('hidden');
-        
-        if (isExpanded) {
-            // Collapse
-            requirementsSection.classList.add('hidden');
-            tellMeMoreBtn.classList.remove('expanded');
-            tellMeMoreBtn.textContent = 'Tell me more';
-            console.log('Modal requirements section collapsed');
-        } else {
-            // Expand
-            requirementsSection.classList.remove('hidden');
-            tellMeMoreBtn.classList.add('expanded');
-            tellMeMoreBtn.textContent = 'Show less';
-            console.log('Modal requirements section expanded');
-        }
-        
-        // Smooth scroll to show expanded content
-        if (!isExpanded) {
-            setTimeout(() => {
-                requirementsSection.scrollIntoView({ 
-                    behavior: 'smooth', 
-                    block: 'nearest' 
-                });
-            }, 200);
-        }
-    }
-
-    initializeChatInterface(aiSession = null) {
-        if (window.lightweightChat) {
-            console.log('Chat interface already initialized');
-            return;
-        }
-
-        console.log('Initializing chat interface...');
-        lightweightChat = new LightweightChat(aiSession);
-        window.lightweightChat = lightweightChat;
-        
-        const chatInterface = document.getElementById('ai-chat-interface');
-        if (chatInterface) {
-            chatInterface.style.display = 'block';
-        }
-    }
-}
-
-// Initialize chat when DOM is ready AND handle AI availability states
+// Initialize chat interface with consolidated AI management
 let lightweightChat;
-let aiDownloadManager;
 
-// Enhanced browser and device detection
-function detectBrowserAndDevice() {
-    const userAgent = navigator.userAgent.toLowerCase();
-    
-    // Mobile detection
-    const isMobile = /android|iphone|ipad|ipod|blackberry|iemobile|opera mini|mobile/i.test(userAgent);
-    const isAndroid = /android/i.test(userAgent);
-    const isIOS = /iphone|ipad|ipod/i.test(userAgent);
-    const isChromeOS = /cros/i.test(userAgent);
-    
-    // Browser detection
-    const isChrome = /chrome/i.test(userAgent) && !/edge|edg/i.test(userAgent);
-    const isEdge = /edge|edg/i.test(userAgent);
-    const isFirefox = /firefox/i.test(userAgent);
-    const isSafari = /safari/i.test(userAgent) && !/chrome/i.test(userAgent);
-    
-    // Chrome version detection
-    const chromeMatch = userAgent.match(/chrome\/(\d+)/);
-    const chromeVersion = chromeMatch ? parseInt(chromeMatch[1]) : null;
-    
-    return {
-        isMobile,
-        isAndroid,
-        isIOS,
-        isChromeOS,
-        isChrome,
-        isEdge,
-        isFirefox,
-        isSafari,
-        chromeVersion,
-        isCompatibleBrowser: isChrome && chromeVersion >= 127,
-        isCompatibleDevice: !isMobile && !isChromeOS
-    };
-}
-
-// Enhanced chat initialization that handles all AI availability states
-function initializeChatWhenReady() {
-    // Initialize download manager
-    aiDownloadManager = new AIDownloadManager();
-    window.aiDownloadManager = aiDownloadManager;
-
-    // Check browser and device compatibility first
-    const browserInfo = detectBrowserAndDevice();
-    console.log('Browser and device info:', browserInfo);
-    
-    // Always show teaser - even for compatible setups
-    setTimeout(() => {
-        aiDownloadManager.showTeaserModal(browserInfo, null); // Pass null for initial detection
-    }, 500);
-
-    // Listen for AI feature detection completion
-    window.addEventListener('aiFeatureDetectionComplete', (event) => {
-        console.log('AI feature detection completed:', event.detail);
-        handleAIAvailabilityState(event.detail, browserInfo);
-    });
-    
-    // If AI detection has already completed, handle the current state
-    if (window.AIFeatureDetector) {
-        const capabilities = window.AIFeatureDetector.getCapabilities();
-        if (capabilities) {
-            handleAIAvailabilityState({
-                isSupported: window.AIFeatureDetector.isAISupported(),
-                capabilities: capabilities
-            }, browserInfo);
-        }
-    }
-}
-
-function handleAIAvailabilityState(detectionResult, browserInfo) {
-    const { isSupported, capabilities } = detectionResult;
-    const chatInterface = document.getElementById('ai-chat-interface');
-    
-    // Always update teaser with availability info
-    setTimeout(() => {
-        aiDownloadManager.showTeaserModal(browserInfo, detectionResult);
-    }, 100);
-    
-    if (!isSupported) {
-        console.log('AI not supported - chat interface hidden');
-        if (chatInterface) {
-            chatInterface.style.display = 'none';
-        }
+/**
+ * Initialize chat interface when AI becomes available
+ */
+function initializeChatInterface() {
+    if (lightweightChat) {
+        console.log('Chat interface already initialized');
         return;
     }
 
-    const availability = capabilities?.available;
-    console.log('AI availability state:', availability);
-
-    switch (availability) {
-        case 'available':
-            console.log('AI is available - showing chat button (lazy loading)');
-            if (chatInterface) {
-                chatInterface.style.display = 'block';
-                chatInterface.classList.remove('hidden');
-            }
-            
-            // Initialize the basic chat interface (without AI session) - session created on first click
-            if (!window.lightweightChat) {
-                aiDownloadManager.initializeChatInterface();
-            }
-            break;
-
-        case 'downloadable':
-            console.log('AI model needs to be downloaded - hiding chat button');
-            if (chatInterface) {
-                chatInterface.style.display = 'none';
-            }
-            
-            if (aiDownloadManager.shouldShowDownloadPrompt()) {
-                aiDownloadManager.showModal('ai-download-modal');
-            } else {
-                console.log('User declined download recently - hiding chat interface');
-            }
-            break;
-
-        case 'downloading':
-            console.log('AI model is currently downloading - hiding chat button');
-            if (chatInterface) {
-                chatInterface.style.display = 'none';
-            }
-            aiDownloadManager.showModal('ai-progress-modal');
-            
-            // Show initial download starting message
-            const downloadStatus = document.getElementById('download-status');
-            if (downloadStatus) {
-                downloadStatus.textContent = 'AI model download in progress...';
-            }
-            break;
-
-        default:
-            console.log('AI unavailable - hiding chat button');
-            if (chatInterface) {
-                chatInterface.style.display = 'none';
-            }
-            break;
+    try {
+        lightweightChat = new LightweightChat();
+        window.lightweightChat = lightweightChat;
+        console.log('✅ Chat interface initialized');
+    } catch (error) {
+        console.error('❌ Failed to initialize chat interface:', error);
     }
 }
 
+/**
+ * Listen for AI state changes from consolidated AIManager
+ */
+function listenForChatStateChanges() {
+    if (window.AIManager) {
+        window.AIManager.addEventListener('statechange', (event) => {
+            const { currentState } = event.detail;
+            
+            // Initialize chat interface when AI becomes available
+            if (currentState === 'available' && !lightweightChat) {
+                initializeChatInterface();
+            }
+        });
+        
+        console.log('👂 Chat interface listening to consolidated AIManager state changes');
+    }
+}
+
+// Initialize when DOM is ready
 if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initializeChatWhenReady);
+    document.addEventListener('DOMContentLoaded', listenForChatStateChanges);
 } else {
-    initializeChatWhenReady();
+    listenForChatStateChanges();
 }
 
 // Test function

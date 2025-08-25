@@ -144,15 +144,51 @@
                 <div id="ai-teaser-section" class="hidden mt-8 max-w-2xl mx-auto">
                     <div class="flip-card-container perspective-1000">
                         <div class="flip-card-inner" id="flip-card-inner">
-                            <!-- Front Side: Options Interface -->
+                            <!-- Front Side: Dynamic AI Options Interface -->
                             <div class="flip-card-front">
                                 <div class="bg-gradient-to-br from-blue-500/10 to-blue-600/5 border border-blue-500/20 rounded-xl p-6 backdrop-blur-sm">
                                     <div class="text-center">
                                         <h3 class="text-xl font-semibold text-gray-100 mb-3">Wanna know more about me?</h3>
+                                        
+                                        <!-- Dynamic content based on AI state -->
                                         <p id="ai-teaser-inline-text" class="text-gray-300 text-sm mb-4 leading-relaxed">
                                             You can either flip this card and view my info or chat with AI Karthik and get a sneak peek with hidden insights (and hallucinations 😉)
                                         </p>
-                                        <div class="flex flex-col sm:flex-row gap-3 justify-center">
+                                        <!-- Chrome AI Documentation Link -->
+                                        <a href="https://developer.chrome.com/docs/ai/get-started" target="_blank" rel="noopener noreferrer" class="inline-flex items-center text-xs text-gray-500 hover:text-gray-400 transition-colors duration-200 focus:outline-none focus:ring-1 focus:ring-gray-400 rounded px-2 py-1 mb-2 underline">
+                                            Learn more about Chrome built-in AI
+                                            <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+                                            </svg>
+                                        </a>
+                                        <!-- Loading indicator for AI detection (initially shown) -->
+                                        <div id="ai-detection-loading" class="mb-4">
+                                            <div class="flex items-center justify-center space-x-2">
+                                                <div class="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-400"></div>
+                                                <span class="text-xs text-gray-400">Checking AI capabilities...</span>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Downloading indicator (hidden by default) -->
+                                        <div id="ai-downloading-indicator" class="hidden mb-4">
+                                            <div class="flex items-center justify-center space-x-2">
+                                                <div class="animate-pulse rounded-full h-3 w-3 bg-blue-400"></div>
+                                                <span class="text-xs text-blue-400">AI model downloading...</span>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Dynamic buttons container -->
+                                        <div id="ai-action-buttons" class="flex flex-col sm:flex-row gap-3 justify-center mb-4">
+                                            <!-- Download AI button (hidden by default) -->
+                                            <button id="ai-download-btn" class="hidden inline-flex items-center justify-center bg-emerald-500/10 text-emerald-400 hover:bg-emerald-500/20 hover:text-emerald-300 font-medium text-sm transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:ring-offset-2 focus:ring-offset-gray-900 rounded-lg px-4 py-2">
+                                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10"/>
+                                                </svg>
+                                                Download AI Model
+                                            </button>
+                                            
+                                            
+                                            <!-- Always visible flip card button -->
                                             <button id="flip-card-inline-btn" class="inline-flex items-center justify-center bg-blue-500/10 text-blue-400 hover:bg-blue-500/20 hover:text-blue-300 font-medium text-sm transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-gray-900 rounded-lg px-4 py-2">
                                                 <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
@@ -160,6 +196,7 @@
                                                 No Thanks, I like boring
                                             </button>
                                         </div>
+                                        
                                     </div>
                                 </div>
                             </div>
@@ -897,166 +934,6 @@
         </footer>
     </main>
 
-    <!-- AI Download Modal -->
-    <div id="ai-download-modal" class="ai-modal hidden" aria-hidden="true">
-        <div class="ai-modal-backdrop"></div>
-        <div class="ai-modal-content">
-            <div class="ai-modal-header">
-                <h3>Chat with AI Karthik</h3>
-                <button class="ai-modal-close" aria-label="Close modal">×</button>
-            </div>
-            <div class="ai-modal-body">
-                <div class="ai-modal-icon">
-                    <svg class="w-12 h-12 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
-                    </svg>
-                </div>
-                <p class="ai-modal-text">
-                    Would you like to chat with AI Karthik? This uses Chrome's built-in Gemini Nano model which needs to be downloaded first. Don't worry, once downloaded you can use it for any site that supports chrome's built-in AI.
-                </p>
-                <div class="ai-modal-info">
-                    <ul>
-                        <li>✓ Free Chrome AI feature</li>
-                        <li>✓ Works offline once downloaded</li>
-                        <li>✓ About ~4.5GB download</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="ai-modal-actions">
-                <button id="ai-download-yes" class="ai-btn ai-btn-primary">Yes, Download & Chat</button>
-                <button id="ai-download-later" class="ai-btn ai-btn-secondary">Maybe Later</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- AI Progress Modal -->
-    <div id="ai-progress-modal" class="ai-modal hidden" aria-hidden="true">
-        <div class="ai-modal-backdrop"></div>
-        <div class="ai-progress-content">
-            <div class="ai-progress-header">
-                <h3>Downloading AI Model</h3>
-            </div>
-            <div class="ai-progress-body">
-                <!-- Fun AI Download Animation -->
-                <div class="ai-download-animation">
-                    <div class="ai-brain-container">
-                        <div class="ai-brain">
-                            <div class="brain-left pulse-1"></div>
-                            <div class="brain-right pulse-2"></div>
-                        </div>
-                        <div class="ai-data-streams">
-                            <div class="data-stream stream-1"></div>
-                            <div class="data-stream stream-2"></div>
-                            <div class="data-stream stream-3"></div>
-                            <div class="data-stream stream-4"></div>
-                        </div>
-                    </div>
-                    <div class="loading-dots">
-                        <span class="dot dot-1"></span>
-                        <span class="dot dot-2"></span>
-                        <span class="dot dot-3"></span>
-                    </div>
-                </div>
-                
-                <p class="ai-progress-text">Downloading Chrome's Gemini Nano model...</p>
-                <div class="ai-progress-info">
-                    <p id="download-status">This may take a few minutes depending on your connection.</p>
-                    <p><strong>Please keep this tab open</strong> during the download.</p>
-                </div>
-            </div>
-            <div class="ai-progress-actions">
-                <button id="ai-progress-background" class="ai-btn ai-btn-secondary">Continue in Background</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- AI Unavailable Modal with Two Options -->
-    <div id="ai-unavailable-modal" class="ai-modal hidden" aria-hidden="true">
-        <div class="ai-modal-backdrop"></div>
-        <div class="ai-modal-content">
-            <div class="ai-modal-header">
-                <h3 id="ai-teaser-title">Wanna know more about me?</h3>
-                <button class="ai-modal-close" aria-label="Close modal">×</button>
-            </div>
-            <div class="ai-modal-body">
-                <div class="ai-modal-icon">
-                    <svg class="w-12 h-12 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
-                    </svg>
-                </div>
-                <p class="ai-modal-text" id="ai-teaser-text">
-                    You can either flip this card and view my info or chat with AI Karthik and get a sneak peek with hidden insights (and hallucinations 😉)
-                </p>
-                
-                <!-- Requirements Section (initially hidden) -->
-                <div id="ai-requirements-section" class="ai-modal-requirements hidden">
-                    <div class="ai-requirements-divider"></div>
-                    <h4>System Requirements for AI Chat:</h4>
-                    <div class="ai-requirements-grid">
-                        <div class="ai-requirement-item">
-                            <strong>Operating System:</strong>
-                            <ul>
-                                <li>Windows 10 or 11</li>
-                                <li>macOS 13+ (Ventura and onwards)</li>
-                                <li>Linux</li>
-                            </ul>
-                        </div>
-                        <div class="ai-requirement-item">
-                            <strong>Browser:</strong>
-                            <ul>
-                                <li>Chrome Canary or Chrome Dev</li>
-                                <li>Version 127+ required</li>
-                                <li>AI flags must be enabled</li>
-                            </ul>
-                        </div>
-                        <div class="ai-requirement-item">
-                            <strong>Storage:</strong>
-                            <ul>
-                                <li>At least 22 GB free space</li>
-                                <li>On volume with Chrome profile</li>
-                            </ul>
-                        </div>
-                        <div class="ai-requirement-item ai-not-supported">
-                            <strong>Not Yet Supported:</strong>
-                            <ul>
-                                <li>Chrome for Android</li>
-                                <li>Chrome for iOS</li>
-                                <li>Chrome for ChromeOS</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="ai-modal-links">
-                        <a href="https://www.google.com/chrome/canary/" target="_blank" rel="noopener noreferrer" class="ai-link">
-                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
-                            </svg>
-                            Download Chrome Canary
-                        </a>
-                        <a href="https://developer.chrome.com/docs/ai/built-in" target="_blank" rel="noopener noreferrer" class="ai-link">
-                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
-                            </svg>
-                            Setup Guide
-                        </a>
-                    </div>
-                </div>
-            </div>
-            <div class="ai-modal-actions">
-                <button id="flip-card-btn" class="ai-btn ai-btn-primary">
-                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
-                    </svg>
-                    Flip this Card
-                </button>
-                <button id="ai-chat-btn" class="ai-btn ai-btn-secondary">
-                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
-                    </svg>
-                    Chat with AI Karthik
-                </button>
-            </div>
-        </div>
-    </div>
 
     <!-- AI Chat Interface (conditionally rendered based on browser support) -->
     <div id="ai-chat-interface" class="chat-widget hidden" aria-hidden="true">
@@ -1098,8 +975,8 @@
     <!-- Profile Data -->
     <script src="scripts/data.js"></script>
     
-    <!-- AI Feature Detection -->
-    <script src="scripts/ai-feature-detection.js"></script>
+    <!-- Consolidated AI Manager (handles all AI functionality) -->
+    <script src="scripts/ai-manager.js"></script>
     
     <!-- AI Chat Interface -->
     <script src="scripts/ai-chat-interface.js"></script>

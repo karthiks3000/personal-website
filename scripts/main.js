@@ -1156,104 +1156,19 @@ window.addEventListener('unhandledrejection', function(e) {
     // In production, you might want to send this to an error tracking service
 });
 
-// AI Feature Detection Handling - Using LanguageModel API
-async function initAIFeatureHandling() {
-    // Show AI status indicator for debugging
+// AI Feature Status Handling (simplified for centralized state management)
+function initAIFeatureHandling() {
+    console.log('🔍 AI feature handling initialized - using centralized state management');
+    
+    // Hide debug indicator since we're using inline teaser
     const statusIndicator = document.getElementById('ai-status-indicator');
-    const statusText = document.getElementById('ai-status-text');
-    
-    if (!statusIndicator || !statusText) {
-        console.log('AI status indicator elements not found, skipping AI feature handling');
-        return;
+    if (statusIndicator) {
+        statusIndicator.classList.add('hidden');
     }
     
-    // Setup status indicator with dismiss button
-    setupStatusIndicator(statusIndicator, statusText);
-    
-    try {
-        // Follow the official Chrome Prompt API pattern
-        console.log('🔍 Checking Chrome AI capabilities...');
-        
-        // Step 1: Check if LanguageModel is available (correct API)
-        if (typeof LanguageModel === 'undefined') {
-            throw new Error('LanguageModel global not available');
-        }
-        
-        console.log('✅ LanguageModel global found');
-        
-        // Step 2: Check availability first
-        const availability = await LanguageModel.availability();
-        console.log(`🎯 AI availability: ${availability}`);
-        
-        // Step 3: Get model parameters if available
-        let defaultTemperature = 0.8, maxTemperature = 2.0, defaultTopK = 3, maxTopK = 8;
-        if (availability !== 'unavailable') {
-            try {
-                const params = await LanguageModel.params();
-                defaultTemperature = params.defaultTemperature || 0.8;
-                maxTemperature = params.maxTemperature || 2.0;
-                defaultTopK = params.defaultTopK || 3;
-                maxTopK = params.maxTopK || 8;
-                console.log(`📊 Model params: topK(${defaultTopK}-${maxTopK}), temp(${defaultTemperature}-${maxTemperature})`);
-            } catch (paramError) {
-                console.log('Could not get detailed parameters, using defaults');
-            }
-        }
-        
-        // Store capabilities globally for other components
-        window.aiCapabilities = { available: availability };
-        window.aiModelParams = { defaultTemperature, maxTemperature, defaultTopK, maxTopK };
-        
-        // Update UI based on availability
-        updateStatusIndicator(statusIndicator, statusText, availability);
-        
-    } catch (error) {
-        console.log('❌ AI features not available:', error.message);
-        window.aiSupported = false;
-        
-        updateStatusIndicator(statusIndicator, statusText, 'error', error.message);
-    }
-}
-
-// Setup status indicator with dismiss functionality
-function setupStatusIndicator(statusIndicator, statusText) {
-    // Show the indicator and add basic styling
-    statusIndicator.classList.remove('hidden');
-    statusIndicator.classList.add('bg-blue-900/50', 'border-blue-500/50', 'text-blue-300', 'relative');
-    
-    // Set initial text
-    statusText.innerHTML = 'Checking AI capabilities...';
-    
-    // Add dismiss button if not already present
-    if (!statusIndicator.querySelector('.status-dismiss-btn')) {
-        const dismissBtn = document.createElement('button');
-        dismissBtn.className = 'status-dismiss-btn absolute top-2 right-2 p-1 hover:bg-gray-700/50 rounded transition-colors duration-200';
-        dismissBtn.setAttribute('aria-label', 'Dismiss AI status');
-        dismissBtn.innerHTML = '×';
-        dismissBtn.style.fontSize = '18px';
-        dismissBtn.style.lineHeight = '1';
-        dismissBtn.style.color = 'rgba(156, 163, 175, 0.8)';
-        
-        dismissBtn.addEventListener('click', () => {
-            statusIndicator.classList.add('hidden');
-        });
-        
-        statusIndicator.appendChild(dismissBtn);
-    }
-}
-
-// Update status indicator based on AI availability
-function updateStatusIndicator(statusIndicator, statusText, availability, errorMessage = null) {
-    // Hide the status indicator since we're using inline teaser instead
-    statusIndicator.classList.add('hidden');
-    window.aiSupported = false;
-    
-    // Set global variables for other components to use
-    if (availability === 'available') {
-        window.aiSupported = true;
-    } else if (availability === 'downloadable' || availability === 'downloading') {
-        window.aiSupported = true;
-    }
+    // The actual AI detection is handled by AIStateManager
+    // Legacy support for other parts of the code
+    window.aiSupported = false; // Will be updated by state manager
 }
 
 // Helper function to create AI session using correct LanguageModel API
@@ -3990,7 +3905,7 @@ Keep responses concise and conversational. If asked about specific technical det
     });
 }
 
-// Initialize Flip Card handling
+// Initialize Flip Card handling (simplified without modals)
 function initPersonalCardModal() {
     console.log('Initializing flip card functionality...');
     
@@ -3998,47 +3913,10 @@ function initPersonalCardModal() {
     const flipCardInner = document.getElementById('flip-card-inner');
     const flipCardInlineBtn = document.getElementById('flip-card-inline-btn');
     const flipBackBtn = document.getElementById('flip-back-btn');
-    const aiChatInlineBtn = document.getElementById('ai-chat-inline-btn');
-    const aiUnavailableModal = document.getElementById('ai-unavailable-modal');
     
     if (!flipCardInner) {
         console.warn('Flip card elements not found');
         return;
-    }
-    
-    // Helper function to show modal
-    function showModal(modal) {
-        if (!modal) return;
-        modal.classList.remove('hidden');
-        modal.setAttribute('aria-hidden', 'false');
-        
-        // Smooth show animation
-        setTimeout(() => {
-            modal.classList.add('show');
-        }, 10);
-        
-        // Focus on the first focusable element
-        const firstFocusable = modal.querySelector('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
-        if (firstFocusable) {
-            setTimeout(() => firstFocusable.focus(), 150);
-        }
-        
-        // Prevent body scroll
-        document.body.style.overflow = 'hidden';
-    }
-    
-    function hideModal(modal) {
-        if (!modal) return;
-        modal.classList.remove('show');
-        
-        // Hide after animation
-        setTimeout(() => {
-            modal.classList.add('hidden');
-            modal.setAttribute('aria-hidden', 'true');
-        }, 300);
-        
-        // Restore body scroll
-        document.body.style.overflow = '';
     }
     
     // Flip card to show personal info
@@ -4077,7 +3955,7 @@ function initPersonalCardModal() {
         announceToScreenReader('Card flipped back to options');
     }
     
-    // Inline "Flip this Card" button handler
+    // Inline "No Thanks, I like boring" button handler
     if (flipCardInlineBtn) {
         flipCardInlineBtn.addEventListener('click', function() {
             console.log('Inline flip card button clicked');
@@ -4093,7 +3971,7 @@ function initPersonalCardModal() {
         });
     }
     
-    // "Back to Options" button handler
+    // "Back" button handler
     if (flipBackBtn) {
         flipBackBtn.addEventListener('click', function() {
             console.log('Flip back button clicked');
@@ -4108,134 +3986,6 @@ function initPersonalCardModal() {
             }
         });
     }
-    
-    // Inline "Chat with AI Karthik" button handler
-    if (aiChatInlineBtn) {
-        aiChatInlineBtn.addEventListener('click', function() {
-            console.log('Inline AI chat button clicked');
-            
-            // Show AI unavailable modal
-            showModal(aiUnavailableModal);
-            
-            // Announce change to screen readers
-            announceToScreenReader('Showing AI chat information');
-        });
-    }
-    
-    // Modal handlers for AI chat (keeping existing functionality)
-    const flipCardBtn = document.getElementById('flip-card-btn');
-    const aiChatBtn = document.getElementById('ai-chat-btn');
-    const aiTellMeMoreBtn = document.getElementById('ai-tell-me-more');
-    const aiRequirementsSection = document.getElementById('ai-requirements-section');
-    
-    // Modal "Chat with AI Karthik" button handler
-    if (aiChatBtn) {
-        aiChatBtn.addEventListener('click', function() {
-            console.log('AI chat button clicked');
-            
-            // Check if AI requirements are shown, if not show them
-            if (aiRequirementsSection && aiRequirementsSection.classList.contains('hidden')) {
-                // Show requirements section
-                aiRequirementsSection.classList.remove('hidden');
-                
-                // Scroll to requirements
-                setTimeout(() => {
-                    aiRequirementsSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                }, 100);
-                
-                // Update button text
-                this.innerHTML = `
-                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
-                    </svg>
-                    Got it, maybe later
-                `;
-                
-                announceToScreenReader('AI chat requirements displayed');
-            } else {
-                // Requirements are already shown, close modal
-                hideModal(aiUnavailableModal);
-                announceToScreenReader('AI chat setup information closed');
-            }
-        });
-    }
-    
-    // "Tell me more" button handler (existing functionality)
-    if (aiTellMeMoreBtn) {
-        aiTellMeMoreBtn.addEventListener('click', function() {
-            console.log('Tell me more button clicked');
-            
-            if (aiRequirementsSection) {
-                const isHidden = aiRequirementsSection.classList.contains('hidden');
-                
-                if (isHidden) {
-                    // Show requirements
-                    aiRequirementsSection.classList.remove('hidden');
-                    this.classList.add('expanded');
-                    
-                    // Update button text and icon
-                    this.innerHTML = `
-                        Hide requirements
-                        <svg class="w-4 h-4 ml-1 transform transition-transform duration-200 rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                        </svg>
-                    `;
-                    
-                    announceToScreenReader('AI requirements information expanded');
-                } else {
-                    // Hide requirements
-                    aiRequirementsSection.classList.add('hidden');
-                    this.classList.remove('expanded');
-                    
-                    // Reset button text and icon
-                    this.innerHTML = `
-                        Tell me more
-                        <svg class="w-4 h-4 ml-1 transform transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                        </svg>
-                    `;
-                    
-                    announceToScreenReader('AI requirements information collapsed');
-                }
-            }
-        });
-    }
-    
-    // Close modal handlers
-    const closeButtons = document.querySelectorAll('.ai-modal-close');
-    closeButtons.forEach(closeBtn => {
-        closeBtn.addEventListener('click', function() {
-            const modal = this.closest('.ai-modal');
-            hideModal(modal);
-        });
-    });
-    
-    // Close modals on backdrop click
-    const modalBackdrops = document.querySelectorAll('.ai-modal-backdrop');
-    modalBackdrops.forEach(backdrop => {
-        backdrop.addEventListener('click', function() {
-            const modal = this.closest('.ai-modal');
-            hideModal(modal);
-        });
-    });
-    
-    // Close modals on Escape key
-    document.addEventListener('keydown', function(event) {
-        if (event.key === 'Escape') {
-            const visibleModal = document.querySelector('.ai-modal:not(.hidden)');
-            if (visibleModal) {
-                hideModal(visibleModal);
-            }
-        }
-    });
-    
-    // Auto-show AI unavailable modal on page load (for testing - can be removed later)
-    setTimeout(() => {
-        if (!window.aiSupported) {
-            console.log('Auto-showing AI unavailable modal for testing');
-            showModal(aiUnavailableModal);
-        }
-    }, 2000);
     
     console.log('Flip card functionality initialized successfully');
 }
