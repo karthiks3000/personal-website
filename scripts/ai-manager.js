@@ -187,10 +187,10 @@ class AIManager extends EventTarget {
                     m.addEventListener('downloadprogress', (e) => {
                         // e.loaded ranges from 0 to 1, e.total is always 1
                         const percentComplete = Math.round(e.loaded * 100);
-                        this.log(`📥 Download progress: ${percentComplete}% (loaded: ${e.loaded})`);
+                        // this.log(`📥 Download progress: ${percentComplete}% (loaded: ${e.loaded})`);
                         
                         // Update downloading indicator in teaser
-                        this.updateDownloadProgress(e.loaded);
+                        this.updateDownloadProgress(percentComplete);
                         
                         // Check for completion (e.loaded === 1)
                         if (e.loaded === 1) {

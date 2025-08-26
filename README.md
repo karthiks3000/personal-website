@@ -315,9 +315,109 @@ php -S localhost:8000
 4. Verify `data.js` syntax is correct (use JSON validator)
 
 ### AI Chat Not Appearing
-1. AI chat requires Chrome 127+ with experimental flags
+1. AI chat requires Chrome 127+ with experimental flags OR Origin Trial token
 2. Feature will automatically hide if not supported
 3. This is expected behavior and doesn't affect the main site
+
+## 🤖 Chrome Prompt API Origin Trial Setup
+
+The AI chat feature uses Chrome's built-in Prompt API (Gemini Nano). Instead of requiring users to manually enable Chrome flags, you can register for Google's Origin Trial to automatically enable the feature for your domain visitors.
+
+### What is the Origin Trial?
+
+The Chrome Prompt API Origin Trial allows websites to use experimental Chrome AI features without requiring users to manually enable flags. When you register your domain and add the origin trial token to your HTML, Chrome automatically enables the Prompt API for all visitors to your site.
+
+**Benefits over manual Chrome flags:**
+- ✅ **Better User Experience**: Visitors don't need to configure anything
+- ✅ **Automatic Activation**: AI features work immediately for supported browsers  
+- ✅ **Higher Adoption**: More users will experience your AI features
+- ✅ **Professional Setup**: No technical knowledge required from visitors
+
+### Step-by-Step Registration Process
+
+#### 1. Register for Origin Trial
+1. Visit [Chrome Origin Trials](https://developer.chrome.com/origintrials/)
+2. Sign in with your Google account
+3. Click "Register for New Trial"
+4. Search for **"Prompt API for Gemini Nano"** or **"AI Prompt API Multimodal Input"**
+5. Select the trial and click "Register"
+
+#### 2. Add Your Domain
+1. Enter your website domain (e.g., `https://yoursite.com`)
+2. Include both `www` and non-`www` versions if needed:
+   - `https://yoursite.com`
+   - `https://www.yoursite.com`
+3. For localhost testing, add: `http://localhost:8000` (adjust port as needed)
+4. Click "Register"
+
+#### 3. Get Your Token
+1. After registration, you'll receive a unique origin trial token
+2. Copy the token string (it will be quite long)
+
+#### 4. Update Your HTML
+Replace the existing origin trial meta tag in `index.html`:
+
+**Find this existing line:**
+```html
+<meta http-equiv="origin-trial" content="AqMixl1ARhc0sjViJvLf27A7IYKfLAi0V3sTbkLO5/PjCWcwX9M405Xmi4KWNJfZBWlr1ueL5A06O+fCjjg+hQgAAAB2eyJvcmlnaW4iOiJodHRwczovL21haW4uZDEwcmdlMG55M203c3YuYW1wbGlmeWFwcC5jb206NDQzIiwiZmVhdHVyZSI6IkFJUHJvbXB0QVBJTXVsdGltb2RhbElucHV0IiwiZXhwaXJ5IjoxNzc0MzEwNDAwfQ==">
+```
+
+**Replace with your token:**
+```html
+<meta http-equiv="origin-trial" content="YOUR_ORIGIN_TRIAL_TOKEN_HERE">
+```
+
+#### 5. Deploy and Test
+1. Deploy your updated website
+2. Visit your site in Chrome 127+ (Canary/Dev Channel recommended)
+3. Open DevTools Console - you should see AI detection logs
+4. The AI chat button should appear automatically if the browser supports it
+
+### Important Notes
+
+**Token Expiry:**
+- Origin trial tokens have expiration dates (typically 6-12 months)
+- Monitor your token status in the Chrome Origin Trials dashboard
+- Update tokens before they expire to maintain functionality
+
+**Browser Requirements:**
+- Chrome 127+ (Canary, Dev, or Beta channels recommended)
+- Desktop only (mobile Chrome doesn't support on-device AI yet)
+- ChromeOS is not currently supported
+
+**Fallback for Development:**
+If you prefer not to use Origin Trial or need to test locally, users can still manually enable Chrome flags:
+
+1. Open Chrome and navigate to: `chrome://flags/`
+2. Enable these flags:
+   - `#prompt-api-for-gemini-nano`
+   - `#optimization-guide-on-device-model`
+3. Restart Chrome
+4. Visit `chrome://components/`
+5. Find "Optimization Guide On Device Model" and click "Check for update"
+6. Wait for the model to download (~5GB)
+
+### Troubleshooting Origin Trial
+
+**Token Not Working:**
+- Verify your domain exactly matches what you registered
+- Check that the token hasn't expired
+- Ensure you're testing on the registered domain (not localhost unless registered)
+- Try hard refresh (Ctrl+F5) to clear cache
+
+**AI Still Not Available:**
+- Confirm you're using Chrome 127+ (check `chrome://version/`)
+- Try Chrome Canary or Dev channel for latest features
+- Check browser console for specific error messages
+- Verify you're not on mobile or ChromeOS
+
+**Model Download Issues:**
+- The AI model is ~5GB and downloads automatically
+- Download happens in background and may take time
+- Check `chrome://components/` for download status
+- Ensure stable internet connection
+
+For more information, see the [Chrome AI Documentation](https://developer.chrome.com/docs/ai/get-started).
 
 ## 📄 License
 
