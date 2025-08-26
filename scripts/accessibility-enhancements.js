@@ -210,7 +210,8 @@ class AccessibilityEnhancer {
     announcePageLoad() {
         // Announce page load completion to screen readers
         setTimeout(() => {
-            this.announce('Page loaded. Karthik Subramanian\'s portfolio website. Use skip links or tab to navigate.');
+            const userName = (typeof personalInfo !== 'undefined' && personalInfo.name) ? personalInfo.name : 'User';
+            this.announce(`Page loaded. ${userName}'s portfolio website. Use skip links or tab to navigate.`);
         }, 1000);
     }
 

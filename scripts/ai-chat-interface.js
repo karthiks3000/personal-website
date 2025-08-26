@@ -368,7 +368,8 @@ class LightweightChat {
     addWelcomeMessage() {
         if (this.messages.length > 0) return;
         
-        const welcomeText = "Hey there! I'm AI Karthik - like regular Karthik but with 47% more hallucinations and 0% coffee dependency. Ask me about my experience, but remember I'm just a chatty algorithm trying my best not to embarrass my creator!";
+        const userName = (typeof personalInfo !== 'undefined' && personalInfo.name) ? personalInfo.name : 'me';
+        const welcomeText = `Hey there! I'm AI ${userName} - like regular ${userName} but with 47% more hallucinations and 0% coffee dependency. Ask me about my experience, but remember I'm just a chatty algorithm trying my best not to embarrass my creator!`;
         this.addMessage(welcomeText, 'ai');
     }
 
@@ -376,13 +377,14 @@ class LightweightChat {
         // Remove existing typing indicator
         this.hideTyping();
         
+        const userName = (typeof personalInfo !== 'undefined' && personalInfo.name) ? personalInfo.name.split(' ')[0] : 'AI';
         const typingEl = document.createElement('div');
         typingEl.className = 'typing-indicator';
         typingEl.innerHTML = `
             <div class="message-content">
                 <div class="avatar">K</div>
                 <div class="typing-bubble">
-                    <span class="typing-text">Karthik is typing</span>
+                    <span class="typing-text">${userName} is typing</span>
                     <div class="typing-dots">
                         <span></span>
                         <span></span>
@@ -424,25 +426,59 @@ class LightweightChat {
     generateResponse(userMessage) {
         const message = userMessage.toLowerCase();
         
+        // Get dynamic data with fallbacks
+        const userInfo = typeof personalInfo !== 'undefined' ? personalInfo : {};
+        const currentRole = userInfo.title || 'Software Engineer';
+        const currentCompany = userInfo.currentCompany || 'my current company';
+        const contactEmail = (typeof contactConfig !== 'undefined' ? contactConfig.contactEmail : userInfo.email) || 'me';
+        const userBio = userInfo.bio || 'I\'m a passionate software engineer with extensive experience in modern web technologies.';
+        
         // Simple response logic based on keywords
         if (message.includes('experience') || message.includes('work') || message.includes('job')) {
-            return "I'm currently a Senior Software Engineering Manager at Scholastic Inc., where I lead technical teams and drive software architecture decisions. I have over 13 years of experience in software development, from full-stack development to technical leadership roles.";
+            return `I'm currently working as ${currentRole} at ${currentCompany}, where I lead technical teams and drive software architecture decisions. ${userBio}`;
         }
         
         if (message.includes('skills') || message.includes('technology') || message.includes('tech')) {
-            return "My core expertise spans backend systems (Node.js, Python, Java), cloud architecture (AWS, serverless), and frontend development (JavaScript, React, CSS). I specialize in building scalable systems and leading technical teams.";
+            // Build skills response from data if available
+            let skillsText = "My expertise includes various technologies and frameworks. ";
+            if (typeof skills !== 'undefined') {
+                const allSkills = Object.values(skills).flat().map(skill => skill.name);
+                if (allSkills.length > 0) {
+                    const topSkills = allSkills.slice(0, 6).join(', ');
+                    skillsText = `My core expertise spans ${topSkills}, and many other technologies. `;
+                }
+            }
+            return skillsText + "I specialize in building scalable systems and leading technical teams.";
         }
         
         if (message.includes('projects') || message.includes('portfolio')) {
-            return "I've built several interesting projects including a multiplayer TriviaSnake game using AWS and WebSockets, comprehensive AWS serverless tutorials, and this interactive portfolio website. You can check out my GitHub for more projects!";
+            let projectsText = "I've worked on various interesting projects. ";
+            if (typeof projects !== 'undefined' && projects.length > 0) {
+                const featuredProjects = projects.filter(p => p.featured).slice(0, 2);
+                if (featuredProjects.length > 0) {
+                    const projectTitles = featuredProjects.map(p => p.title).join(' and ');
+                    projectsText = `I've built several interesting projects including ${projectTitles}, among others. `;
+                }
+            }
+            return projectsText + "You can check out my portfolio for more details about my work!";
         }
         
         if (message.includes('education') || message.includes('degree') || message.includes('study')) {
-            return "I have a Bachelor of Engineering in Information Technology from the University of Mumbai (2011). I'm also AWS Certified Cloud Practitioner and an AWS Community Builder, contributing to the community through technical content.";
+            let educationText = "I have a strong educational background. ";
+            if (typeof education !== 'undefined' && education.degree) {
+                educationText = `I have ${education.degree} from ${education.institution} (${education.year}). `;
+            }
+            
+            if (typeof certifications !== 'undefined' && certifications.length > 0) {
+                const certNames = certifications.map(cert => cert.name).join(', ');
+                educationText += `I'm also certified in ${certNames}.`;
+            }
+            
+            return educationText;
         }
         
         if (message.includes('contact') || message.includes('hire') || message.includes('email')) {
-            return "I'd love to connect! You can reach me at contact@karthiks3000.dev or connect with me on LinkedIn. I'm always open to discussing interesting projects and collaboration opportunities.";
+            return `I'd love to connect! You can reach me at ${contactEmail} or use the contact form on this website. I'm always open to discussing interesting projects and collaboration opportunities.`;
         }
         
         if (message.includes('hello') || message.includes('hi') || message.includes('hey')) {
@@ -450,7 +486,7 @@ class LightweightChat {
         }
         
         // Default response
-        return "That's a great question! I'd be happy to share more about my experience in software engineering, technical leadership, or any of my projects. Feel free to ask about my work at Scholastic, my AWS expertise, or anything else you'd like to know!";
+        return "That's a great question! I'd be happy to share more about my experience, projects, or anything else you'd like to know. Feel free to ask me about my background or technical expertise!";
     }
 
     /**

@@ -1,11 +1,15 @@
-// Main JavaScript file for Karthik's Personal Website
+// Main JavaScript file for Personal Website Template
 
 // Contact form handler - Sends form data to AWS Lambda
-const LAMBDA_URL = 'https://dgkl5wqh364k5l35oglsk2lkwm0vjszu.lambda-url.us-east-1.on.aws';
+// Lambda URL is now configured in data.js contactConfig
+let LAMBDA_URL = '';
 
 // DOM Content Loaded Event
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('Karthik\'s Personal Website - Initializing...');
+    console.log('Personal Website Template - Initializing...');
+    
+    // Load configuration from data.js
+    loadTemplateConfiguration();
     
     // Add error boundary
     setupErrorBoundary();
@@ -26,6 +30,29 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initialize performance-aware components
     initializeWithPerformanceCheck();
 });
+
+// Load template configuration from data.js
+function loadTemplateConfiguration() {
+    // Load contact form configuration
+    if (typeof contactConfig !== 'undefined') {
+        LAMBDA_URL = contactConfig.lambdaUrl || '';
+        
+        // Update message field max length if configured
+        const messageField = document.getElementById('message');
+        if (messageField && contactConfig.maxMessageLength) {
+            messageField.setAttribute('maxlength', contactConfig.maxMessageLength);
+        }
+        
+        console.log('✅ Contact form configuration loaded');
+    } else {
+        console.warn('⚠️ contactConfig not found in data.js - contact form may not work properly');
+    }
+    
+    // Validate required configuration
+    if (!LAMBDA_URL && typeof contactConfig !== 'undefined' && contactConfig.enableContactForm) {
+        console.warn('⚠️ Contact form is enabled but no Lambda URL provided');
+    }
+}
 
 // Initialize components with performance considerations
 function initializeWithPerformanceCheck() {
@@ -770,9 +797,13 @@ async function handleContactFormSubmission(e) {
     } catch (error) {
         console.error('Contact form submission error:', error);
         
+        const contactEmail = (typeof contactConfig !== 'undefined' && contactConfig.contactEmail) ? 
+                            contactConfig.contactEmail : 
+                            (typeof personalInfo !== 'undefined' && personalInfo.email) ? personalInfo.email : 'me';
+        
         setSubmitButtonLoading(false);
         showContactFormMessage(
-            'Sorry, there was an error sending your message. Please try again or contact me directly at contact@karthiks3000.dev',
+            `Sorry, there was an error sending your message. Please try again or contact me directly at ${contactEmail}`,
             'error'
         );
         announceToScreenReader('Error sending message. Please try again.', 'assertive');
@@ -936,9 +967,11 @@ function initThemeToggle() {
 function initLogoTypewriter() {
     const logoElement = document.getElementById('logo-typewriter');
     if (logoElement && window.AnimationUtils) {
+        // Use dynamic name from personalInfo
+        const userName = (typeof personalInfo !== 'undefined' && personalInfo.name) ? personalInfo.name : 'Your Name';
         // Add a slight delay before starting the typewriter effect
         setTimeout(() => {
-            window.AnimationUtils.typewriterEffect(logoElement, 'Karthik Subramanian', 80);
+            window.AnimationUtils.typewriterEffect(logoElement, userName, 80);
         }, 500);
     }
 }
@@ -3714,15 +3747,6 @@ function initContactSection() {
         });
     });
     
-    // Add resume download tracking
-    const resumeLinks = document.querySelectorAll('a[href*="resume"], a[href*="Resume"], a[href*="CV"], a[href*=".pdf"]');
-    resumeLinks.forEach(link => {
-        link.addEventListener('click', (e) => {
-            // Track resume download (for analytics if needed)
-            console.log('Resume download clicked:', link.href);
-        });
-    });
-    
     // Initialize contact form animations
     initContactFormAnimations();
 }
@@ -3812,29 +3836,58 @@ function initAIChatHandling() {
         try {
             // Create AI session if not exists
             if (!window.aiSession) {
-                const initialPrompts = [
-                    {
-                        role: 'system',
-                        content: `You are an AI representation of Karthik Subramanian. 
-Respond as if you are Karthik himself, using first person. Base your responses on this information:
+                // Build dynamic system prompt from data.js
+                const userName = (typeof personalInfo !== 'undefined' && personalInfo.name) ? personalInfo.name : 'the user';
+                const currentRole = (typeof personalInfo !== 'undefined' && personalInfo.title) ? personalInfo.title : 'Software Engineer';
+                const currentCompany = (typeof personalInfo !== 'undefined' && personalInfo.currentCompany) ? personalInfo.currentCompany : 'my current company';
+                const userBio = (typeof personalInfo !== 'undefined' && personalInfo.bio) ? personalInfo.bio : 'I\'m a passionate software engineer with extensive experience in modern technologies.';
+                
+                // Get key skills
+                let technicalExpertise = "Various technologies and frameworks";
+                if (typeof skills !== 'undefined') {
+                    const allSkills = Object.values(skills).flat().map(skill => skill.name);
+                    if (allSkills.length > 0) {
+                        technicalExpertise = allSkills.slice(0, 8).join(', ');
+                    }
+                }
+                
+                // Get featured projects
+                let keyProjects = "Various software projects";
+                if (typeof projects !== 'undefined' && projects.length > 0) {
+                    const featuredProjects = projects.filter(p => p.featured).slice(0, 3);
+                    if (featuredProjects.length > 0) {
+                        keyProjects = featuredProjects.map(p => p.title).join(', ');
+                    }
+                }
+                
+                // Get experience companies
+                let experienceCompanies = "various companies";
+                if (typeof experience !== 'undefined' && experience.length > 0) {
+                    const companies = [...new Set(experience.map(exp => exp.company))].slice(0, 3);
+                    if (companies.length > 0) {
+                        experienceCompanies = companies.join(', ');
+                    }
+                }
+                
+                const systemPrompt = `You are an AI representation of ${userName}. 
+Respond as if you are ${userName} personally, using first person. Base your responses on this information:
 
-Background: Principal-level software engineer specializing in scalable backend systems, cloud architecture, and modern web applications. Currently Senior Software Engineering Manager at Scholastic Inc.
+Background: ${userBio} Currently working as ${currentRole} at ${currentCompany}.
 
-Technical Expertise:
-- Backend: Node.js, Python, Java, System Architecture, API Design
-- Frontend: JavaScript/TypeScript, React, HTML/CSS, Modern Web APIs
-- Cloud: AWS Services, Serverless Architecture, Infrastructure as Code
+Technical Expertise: ${technicalExpertise}
 
-Key Projects:
-- Multiplayer TriviaSnake Game built with Amazon Q Developer
-- AWS Serverless Architecture tutorials and implementations
-- Educational technology platforms at Scholastic and Renaissance Learning
+Key Projects: ${keyProjects}
 
-Experience: Led technical teams at major companies including Scholastic, Renaissance Learning, and Viacom. AWS Community Builder member.
+Experience: I have experience working with ${experienceCompanies} and have built various technical solutions.
 
 Communication Style: Professional but approachable, technical when needed, focused on practical solutions and real-world experience.
 
-Keep responses concise and conversational. If asked about specific technical details not covered above, acknowledge the limitation and suggest contacting directly.`
+Keep responses concise and conversational. If asked about specific technical details not covered above, acknowledge the limitation and suggest contacting directly.`;
+
+                const initialPrompts = [
+                    {
+                        role: 'system',
+                        content: systemPrompt
                     }
                 ];
 

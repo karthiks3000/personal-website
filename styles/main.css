@@ -1,4 +1,4 @@
-/* Dark Theme Foundation CSS for Karthik's Personal Website */
+/* Dark Theme Foundation CSS for Personal Website Template */
 
 /* Base Styles */
 * {
@@ -2659,33 +2659,6 @@ ection Styles */
 .contact-info .contact-email:hover::before,
 .contact-info .contact-email:focus::before {
     width: 100%;
-}
-
-/* Resume Download Button Enhancement */
-.resume-download {
-    transition: all 0.3s ease;
-    position: relative;
-    overflow: hidden;
-}
-
-.resume-download::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-    transition: left 0.5s ease;
-}
-
-.resume-download:hover::before {
-    left: 100%;
-}
-
-.resume-download:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(59, 130, 246, 0.3);
 }
 
 /* Contact Section Background Pattern Animation */

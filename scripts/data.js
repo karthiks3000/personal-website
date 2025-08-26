@@ -1,4 +1,47 @@
-// Personal Website Data for Karthik Subramanian
+// Personal Website Template Data
+// Replace all the information below with your own details
+
+// Site Configuration - Meta tags and global settings
+const siteConfig = {
+    // Basic meta tags
+    title: "Karthik Subramanian", // Will be used as page title
+    description: "Senior Software Engineering Manager specializing in cloud technologies, full-stack development, and AWS services. AWS Community Builder passionate about building innovative solutions.",
+    keywords: "Software Engineer, AWS, Cloud Architecture, Full Stack Developer, Technical Leadership, JavaScript, Python, Serverless",
+    author: "Karthik Subramanian",
+    
+    // Open Graph and social media tags
+    ogType: "website",
+    ogUrl: "https://karthiks3000.dev", // Replace with your domain
+    twitterCard: "summary_large_image",
+    twitterTitle: "Karthik Subramanian",
+    twitterDescription: "Find out what you like doing best, and get someone to pay you for it.",
+    
+    // Theme and branding
+    themeColor: "#111827",
+    faviconPath: "assets/favicon.svg" // Path to your favicon
+};
+
+// Contact Configuration
+const contactConfig = {
+    // AWS Lambda URL for contact form (replace with your own)
+    lambdaUrl: 'https://dgkl5wqh364k5l35oglsk2lkwm0vjszu.lambda-url.us-east-1.on.aws',
+    
+    // Contact email (will be used in mailto links)
+    contactEmail: "karthiks3000@gmail.com",
+    
+    // Form settings
+    maxMessageLength: 1000,
+    enableContactForm: true // Set to false to hide contact form
+};
+
+// Personal Introduction for flip card
+const personalIntro = {
+    paragraph1: "I'm a software engineer and proud twin dad blessed with a boy and a girl. My journey started in Mumbai where I began my career, then took me through nearly 7 years in New York before finding my way to Canada - first Toronto, and now calling Waterloo home.",
+    
+    paragraph2: "Over the past decade, I've built scalable web applications and led engineering teams at companies like Scholastic and Viacom. What started as writing code in Mumbai has evolved into architecting cloud solutions and mentoring developers across different continents.",
+    
+    paragraph3: "When I'm not busy with work or playing with the kids, you'll find me savoring the perfect cup of coffee, diving into RPG adventures, or flying my drone around Waterloo. I believe the best code tells a story, and I love sharing those stories through technical writing and open source contributions."
+};
 
 // Personal Information
 const personalInfo = {
@@ -10,7 +53,6 @@ const personalInfo = {
     location: "Waterloo, Canada",
     bio: "Passionate software engineer with extensive experience in cloud technologies, full-stack development, and AWS services. Currently leading engineering teams at Scholastic Inc. and contributing to the AWS community through technical articles and innovative projects.",
     profileImage: "assets/profile.jpg",
-    resume: "assets/Karthik_Subramanian.pdf"
 };
 
 // Social Links

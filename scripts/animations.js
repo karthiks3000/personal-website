@@ -52,6 +52,11 @@ function initScrollProgressIndicator() {
     progressBar.className = 'fixed top-0 left-0 h-1 bg-blue-400 z-50 transition-all duration-300 ease-out';
     progressBar.style.width = '0%';
     progressBar.setAttribute('aria-hidden', 'true');
+    progressBar.setAttribute('role', 'progressbar');
+    progressBar.setAttribute('aria-label', 'Page scroll progress');
+    progressBar.setAttribute('aria-valuemin', '0');
+    progressBar.setAttribute('aria-valuemax', '100');
+    progressBar.setAttribute('aria-valuenow', '0');
     
     // Insert at the beginning of body
     document.body.insertBefore(progressBar, document.body.firstChild);
@@ -62,9 +67,11 @@ function initScrollProgressIndicator() {
     function updateScrollProgress() {
         const scrollTop = window.scrollY || document.documentElement.scrollTop;
         const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
-        const scrollPercent = (scrollTop / scrollHeight) * 100;
+        const scrollPercent = Math.min(100, Math.max(0, (scrollTop / scrollHeight) * 100));
         
-        progressBar.style.width = `${Math.min(100, Math.max(0, scrollPercent))}%`;
+        progressBar.style.width = `${scrollPercent}%`;
+        progressBar.setAttribute('aria-valuenow', Math.round(scrollPercent));
+        
         ticking = false;
     }
     
@@ -154,8 +161,6 @@ function initSmoothScrolling() {
         });
     });
 }
-
-
 
 /**
  * Utility function to add staggered animations to child elements
@@ -448,145 +453,7 @@ function announceToScreenReader(message) {
 }
 
 /**
- * Enhanced scroll progress with accessibility
- */
-function initScrollProgressIndicator() {
-    // Create progress bar element
-    const progressBar = document.createElement('div');
-    progressBar.id = 'scroll-progress';
-    progressBar.className = 'fixed top-0 left-0 h-1 bg-blue-400 z-50 transition-all duration-300 ease-out';
-    progressBar.style.width = '0%';
-    progressBar.setAttribute('aria-hidden', 'true');
-    progressBar.setAttribute('role', 'progressbar');
-    progressBar.setAttribute('aria-label', 'Page scroll progress');
-    progressBar.setAttribute('aria-valuemin', '0');
-    progressBar.setAttribute('aria-valuemax', '100');
-    progressBar.setAttribute('aria-valuenow', '0');
-    
-    // Insert at the beginning of body
-    document.body.insertBefore(progressBar, document.body.firstChild);
-    
-    // Update progress on scroll
-    let ticking = false;
-    
-    function updateScrollProgress() {
-        const scrollTop = window.scrollY || document.documentElement.scrollTop;
-        const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
-        const scrollPercent = Math.min(100, Math.max(0, (scrollTop / scrollHeight) * 100));
-        
-        progressBar.style.width = `${scrollPercent}%`;
-        progressBar.setAttribute('aria-valuenow', Math.round(scrollPercent));
-        
-        ticking = false;
-    }
-    
-    function requestScrollUpdate() {
-        if (!ticking) {
-            requestAnimationFrame(updateScrollProgress);
-            ticking = true;
-        }
-    }
-    
-    window.addEventListener('scroll', requestScrollUpdate, { passive: true });
-    
-    // Initial update
-    updateScrollProgress();
-}
-
-// Export functions for potential external use
-window.AnimationUtils = {
-    addStaggeredAnimation,
-    prefersReducedMotion,
-    announceToScreenReader,
-    
-    // Initialize all animations
-    initAllAnimations: function() {
-        if (!prefersReducedMotion) {
-            initFadeInAnimations();
-            initInteractiveSkills();
-            initExperienceAnimations();
-            initProjectsAnimations();
-        }
-    },
-    
-    // Initialize basic animations (for low-end devices)
-    initBasicAnimations: function() {
-        // Just initialize essential animations with reduced motion
-        const sections = document.querySelectorAll('section');
-        sections.forEach(section => {
-            section.classList.add('animate-fade-in-up');
-        });
-    },
-    
-    // Initialize particles (placeholder function)
-    initParticles: function() {
-        console.log('Particles initialization - placeholder function');
-        // This would typically initialize a particle system
-        // For now, we'll just add a simple background effect
-        const hero = document.getElementById('hero');
-        if (hero && !prefersReducedMotion) {
-            hero.style.background = 'linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(147, 51, 234, 0.1) 100%)';
-        }
-    },
-    
-    // Add hover effects
-    addHoverEffects: function() {
-        if (prefersReducedMotion) return;
-        
-        // Add hover effects to interactive elements
-        const interactiveElements = document.querySelectorAll('.btn-primary, .btn-secondary, .project-card, .skill-card');
-        interactiveElements.forEach(element => {
-            element.addEventListener('mouseenter', function() {
-                this.style.transform = 'translateY(-2px)';
-                this.style.transition = 'transform 0.2s ease';
-            });
-            
-            element.addEventListener('mouseleave', function() {
-                this.style.transform = 'translateY(0)';
-            });
-        });
-    },
-    
-    // Initialize micro-interactions
-    initMicroInteractions: function() {
-        if (prefersReducedMotion) return;
-        
-        // Add subtle micro-interactions to buttons and links
-        const buttons = document.querySelectorAll('button, a');
-        buttons.forEach(button => {
-            button.addEventListener('click', function() {
-                this.style.transform = 'scale(0.98)';
-                setTimeout(() => {
-                    this.style.transform = 'scale(1)';
-                }, 100);
-            });
-        });
-    },
-    
-    // Typewriter effect
-    typewriterEffect: function(element, text, speed = 100) {
-        if (!element || prefersReducedMotion) {
-            if (element) element.textContent = text;
-            return;
-        }
-        
-        element.textContent = '';
-        let i = 0;
-        
-        function typeChar() {
-            if (i < text.length) {
-                element.textContent += text.charAt(i);
-                i++;
-                setTimeout(typeChar, speed);
-            }
-        }
-        
-        typeChar();
-    }
-};
-/**
- 
-* Interactive Skills Section
+ * Interactive Skills Section
  * Handles switching between different skill categories
  */
 function initInteractiveSkills() {
@@ -672,12 +539,7 @@ function setActiveSkillCategory(category) {
     });
 }
 
-// Export the interactive skills function for potential external use
-window.SkillsUtils = {
-    setActiveSkillCategory,
-    initInteractiveSkills
-};/*
-*
+/**
  * Experience Section Animations
  * Handles timeline animations and interactive elements
  */
@@ -830,9 +692,13 @@ function initExperienceAccessibility() {
         card.setAttribute('tabindex', '0');
         card.setAttribute('role', 'article');
         
-        const company = card.querySelector('.text-lg').textContent;
-        const position = card.querySelector('h3').textContent;
-        card.setAttribute('aria-label', `${position} at ${company}`);
+        const companyElement = card.querySelector('.text-lg');
+        const positionElement = card.querySelector('h3');
+        if (companyElement && positionElement) {
+            const company = companyElement.textContent;
+            const position = positionElement.textContent;
+            card.setAttribute('aria-label', `${position} at ${company}`);
+        }
         
         // Add keyboard navigation between cards
         card.addEventListener('keydown', (e) => {
@@ -1029,8 +895,8 @@ function initProjectsAccessibility() {
         card.setAttribute('tabindex', '0');
         card.setAttribute('role', 'article');
         
-        const projectTitle = card.querySelector('h3').textContent;
-        const projectType = card.querySelector('.text-sm').textContent;
+        const projectTitle = card.querySelector('h3')?.textContent || 'Project';
+        const projectType = card.querySelector('.text-xs')?.textContent || 'Project';
         card.setAttribute('aria-label', `${projectTitle} - ${projectType}`);
         
         // Add keyboard navigation between cards
@@ -1080,32 +946,6 @@ function initProjectsAccessibility() {
             card.style.outlineOffset = '0';
         });
     });
-    
-    // Add ARIA labels to technology tag groups
-    const techTagGroups = document.querySelectorAll('#projects .flex.flex-wrap.gap-2');
-    techTagGroups.forEach(group => {
-        if (group.previousElementSibling && group.previousElementSibling.textContent.includes('Technologies')) {
-            group.setAttribute('role', 'list');
-            group.setAttribute('aria-label', 'Technologies used in this project');
-            
-            const tags = group.querySelectorAll('.px-3.py-1.rounded-full');
-            tags.forEach(tag => {
-                tag.setAttribute('role', 'listitem');
-            });
-        }
-    });
-    
-    // Add ARIA labels to project link groups
-    const linkGroups = document.querySelectorAll('#projects .flex.flex-wrap.gap-3');
-    linkGroups.forEach(group => {
-        group.setAttribute('role', 'list');
-        group.setAttribute('aria-label', 'Project links');
-        
-        const links = group.querySelectorAll('a');
-        links.forEach(link => {
-            link.setAttribute('role', 'listitem');
-        });
-    });
 }
 
 /**
@@ -1130,19 +970,6 @@ function initProjectsMobileOptimizations() {
                     card.style.backgroundColor = '';
                 }, 150);
             }, { passive: true });
-            
-            // Improve button spacing on mobile
-            const linkContainer = card.querySelector('.flex.flex-wrap.gap-3');
-            if (linkContainer) {
-                linkContainer.style.flexDirection = 'column';
-                linkContainer.style.gap = '0.75rem';
-                
-                const links = linkContainer.querySelectorAll('a');
-                links.forEach(link => {
-                    link.style.width = '100%';
-                    link.style.justifyContent = 'center';
-                });
-            }
             
             // Optimize technology tags on mobile
             const techTags = card.querySelectorAll('.px-3.py-1.rounded-full');
@@ -1172,308 +999,107 @@ window.addEventListener('resize', () => {
     }, 250);
 });
 
+// Export functions for potential external use
+window.AnimationUtils = {
+    addStaggeredAnimation,
+    prefersReducedMotion,
+    announceToScreenReader,
+    
+    // Initialize all animations
+    initAllAnimations: function() {
+        if (!prefersReducedMotion) {
+            initFadeInAnimations();
+            initInteractiveSkills();
+            initExperienceAnimations();
+            initProjectsAnimations();
+        }
+    },
+    
+    // Initialize basic animations (for low-end devices)
+    initBasicAnimations: function() {
+        // Just initialize essential animations with reduced motion
+        const sections = document.querySelectorAll('section');
+        sections.forEach(section => {
+            section.classList.add('animate-fade-in-up');
+        });
+    },
+    
+    // Initialize particles (placeholder function)
+    initParticles: function() {
+        console.log('Particles initialization - placeholder function');
+        // This would typically initialize a particle system
+        // For now, we'll just add a simple background effect
+        const hero = document.getElementById('hero');
+        if (hero && !prefersReducedMotion) {
+            hero.style.background = 'linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(147, 51, 234, 0.1) 100%)';
+        }
+    },
+    
+    // Add hover effects
+    addHoverEffects: function() {
+        if (prefersReducedMotion) return;
+        
+        // Add hover effects to interactive elements
+        const interactiveElements = document.querySelectorAll('.btn-primary, .btn-secondary, .project-card, .skill-card');
+        interactiveElements.forEach(element => {
+            element.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-2px)';
+                this.style.transition = 'transform 0.2s ease';
+            });
+            
+            element.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0)';
+            });
+        });
+    },
+    
+    // Initialize micro-interactions
+    initMicroInteractions: function() {
+        if (prefersReducedMotion) return;
+        
+        // Add subtle micro-interactions to buttons and links
+        const buttons = document.querySelectorAll('button, a');
+        buttons.forEach(button => {
+            button.addEventListener('click', function() {
+                this.style.transform = 'scale(0.98)';
+                setTimeout(() => {
+                    this.style.transform = 'scale(1)';
+                }, 100);
+            });
+        });
+    },
+    
+    // Typewriter effect
+    typewriterEffect: function(element, text, speed = 100) {
+        if (!element || prefersReducedMotion) {
+            if (element) element.textContent = text;
+            return;
+        }
+        
+        element.textContent = '';
+        let i = 0;
+        
+        function typeChar() {
+            if (i < text.length) {
+                element.textContent += text.charAt(i);
+                i++;
+                setTimeout(typeChar, speed);
+            }
+        }
+        
+        typeChar();
+    }
+};
+
+// Export the interactive skills function for potential external use
+window.SkillsUtils = {
+    setActiveSkillCategory,
+    initInteractiveSkills
+};
+
 // Export experience functions for potential external use
 window.ExperienceUtils = {
     initExperienceAnimations,
     initExperienceAccessibility,
     initExperienceMobileOptimizations
-};/**
- 
-* Contact Section Enhancements
- * Adds interactive functionality to contact elements
- */
-function initContactEnhancements() {
-    // Email copy functionality
-    const emailLinks = document.querySelectorAll('a[href^="mailto:"]');
-    emailLinks.forEach(link => {
-        // Add click handler for email links to show feedback
-        link.addEventListener('click', (e) => {
-            // Show brief feedback that email client is opening
-            showContactFeedback(link, 'Opening email client...');
-        });
-        
-        // Add keyboard support for copying email
-        link.addEventListener('keydown', (e) => {
-            if (e.key === 'c' && (e.ctrlKey || e.metaKey)) {
-                e.preventDefault();
-                copyEmailToClipboard(link);
-            }
-        });
-    });
-    
-    // Resume download tracking
-    const resumeLinks = document.querySelectorAll('a[href$=".pdf"]');
-    resumeLinks.forEach(link => {
-        link.addEventListener('click', () => {
-            showContactFeedback(link, 'Downloading resume...');
-        });
-    });
-    
-    // Social media link enhancements
-    const socialLinks = document.querySelectorAll('a[target="_blank"]');
-    socialLinks.forEach(link => {
-        // Add loading state for external links
-        link.addEventListener('click', () => {
-            if (link.href.includes('linkedin.com') || 
-                link.href.includes('github.com') || 
-                link.href.includes('dev.to')) {
-                showContactFeedback(link, 'Opening in new tab...');
-            }
-        });
-    });
-    
-    // Contact form alternative - show email composition helper
-    initEmailCompositionHelper();
-}
-
-/**
- * Show feedback message for contact interactions
- */
-function showContactFeedback(element, message) {
-    // Create feedback element
-    const feedback = document.createElement('div');
-    feedback.className = 'contact-feedback';
-    feedback.textContent = message;
-    feedback.style.cssText = `
-        position: absolute;
-        top: -40px;
-        left: 50%;
-        transform: translateX(-50%);
-        background: rgba(59, 130, 246, 0.9);
-        color: white;
-        padding: 8px 12px;
-        border-radius: 6px;
-        font-size: 12px;
-        font-weight: 500;
-        white-space: nowrap;
-        z-index: 1000;
-        opacity: 0;
-        transition: opacity 0.3s ease;
-        pointer-events: none;
-    `;
-    
-    // Position relative to element
-    const rect = element.getBoundingClientRect();
-    const container = element.closest('.relative') || element.parentElement;
-    if (container) {
-        container.style.position = 'relative';
-        container.appendChild(feedback);
-        
-        // Animate in
-        requestAnimationFrame(() => {
-            feedback.style.opacity = '1';
-        });
-        
-        // Remove after delay
-        setTimeout(() => {
-            feedback.style.opacity = '0';
-            setTimeout(() => {
-                if (feedback.parentElement) {
-                    feedback.parentElement.removeChild(feedback);
-                }
-            }, 300);
-        }, 2000);
-    }
-}
-
-/**
- * Copy email to clipboard functionality
- */
-function copyEmailToClipboard(emailLink) {
-    const email = emailLink.href.replace('mailto:', '');
-    
-    if (navigator.clipboard && window.isSecureContext) {
-        navigator.clipboard.writeText(email).then(() => {
-            showContactFeedback(emailLink, 'Email copied to clipboard!');
-        }).catch(() => {
-            fallbackCopyEmail(email, emailLink);
-        });
-    } else {
-        fallbackCopyEmail(email, emailLink);
-    }
-}
-
-/**
- * Fallback email copy method for older browsers
- */
-function fallbackCopyEmail(email, emailLink) {
-    const textArea = document.createElement('textarea');
-    textArea.value = email;
-    textArea.style.position = 'fixed';
-    textArea.style.left = '-999999px';
-    textArea.style.top = '-999999px';
-    document.body.appendChild(textArea);
-    textArea.focus();
-    textArea.select();
-    
-    try {
-        document.execCommand('copy');
-        showContactFeedback(emailLink, 'Email copied to clipboard!');
-    } catch (err) {
-        showContactFeedback(emailLink, 'Unable to copy email');
-    }
-    
-    document.body.removeChild(textArea);
-}
-
-/**
- * Email composition helper
- * Provides quick templates for common inquiries
- */
-function initEmailCompositionHelper() {
-    const emailLinks = document.querySelectorAll('a[href^="mailto:contact@karthiks3000.dev"]');
-    
-    emailLinks.forEach(link => {
-        // Add context menu for email templates
-        link.addEventListener('contextmenu', (e) => {
-            if (!prefersReducedMotion) {
-                e.preventDefault();
-                showEmailTemplateMenu(e, link);
-            }
-        });
-        
-        // Add keyboard shortcut for templates
-        link.addEventListener('keydown', (e) => {
-            if (e.key === 't' && (e.ctrlKey || e.metaKey)) {
-                e.preventDefault();
-                showEmailTemplateMenu(e, link);
-            }
-        });
-    });
-}
-
-/**
- * Show email template selection menu
- */
-function showEmailTemplateMenu(event, emailLink) {
-    const templates = [
-        {
-            name: 'Project Inquiry',
-            subject: 'Project Collaboration Inquiry',
-            body: 'Hi Karthik,\n\nI came across your portfolio and I\'m interested in discussing a potential project collaboration.\n\n[Please describe your project or requirements here]\n\nLooking forward to hearing from you.\n\nBest regards,'
-        },
-        {
-            name: 'Job Opportunity',
-            subject: 'Job Opportunity Discussion',
-            body: 'Hi Karthik,\n\nI hope this email finds you well. I\'d like to discuss a potential job opportunity that might interest you.\n\n[Please provide details about the role and company]\n\nWould you be available for a brief conversation?\n\nBest regards,'
-        },
-        {
-            name: 'Technical Question',
-            subject: 'Technical Question',
-            body: 'Hi Karthik,\n\nI have a technical question and would appreciate your insights.\n\n[Please describe your question or challenge]\n\nThank you for your time.\n\nBest regards,'
-        },
-        {
-            name: 'General Inquiry',
-            subject: 'General Inquiry',
-            body: 'Hi Karthik,\n\nI hope you\'re doing well. I wanted to reach out regarding:\n\n[Please describe your inquiry]\n\nThank you for your time.\n\nBest regards,'
-        }
-    ];
-    
-    // Create template menu
-    const menu = document.createElement('div');
-    menu.className = 'email-template-menu';
-    menu.style.cssText = `
-        position: fixed;
-        background: rgba(31, 41, 55, 0.95);
-        backdrop-filter: blur(10px);
-        border: 1px solid rgba(75, 85, 99, 0.3);
-        border-radius: 8px;
-        padding: 8px;
-        z-index: 10000;
-        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-        min-width: 200px;
-    `;
-    
-    // Position menu
-    menu.style.left = `${event.clientX}px`;
-    menu.style.top = `${event.clientY}px`;
-    
-    // Add template options
-    templates.forEach(template => {
-        const option = document.createElement('button');
-        option.className = 'template-option';
-        option.textContent = template.name;
-        option.style.cssText = `
-            display: block;
-            width: 100%;
-            padding: 8px 12px;
-            background: transparent;
-            border: none;
-            color: #f3f4f6;
-            text-align: left;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 14px;
-            transition: background-color 0.2s ease;
-        `;
-        
-        option.addEventListener('mouseenter', () => {
-            option.style.backgroundColor = 'rgba(96, 165, 250, 0.1)';
-        });
-        
-        option.addEventListener('mouseleave', () => {
-            option.style.backgroundColor = 'transparent';
-        });
-        
-        option.addEventListener('click', () => {
-            const mailtoUrl = `mailto:contact@karthiks3000.dev?subject=${encodeURIComponent(template.subject)}&body=${encodeURIComponent(template.body)}`;
-            window.location.href = mailtoUrl;
-            document.body.removeChild(menu);
-        });
-        
-        menu.appendChild(option);
-    });
-    
-    // Add close option
-    const closeOption = document.createElement('button');
-    closeOption.textContent = 'Cancel';
-    closeOption.style.cssText = `
-        display: block;
-        width: 100%;
-        padding: 8px 12px;
-        background: transparent;
-        border: none;
-        color: #9ca3af;
-        text-align: left;
-        border-radius: 4px;
-        cursor: pointer;
-        font-size: 14px;
-        border-top: 1px solid rgba(75, 85, 99, 0.3);
-        margin-top: 4px;
-        transition: background-color 0.2s ease;
-    `;
-    
-    closeOption.addEventListener('click', () => {
-        document.body.removeChild(menu);
-    });
-    
-    menu.appendChild(closeOption);
-    document.body.appendChild(menu);
-    
-    // Close menu when clicking outside
-    const closeMenu = (e) => {
-        if (!menu.contains(e.target)) {
-            document.body.removeChild(menu);
-            document.removeEventListener('click', closeMenu);
-        }
-    };
-    
-    setTimeout(() => {
-        document.addEventListener('click', closeMenu);
-    }, 100);
-    
-    // Close menu on escape key
-    const handleEscape = (e) => {
-        if (e.key === 'Escape') {
-            document.body.removeChild(menu);
-            document.removeEventListener('keydown', handleEscape);
-        }
-    };
-    
-    document.addEventListener('keydown', handleEscape);
-}
-
-// Initialize contact enhancements when DOM is loaded
-document.addEventListener('DOMContentLoaded', () => {
-    initContactEnhancements();
-});
+};
