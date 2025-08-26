@@ -8,11 +8,10 @@ A modern, responsive personal website template built with vanilla JavaScript, Ta
 
 1. **Clone or download** this repository
 2. **Edit** `scripts/data.js` with your personal information
-3. **Replace** `me.jpg` with your professional photo
+3. **Replace** `profile.jpg` with your professional photo
 4. **Deploy** to your preferred hosting platform
 5. **Done!** Your personalized website is ready
 
-> **Template Status**: ✅ **COMPLETE** - All hardcoded content has been removed and replaced with dynamic data loading from `scripts/data.js`. This template is now ready for anyone to use!
 
 ## 🎯 What You Get
 
@@ -41,7 +40,6 @@ A modern, responsive personal website template built with vanilla JavaScript, Ta
 ```
 personal-website/
 ├── index.html              # Main HTML file (minimal editing required)
-├── me.jpg                  # Your profile photo (replace this)
 ├── scripts/
 │   ├── data.js            # 🎯 MAIN CONFIG FILE - Edit this!
 │   ├── main.js            # Core functionality
@@ -53,6 +51,7 @@ personal-website/
 │   └── main.css           # Custom styles
 ├── assets/
 │   └── favicon.svg        # Site icon
+    ├── profile.jpg        # Your profile photo (replace this)
 └── README.md              # This file
 ```
 
